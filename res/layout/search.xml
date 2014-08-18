@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@android:color/transparent"
+                android:id="@+id/search_relativeLayout">
+
+    <Spinner
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/activity_type_spinner"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="3dp"
+            android:entries="@array/activity_type"/>
+
+    <Spinner
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/activity_distance_spinner"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="3dp"
+            android:entries="@array/activity_distance"/>
+
+
+    <Spinner
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/activity_duration_spinner"
+            android:layout_below="@+id/activity_type_spinner"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="10dp"
+            android:entries="@array/activity_time"/>
+
+    <Spinner
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/activity_radius_spinner"
+            android:layout_below="@+id/activity_distance_spinner"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:entries="@array/activity_radius"/>
+
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Set Date"
+            android:id="@+id/select_date_button"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/activity_duration_spinner"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:minWidth="100dp"/>
+
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Set Time"
+            android:id="@+id/select_time_button"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/activity_radius_spinner"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="15dp"
+            android:minWidth="100dp"/>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search"
+            android:id="@+id/search"
+            android:layout_below="@id/select_date_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp" android:textColor="@color/tab_highlight"
+            android:background="@color/transparent"/>
+
+    <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/hDivider"
+            android:background="@android:color/black"
+            android:src="@android:color/black"
+            android:layout_below="@+id/search"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="5dp"/>
+
+</RelativeLayout>

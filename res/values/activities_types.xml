@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="activity_type">
+        <item>@string/choose_activity</item>
+        <item>@string/running</item>
+        <item>@string/walking</item>
+        <item>@string/cycling</item>
+        <item>@string/mountain_biking</item>
+        <item>@string/swimming</item>
+        <item>@string/rowing</item>
+        <item>@string/snowboarding</item>
+        <item>@string/wheelchair</item>
+    </string-array>
+</resources>

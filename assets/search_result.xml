@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <activities>
+
+        <activity>
+            <id>1</id>
+            <title>Test Run 2</title>
+            <type>Running</type>
+            <distance>5 KM</distance>
+            <duration>35 Min</duration>
+            <date>22/07/2014</date>
+            <time>18:30</time>
+            <participants>5</participants>
+        </activity>
+
+    <activity>
+        <id>5</id>
+        <title>Test Run tt</title>
+        <type>Running</type>
+        <distance>5 KM</distance>
+        <duration>35 Min</duration>
+        <date>22/07/2014</date>
+        <time>18:30</time>
+        <participants>5</participants>
+    </activity>
+    </activities>

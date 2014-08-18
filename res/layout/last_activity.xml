@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent">
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Last Activity"
+            android:id="@+id/last_activity" android:textColor="@android:color/black"
+            android:layout_alignParentTop="true" android:layout_centerHorizontal="true"/>
+
+    <ListView
+            android:id="@+id/list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="3dp"
+            android:listSelector="@drawable/listview_selector" android:layout_marginTop="50dp"/>
+</RelativeLayout>

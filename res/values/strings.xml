@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FitAndSocial</string>
+    <string name="choose_activity">Activity Type</string>
+    <string name="distance">Distance (KM)</string>
+    <string name="duration">Duration</string>
+    <string name="running">Running</string>
+    <string name="walking">Walking</string>
+    <string name="cycling">Cycling</string>
+    <string name="swimming">Swimming</string>
+    <string name="mountain_biking">Mountain Biking</string>
+    <string name="rowing">Rowing</string>
+    <string name="snowboarding">Snowboarding</string>
+    <string name="wheelchair">Wheelchair</string>
+    <string name="radius">Radius</string>
+</resources>

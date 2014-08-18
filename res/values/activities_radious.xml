@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="activity_radius">
+        <item>@string/radius</item>
+        <item>0 - 5 KM</item>
+        <item>5 - 10 KM</item>
+        <item>10 - 15 KM</item>
+        <item>15 - 20 KM</item>
+        <item>20 - 25 KM</item>
+        <item>25 - 30</item>
+    </string-array>
+</resources>

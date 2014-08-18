@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="activity_distance">
+        <item>@string/distance</item>
+        <item>2 KM</item>
+        <item>3 KM</item>
+        <item>5 KM</item>
+        <item>7 KM</item>
+        <item>10 KM</item>
+        <item>12 KM</item>
+        <item>14 KM</item>
+        <item>15 KM</item>
+        <item>16 KM</item>
+        <item>18 KM</item>
+        <item>20 KM</item>
+    </string-array>
+</resources>

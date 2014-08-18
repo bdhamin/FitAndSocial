@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="activity_time">
+        <item>@string/duration</item>
+        <item>5 - 10 MIN</item>
+        <item>10 - 20 MIN</item>
+        <item>20 - 30 MIN</item>
+        <item>30 - 40 MIN</item>
+        <item>40 - 50 MIN</item>
+        <item>50 - 60 MIN</item>
+    </string-array>
+</resources>
