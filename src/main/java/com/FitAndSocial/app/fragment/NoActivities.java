@@ -1,17 +1,13 @@
 package com.FitAndSocial.app.fragment;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import com.FitAndSocial.app.mobile.R;
-import com.actionbarsherlock.app.SherlockFragment;
 import android.view.View;
 import android.support.v4.app.FragmentManager;
 
@@ -26,11 +22,13 @@ public class NoActivities extends BaseFragment {
         view = inflater.inflate(R.layout.no_activities, container, false);
         createButtonListener();
         searchButtonListener();
-
-
-        if(!getActivity().getActionBar().isShowing()){
-            getActivity().getActionBar().show();
-        }
+        enableViewPagerSwipe(true);
+        setActionbarNavigationMode(2);
+        /**
+         * Note this should be changed to get the logged in username
+         * and display it as title.
+         */
+        setFragmentTitle("Username");
         return view;
     }
 
@@ -76,6 +74,14 @@ public class NoActivities extends BaseFragment {
         fragmentTransaction.remove(lastActivity);
         fragmentTransaction.addToBackStack(null);
     }
+
+//    private void enableSwipeable() {
+//        NonSwipeableViewPager viewPager = (NonSwipeableViewPager)getActivity().findViewById(R.id.pager);
+//        if(viewPager != null){
+//            System.out.println("ViewPager found!");
+//            viewPager.setIsSwipeable(true);
+//        }
+//    }
 
     @Override
     public void onSaveInstanceState(Bundle onState){

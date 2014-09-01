@@ -71,6 +71,7 @@ public class SearchResultFragment extends BaseFragment {
         listView = (ListView)view.findViewById(R.id.list);
         searchResultAdapter = new SearchResultAdapter(this, searchResultList);
         listView.setAdapter(searchResultAdapter);
+        setFragmentTitle("Search Results");
         return view;
     }
 

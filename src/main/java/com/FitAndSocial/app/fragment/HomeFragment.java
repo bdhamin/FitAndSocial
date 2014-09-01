@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.FitAndSocial.app.fragment.helper.NonSwipeableViewPager;
 import com.FitAndSocial.app.mobile.R;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 import android.support.v4.app.FragmentManager;

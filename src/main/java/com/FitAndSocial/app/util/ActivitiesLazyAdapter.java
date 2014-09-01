@@ -28,6 +28,7 @@ public class ActivitiesLazyAdapter extends BaseAdapter{
     private final String KEY_DURATION = "duration";
     private final String KEY_DATE = "date";
     private final String KEY_TIME = "time";
+    private final String KEY_MEMBERS_TOTAL="members_total";
     private TextView showMore;
     TextView no_members;
     TextView title;
@@ -42,6 +43,8 @@ public class ActivitiesLazyAdapter extends BaseAdapter{
     TextView memberOneName;
     TextView memberTwoName;
     TextView memberThreeName;
+    TextView members;
+    private boolean test =false;
 
 
 
@@ -49,6 +52,12 @@ public class ActivitiesLazyAdapter extends BaseAdapter{
         this.activity = activity;
         this.data = data;
         layoutInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    public void setIsInformation(boolean isInformation){
+        if(isInformation){
+          test = true;
+        }
     }
 
 
@@ -89,9 +98,17 @@ public class ActivitiesLazyAdapter extends BaseAdapter{
         memberOneName = (TextView) view.findViewById(R.id.memberOneName);
         memberTwoName = (TextView) view.findViewById(R.id.memberTwoName);
         memberThreeName = (TextView) view.findViewById(R.id.memberThreeName);
+        members = (TextView)view.findViewById(R.id.members);
 
         HashMap<String, String> fas = new HashMap<>();
+
+//        if(test){
+//            members.setText("Participants: " + fas.get(KEY_PARTICIPANT));
+//            showMore.setVisibility(View.INVISIBLE);
+//        }
+
         fas = data.get(position);
+        members.setText("Members: "+fas.get(KEY_MEMBERS_TOTAL));
         title.setText(fas.get(KEY_TITLE));
         typeName.setText(fas.get(KEY_TYPE));
         distanceInKM.setText(fas.get(KEY_DISTANCE));
@@ -112,7 +129,7 @@ public class ActivitiesLazyAdapter extends BaseAdapter{
             if(fas.get("member_2_name") != "" && fas.get("member_2_name") != null){
                 memberThreeName.setText(fas.get("member_2_name"));
                 memberThree.setImageDrawable(activity.getResources().getDrawable(R.drawable.friends));
-                showMore.setVisibility(View.VISIBLE);
+                if(!test)showMore.setVisibility(View.VISIBLE);
             }else{
                 setVisibility(2);
             }

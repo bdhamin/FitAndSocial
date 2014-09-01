@@ -3,7 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:background="@android:color/transparent"
+                android:background="@android:color/white"
                 android:id="@+id/search_relativeLayout">
 
     <Spinner
@@ -81,5 +81,31 @@
             android:layout_below="@+id/search"
             android:layout_alignParentRight="true"
             android:layout_marginTop="5dp"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No Results Found With Your"
+            android:id="@+id/no_result_found"
+            android:layout_below="@+id/hDivider"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:textColor="@android:color/black"
+            android:singleLine="false"
+            android:visibility="invisible"
+            android:maxWidth="180dp"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search Criteria !"
+            android:id="@+id/no_result_found_2"
+            android:layout_below="@+id/no_result_found"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:textColor="@android:color/black"
+            android:singleLine="false"
+            android:visibility="invisible"
+            android:maxWidth="180dp"/>
+
 
 </RelativeLayout>

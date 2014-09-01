@@ -1,5 +1,6 @@
 package com.FitAndSocial.app.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -7,8 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
+import android.widget.*;
 import com.FitAndSocial.app.mobile.R;
 
 
@@ -27,6 +27,7 @@ public class ActivityInformationFragment extends BaseFragment{
         return view;
     }
 
+
     private void attachButtonListener() {
         Button participateButton = (Button)view.findViewById(R.id.participate_button);
         participateButton.setOnClickListener(new View.OnClickListener() {
@@ -40,6 +41,7 @@ public class ActivityInformationFragment extends BaseFragment{
 
     private void loadRequiredFragments() {
         Activities activityInfo = new Activities();
+        activityInfo.isActivityInformation(true);
         GoogleMapsFragment maps = new GoogleMapsFragment();
         FragmentManager manager = getFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
@@ -62,8 +64,5 @@ public class ActivityInformationFragment extends BaseFragment{
             transaction.commit();
             getActivity().getSupportFragmentManager().popBackStack();
         }
-
     }
-
-
 }

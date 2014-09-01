@@ -34,6 +34,7 @@ public class LastActivity extends BaseFragment {
     private final String KEY_DURATION = "duration";
     private final String KEY_DATE = "date";
     private final String KEY_TIME = "time";
+    private final String KEY_MEMBERS_TOTAL="members_total";
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState){
@@ -58,6 +59,7 @@ public class LastActivity extends BaseFragment {
             map.put(KEY_DURATION, xmlParser.getValue(e, KEY_DURATION));
             map.put(KEY_DATE, xmlParser.getValue(e, KEY_DATE));
             map.put(KEY_TIME, xmlParser.getValue(e, KEY_TIME));
+            map.put(KEY_MEMBERS_TOTAL, xmlParser.getValue(e, KEY_MEMBERS_TOTAL));
             NodeList members = ((Element) nl.item(i)).getElementsByTagName("member");
             if(members != null && members.getLength() > 0){
                 for(int j=0; j< members.getLength(); j++){

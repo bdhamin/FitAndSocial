@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import com.FitAndSocial.app.fragment.helper.NonSwipeableViewPager;
 import com.FitAndSocial.app.fragment.helper.ViewPagerAdapter;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
@@ -19,7 +20,8 @@ public class FitAndSocial extends RoboSherlockFragmentActivity {
 
     private ActionBar actionbar;
     private ActionBar.Tab tab;
-    private ViewPager viewPager;
+//    private ViewPager viewPager;
+    private NonSwipeableViewPager viewPager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,10 +39,11 @@ public class FitAndSocial extends RoboSherlockFragmentActivity {
         ((View) homeIcon.getParent()).setVisibility(View.GONE);
 
 
-        viewPager = (ViewPager)findViewById(R.id.pager);
+//        viewPager = (ViewPager)findViewById(R.id.pager);
+        viewPager = (NonSwipeableViewPager)findViewById(R.id.pager);
         FragmentManager fragmentManager = getSupportFragmentManager();
 
-        SimpleOnPageChangeListener viewPagerListener = new ViewPager.SimpleOnPageChangeListener(){
+        SimpleOnPageChangeListener viewPagerListener = new NonSwipeableViewPager.SimpleOnPageChangeListener(){
 
             @Override
             public void onPageSelected(int position){

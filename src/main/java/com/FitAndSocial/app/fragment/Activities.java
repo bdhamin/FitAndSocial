@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 import com.FitAndSocial.app.mobile.R;
 import com.FitAndSocial.app.util.ActivitiesLazyAdapter;
 import com.FitAndSocial.app.util.Utils;
@@ -35,10 +36,13 @@ public class Activities extends BaseFragment {
     private final String KEY_DURATION = "duration";
     private final String KEY_DATE = "date";
     private final String KEY_TIME = "time";
+    private final String KEY_MEMBERS_TOTAL="members_total";
+    private boolean isInformation = false;
+    private View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceBundle){
-        View view = inflater.inflate(R.layout.activities, container, false);
+        view = inflater.inflate(R.layout.activities, container, false);
         ArrayList<HashMap<String, String>> activitiesList = new ArrayList<>();
         XMLParser xmlParser = new XMLParser();
         AssetManager assetManager = getActivity().getAssets();
@@ -59,6 +63,7 @@ public class Activities extends BaseFragment {
             map.put(KEY_DURATION, xmlParser.getValue(e, KEY_DURATION));
             map.put(KEY_DATE, xmlParser.getValue(e, KEY_DATE));
             map.put(KEY_TIME, xmlParser.getValue(e, KEY_TIME));
+            map.put(KEY_MEMBERS_TOTAL, xmlParser.getValue(e, KEY_MEMBERS_TOTAL));
             NodeList members = ((Element) nl.item(i)).getElementsByTagName("member");
             if(members != null && members.getLength() > 0){
                 for(int j=0; j< members.getLength(); j++){
@@ -73,6 +78,7 @@ public class Activities extends BaseFragment {
         listView = (ListView)view.findViewById(R.id.list);
         activitiesLazyAdapter = new ActivitiesLazyAdapter(getActivity(), activitiesList);
         listView.setAdapter(activitiesLazyAdapter);
+        activitiesLazyAdapter.setIsInformation(true);
         return view;
     }
 
@@ -81,6 +87,13 @@ public class Activities extends BaseFragment {
         super.onSaveInstanceState(onState);
         setUserVisibleHint(true);
     }
+
+    public void isActivityInformation(boolean isInformationView){
+        if(isInformationView){
+            isInformation = true;
+        }
+    }
+
 
 
 

@@ -6,12 +6,16 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.*;
 import android.view.View;
+import com.FitAndSocial.app.fragment.helper.NonSwipeableViewPager;
+import com.FitAndSocial.app.mobile.FitAndSocial;
 import com.FitAndSocial.app.mobile.R;
 import com.FitAndSocial.app.util.Utils;
+import com.actionbarsherlock.app.ActionBar;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 
 /**
@@ -20,6 +24,7 @@ import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragmen
 public class SearchFragment extends BaseFragment implements OnDateSetListener, OnTimeSetListener{
 
     private View view;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceBundle){
@@ -31,8 +36,12 @@ public class SearchFragment extends BaseFragment implements OnDateSetListener, O
         showDateDialogListener();
         showTimeDialogListener();
         searchActivityButtonListener();
+        enableViewPagerSwipe(false);
+        setActionbarNavigationMode(0);
+        setFragmentTitle("Search");
         return view;
     }
+
 
     private void showTimeDialogListener() {
         Button selectTime = (Button)view.findViewById(R.id.select_time_button);
@@ -153,18 +162,33 @@ public class SearchFragment extends BaseFragment implements OnDateSetListener, O
     }
 
     private void searchActivityButtonListener() {
-        Button search = (Button)view.findViewById(R.id.search);
+        final Button search = (Button)view.findViewById(R.id.search);
+        /**
+         * The resultFound boolean is meant as indicator for the search results
+         * When in production this should the indicator for the xml results
+         * and should be removed to somewhere else.
+         */
+        final boolean resultFound = true;
         search.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                SearchResultFragment searchResultFragment = new SearchResultFragment();
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                Fragment searchFragment = fragmentManager.findFragmentById(R.id.create_fragment_container);
-                fragmentTransaction.remove(searchFragment);
-                fragmentTransaction.add(R.id.activities_container, searchResultFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+            public void onClick(View v) {
+
+                if(resultFound){
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    Fragment searchFragment = fragmentManager.findFragmentById(R.id.create_fragment_container);
+                    SearchResultFragment searchResultFragment = new SearchResultFragment();
+                    fragmentTransaction.remove(searchFragment);
+                    fragmentTransaction.add(R.id.activities_container, searchResultFragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                }else{
+                    TextView searchResultOne = (TextView)view.findViewById(R.id.no_result_found);
+                    TextView searchResultTwo = (TextView)view.findViewById(R.id.no_result_found_2);
+                    searchResultOne.setVisibility(View.VISIBLE);
+                    searchResultTwo.setVisibility(View.VISIBLE);
+
+                }
             }
         });
     }

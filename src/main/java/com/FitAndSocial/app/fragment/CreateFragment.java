@@ -30,8 +30,9 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
         showDateDialogListener();
         showTimeDialogListener();
         createActivityButtonListener();
-//        ViewPager pager = (ViewPager)getActivity().findViewById(R.id.pager);
-//        getActivity().getActionBar().hide();
+        enableViewPagerSwipe(false);
+        setActionbarNavigationMode(0);
+        setFragmentTitle("Create New Activity");
         return view;
     }
 
