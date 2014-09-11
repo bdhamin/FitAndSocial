@@ -27,6 +27,33 @@
                 </member>
             </members>
         </activity>
+    <activity>
+        <id>5</id>
+        <title>Test TEST</title>
+        <type>Running</type>
+        <distance>5 KM</distance>
+        <duration>35 Min</duration>
+        <date>22/07/2014</date>
+        <time>18:30</time>
+        <members_total>5</members_total>
+        <members>
+            <member>
+                <id>52</id>
+                <name>Hardcore</name>
+                <pictureURL>some_url</pictureURL>
+            </member>
+            <member>
+                <id>52</id>
+                <name>Hardcore 2</name>
+                <pictureURL>some_url</pictureURL>
+            </member>
+            <member>
+                <id>52</id>
+                <name>Hardcore 3</name>
+                <pictureURL>some_url</pictureURL>
+            </member>
+        </members>
+    </activity>
 
 
         <!--<activity>-->

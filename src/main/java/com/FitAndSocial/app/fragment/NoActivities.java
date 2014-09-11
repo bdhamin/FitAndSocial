@@ -63,15 +63,16 @@ public class NoActivities extends BaseFragment {
     }
 
     private void removeUnusedFragments(FragmentManager fragmentManager, FragmentTransaction fragmentTransaction){
+
         Fragment noActivities = fragmentManager.findFragmentById(R.id.no_activities_fragment_container);
         Fragment lastActivity = fragmentManager.findFragmentById(R.id.last_activity_fragment_container);
         Fragment createOrSearch = fragmentManager.findFragmentById(R.id.create_fragment_container);
-        if(createOrSearch != null){
-            fragmentTransaction.remove(createOrSearch);
-        }
+        Fragment activities = fragmentManager.findFragmentById(R.id.activities_container);
 
+        if(createOrSearch != null){fragmentTransaction.remove(createOrSearch);}
+        if(lastActivity != null){fragmentTransaction.remove(lastActivity);}
+        if(activities != null){fragmentTransaction.remove(activities);}
         fragmentTransaction.remove(noActivities);
-        fragmentTransaction.remove(lastActivity);
         fragmentTransaction.addToBackStack(null);
     }
 

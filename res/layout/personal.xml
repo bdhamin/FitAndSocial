@@ -1,11 +1,301 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
               android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:background="@android:color/white">
 
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-              android:text="Hello Here is Personal" android:id="@+id/textView" android:textSize="20dp"
-              android:layout_gravity="center_horizontal"/>
-</LinearLayout>
+    <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/scrollView">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                      android:layout_width="fill_parent"
+                      android:layout_height="fill_parent"
+                      android:orientation="vertical"
+                      android:background="@android:color/white">
+
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                         android:id="@+id/personal_general_info_container"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"/>
+
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                         android:id="@+id/personal_activities_summary_container"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"/>
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Warnings"
+                        android:textColor="@color/notification_bar_bg"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/warning"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="0/3"
+                        android:id="@+id/number_of_warnings"
+                        android:layout_below="@id/warning"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="All Good"
+                        android:textColor="@color/tab_highlight"
+                        android:id="@+id/warning_check"
+                        android:layout_below="@id/warning"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_alignParentRight="true"/>
+
+
+                <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/hDivider_warnings"
+                        android:background="@android:color/black"
+                        android:src="@android:color/black"
+                        android:layout_below="@+id/warning"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="35dp"
+                        android:layout_marginBottom="10dp"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="This week"
+                        android:id="@+id/this_week"
+                        android:textColor="@color/notification_bar_bg"
+                        android:textStyle="bold"
+                        android:layout_alignTop="@+id/linearLayout"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginBottom="10dp"/>
+
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Total Activities"
+                        android:id="@+id/this_week_total_activities"
+                        android:textColor="@android:color/black"
+                        android:textStyle="normal"
+                        android:layout_below="@+id/this_week"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"/>
+
+
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="0"
+                        android:id="@+id/this_week_total_activities_number"
+                        android:textColor="@android:color/black"
+                        android:textStyle="normal"
+                        android:layout_below="@+id/this_week"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_toLeftOf="@+id/linearLayout"/>
+
+
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Total Distance"
+                        android:id="@+id/this_week_total_distance"
+                        android:textColor="@android:color/black"
+                        android:textStyle="normal"
+                        android:layout_below="@+id/this_week_total_activities"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="0"
+                        android:id="@+id/this_week_total_distance_number"
+                        android:textColor="@android:color/black"
+                        android:textStyle="normal"
+                        android:layout_below="@+id/this_week_total_activities_number"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_toLeftOf="@+id/linearLayout"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Total Time"
+                        android:id="@+id/this_week_total_time"
+                        android:textColor="@android:color/black"
+                        android:textStyle="normal"
+                        android:layout_below="@+id/this_week_total_distance"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="0"
+                        android:id="@+id/this_week_total_time_number"
+                        android:textColor="@android:color/black"
+                        android:textStyle="normal"
+                        android:layout_below="@+id/this_week_total_distance_number"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_toLeftOf="@+id/linearLayout"/>
+
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:padding="1dip"
+                        android:id="@+id/linearLayout"
+                        android:layout_marginTop="10dp"
+                        android:layout_below="@+id/hDivider_warnings">
+
+                    <ImageView
+                            android:layout_width="fill_parent"
+                            android:layout_height="120dp"
+                            android:id="@+id/imageView"
+                            android:background="@android:color/black"
+                            android:src="@android:color/black"/>
+
+                </LinearLayout>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Last week"
+                        android:id="@+id/last_week_activity"
+                        android:textColor="@color/tab_highlight"
+                        android:textStyle="bold"
+                        android:layout_alignTop="@+id/linearLayout"
+                        android:layout_toRightOf="@+id/linearLayout"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginBottom="10dp"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Total Activities"
+                        android:id="@+id/last_week_total_activities"
+                        android:textColor="@android:color/black"
+                        android:textStyle="normal"
+                        android:layout_below="@+id/last_week_activity"
+                        android:layout_toRightOf="@+id/linearLayout"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="0"
+                        android:id="@+id/last_week_total_activities_number"
+                        android:textColor="@android:color/black"
+                        android:textStyle="normal"
+                        android:layout_below="@+id/last_week_activity"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_alignRight="@+id/hDivider"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Total Distance"
+                        android:id="@+id/last_week_total_distance"
+                        android:textColor="@android:color/black"
+                        android:textStyle="normal"
+                        android:layout_below="@+id/last_week_total_activities"
+                        android:layout_toRightOf="@+id/linearLayout"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="0"
+                        android:id="@+id/last_week_total_distance_number"
+                        android:textColor="@android:color/black"
+                        android:textStyle="normal"
+                        android:layout_below="@+id/last_week_total_activities_number"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_alignRight="@+id/hDivider"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Total Time"
+                        android:id="@+id/last_week_total_time"
+                        android:textColor="@android:color/black"
+                        android:textStyle="normal"
+                        android:layout_below="@+id/last_week_total_distance"
+                        android:layout_toRightOf="@+id/linearLayout"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="0"
+                        android:id="@+id/last_week_total_time_number"
+                        android:textColor="@android:color/black"
+                        android:textStyle="normal"
+                        android:layout_below="@+id/last_week_total_distance_number"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_alignRight="@+id/hDivider"/>
+
+                <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/hDivider"
+                        android:background="@android:color/black"
+                        android:src="@android:color/black"
+                        android:layout_below="@+id/linearLayout"
+                        android:layout_alignParentRight="true"/>
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+              </LinearLayout>
+
+
+
+
+

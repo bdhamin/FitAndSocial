@@ -16,6 +16,7 @@ public class BaseFragment extends Fragment {
     private NonSwipeableViewPager viewPager;
     private String title;
     private TextView fragmentTitle;
+    private boolean isExternalInformationRequired;
 
     /**
      * On a certain fragments we need to disable the navigation tabs and enable them
@@ -56,12 +57,34 @@ public class BaseFragment extends Fragment {
         if(title != null && !title.trim().isEmpty()){
             changeFragmentTitle();
         }
-
     }
 
     private void changeFragmentTitle() {
         fragmentTitle = (TextView)getActivity().findViewById(R.id.username);
         fragmentTitle.setText(this.title);
+    }
+
+    /**
+     *
+     * @param isRequired
+     * @return boolean
+     * Some of the fragments are used to display information about the user
+     * and about the user activities. Some of the user information are stored
+     * local and so the user don't need to connect online te view the information
+     * for example the user profile. When the user view his/her own profile the data
+     * can be loaded from local storage. However this is not the case when the user
+     * tries to view another user profile. In this case the data need to be loaded
+     * from the server. So this boolean check is made to determine of external connection
+     * needed or not.
+     *
+     */
+
+    protected void setIsExternalInformationRequired(boolean isRequired){
+        this.isExternalInformationRequired = isRequired;
+    }
+
+    protected boolean getIsExternalInformationRequired(){
+        return isExternalInformationRequired;
     }
 
 }

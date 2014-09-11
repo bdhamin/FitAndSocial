@@ -74,7 +74,8 @@
               android:text="Date:"
               android:id="@+id/date"
               android:textColor="@android:color/black"
-              android:layout_above="@+id/km" android:layout_toRightOf="@+id/linearLayout"
+              android:layout_above="@+id/km"
+              android:layout_toRightOf="@+id/linearLayout"
               android:layout_marginLeft="5dp"/>
 
     <TextView android:layout_width="wrap_content"
@@ -83,7 +84,8 @@
               android:text="ds"
               android:id="@+id/aDate"
               android:textColor="@android:color/black"
-              android:layout_above="@+id/km" android:layout_alignRight="@+id/hDivider"
+              android:layout_above="@+id/km"
+              android:layout_alignRight="@+id/hDivider"
               android:layout_marginRight="5dp"/>
 
     <TextView android:layout_width="wrap_content"

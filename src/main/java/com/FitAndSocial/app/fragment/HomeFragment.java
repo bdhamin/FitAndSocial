@@ -23,12 +23,12 @@ public class HomeFragment extends BaseFragment{
         View view = layoutInflater.inflate(R.layout.home, container, false);
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        LastActivity lastActivity = new LastActivity();
+//        LastActivity lastActivity = new LastActivity();
         NoActivities noActivities = new NoActivities();
-//        Activities activities = new Activities();
-//        fragmentTransaction.add(R.id.activities_container, activities, "activities");
+        Activities activities = new Activities();
+        fragmentTransaction.add(R.id.activities_container, activities, "activities");
         fragmentTransaction.add(R.id.no_activities_fragment_container, noActivities, NO_ACTIVITIES_FRAGMENT_ID);
-        fragmentTransaction.add(R.id.last_activity_fragment_container,lastActivity);
+//        fragmentTransaction.add(R.id.last_activity_fragment_container,lastActivity);
         fragmentTransaction.commit();
         return view;
     }
