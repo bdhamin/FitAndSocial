@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@android:color/transparent">
+
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/user_image"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="22dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_launcher"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="User Name"
+            android:id="@+id/user_nickname"
+            android:textColor="@android:color/black"
+            android:layout_alignTop="@+id/user_image"
+            android:layout_toRightOf="@+id/user_image"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="10dp"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Active Since"
+            android:textColor="@android:color/black"
+            android:id="@+id/user_active_since"
+            android:layout_alignBottom="@+id/user_image"
+            android:layout_alignLeft="@+id/user_nickname"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Feb 17, 2014"
+            android:textColor="@android:color/black"
+            android:id="@+id/user_active_since_date"
+            android:layout_alignTop="@+id/user_active_since"
+            android:layout_toRightOf="@+id/user_active_since"
+            android:layout_marginLeft="10dp"/>
+
+    <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/hDivider_pgic"
+            android:background="@android:color/black"
+            android:src="@android:color/black"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="15dp"
+            android:layout_below="@id/user_active_since"/>
+</RelativeLayout>
