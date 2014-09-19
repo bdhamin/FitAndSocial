@@ -2,12 +2,7 @@
 <RelativeLayout android:layout_height="fill_parent" android:layout_width="fill_parent"
                 xmlns:android="http://schemas.android.com/apk/res/android">
 
-<android.support.v4.widget.SwipeRefreshLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/activities_ln"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical">
+
 
             <ListView
                     android:id="@+id/list"
@@ -16,10 +11,6 @@
                     android:divider="@android:color/transparent"
                     android:dividerHeight="3dp"
                     android:listSelector="@drawable/listview_selector" />
-
-
-</android.support.v4.widget.SwipeRefreshLayout>
-
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

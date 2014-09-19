@@ -7,6 +7,9 @@ import com.FitAndSocial.app.mobile.FitAndSocial;
 import com.FitAndSocial.app.mobile.R;
 import com.actionbarsherlock.app.ActionBar;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 /**
  * Created by mint on 31-7-14.
  */

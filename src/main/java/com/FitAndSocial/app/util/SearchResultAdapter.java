@@ -72,7 +72,7 @@ public class SearchResultAdapter extends BaseAdapter{
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup viewGroup) {
+    public View getView(final int position, View convertView, ViewGroup viewGroup) {
         View view = convertView;
         if(convertView == null)
             view = layoutInflater.inflate(R.layout.list_row_search_result, null);
@@ -96,7 +96,7 @@ public class SearchResultAdapter extends BaseAdapter{
         participants_total.setText(search.get(KEY_PARTICIPANT));
         aTime.setText(search.get(KEY_TIME));
         aDate.setText(search.get(KEY_DATE));
-        final String id = search.get(KEY_ACTIVITY_ID);
+
 
         participate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,7 +108,8 @@ public class SearchResultAdapter extends BaseAdapter{
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ActivityInformationFragment activityInformation = new ActivityInformationFragment();
+
+                ActivityInformationFragment activityInformation = new ActivityInformationFragment(data.get(position));
                 FragmentTransaction transaction = activity.getActivity().getSupportFragmentManager().beginTransaction();
                 Fragment searchResult = activity.getActivity().getSupportFragmentManager().findFragmentById(R.id.activities_container);
                 transaction.remove(searchResult);

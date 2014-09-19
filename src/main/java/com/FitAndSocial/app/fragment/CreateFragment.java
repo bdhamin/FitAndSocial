@@ -1,5 +1,6 @@
 package com.FitAndSocial.app.fragment;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,7 +12,18 @@ import com.FitAndSocial.app.mobile.R;
 import android.view.View;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog.OnTimeSetListener;
+import com.FitAndSocial.app.model.Event;
 import com.FitAndSocial.app.util.Utils;
+//import org.apache.http.HttpResponse;
+//import org.apache.http.HttpStatus;
+//import org.apache.http.StatusLine;
+//import org.apache.http.client.HttpClient;
+//import org.apache.http.client.methods.HttpPost;
+//import org.apache.http.entity.StringEntity;
+//import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONObject;
+
+import java.net.URI;
 
 /**
  * Created by mint on 13-7-14.
@@ -19,6 +31,7 @@ import com.FitAndSocial.app.util.Utils;
 public class CreateFragment extends BaseFragment implements OnDateSetListener, OnTimeSetListener {
 
     private View view;
+    private String createEvent = "http://192.168.2.9:9000/createActivity";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceBundle){
@@ -150,9 +163,14 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "Activity Created", Toast.LENGTH_SHORT).show();
-                getActivity().getSupportFragmentManager().popBackStack();
-                disposeCurrentFragment();
+                new CreateEvent().execute(createEvent);
+
+
+
+
+//                Toast.makeText(getActivity(), "Activity Created", Toast.LENGTH_SHORT).show();
+//                getActivity().getSupportFragmentManager().popBackStack();
+//                disposeCurrentFragment();
             }
         });
     }
@@ -169,6 +187,72 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
             transaction.commit();
         }
     }
+
+    private class CreateEvent extends AsyncTask<String, Void, Boolean>{
+
+        Event event = new Event();
+
+
+        @Override
+        protected void onPreExecute(){
+            event.setActivityTypeName("Running");
+            event.setDuration(5);
+            event.setDistance(10);
+            event.setDate("13-10-2014");
+            event.setTime("18:20");
+            event.setUserId(10);
+
+        }
+
+        @Override
+        protected Boolean doInBackground(String... Url){
+
+//            try{
+//                HttpClient httpClient = new DefaultHttpClient();
+//                HttpPost httpPost = new HttpPost(Url[0]);
+//                String json = "";
+//
+////                JSONObject object = new JSONObject();
+////                object.accumulate("name", event.getActivityTypeName());
+////                object.accumulate("duration", event.getDuration());
+////                object.accumulate("distance", event.getDistance());
+////                object.accumulate("date", event.getDate());
+////                object.accumulate("time", event.getTime());
+////                object.accumulate("user", event.getUserId());
+////
+////                json = object.toString();
+//
+//                StringEntity stringEntity = new StringEntity(json);
+//                httpPost.setEntity(stringEntity);
+//                httpPost.setHeader("Content-type", "application/json");
+//
+//                HttpResponse httpResponse = httpClient.execute(httpPost);
+//                StatusLine statusLine = httpResponse.getStatusLine();
+//                if(statusLine.getStatusCode() == HttpStatus.SC_OK){
+//                    return true;
+//                }else{
+//                    return false;
+//                }
+//
+//            }catch (Exception e){
+                return false;
+//            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success){
+
+            if(success){
+                System.out.println("You rock!");
+            }
+
+        }
+
+
+
+    }
+
+
 
 
 }

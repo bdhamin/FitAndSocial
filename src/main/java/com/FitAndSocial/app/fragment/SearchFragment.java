@@ -24,6 +24,21 @@ import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragmen
 public class SearchFragment extends BaseFragment implements OnDateSetListener, OnTimeSetListener{
 
     private View view;
+    private String activityTypeName;
+    private String distance;
+    private String duration;
+    private String radius;
+    private String startDate;
+    private String startTime;
+    private final String KEY_ACTIVITY_TYPE = "activityType";
+    private final String KYE_DISTANCE = "distance";
+    private final String KEY_Min_DURATION = "durationMin";
+    private final String KEY_Max_DURATION = "durationMax";
+    private final String KEY_Min_RADIUS = "radiusMin";
+    private final String KEY_Max_RADIUS = "radiusMax";
+    private final String KEY_START_DATE = "startDate";
+    private final String KEY_START_TIME = "time";
+    private String urlAddress = "http://192.168.2.9:9000/searchActivities?";
 
 
     @Override
@@ -72,7 +87,10 @@ public class SearchFragment extends BaseFragment implements OnDateSetListener, O
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
         TextView date = (TextView)view.findViewById(R.id.select_date_button);
-        date.setText(Utils.formatDate(day, month, year));
+        String formattedDate = Utils.formatDate(day, month, year);
+        startDate = formattedDate;
+        System.out.println(formattedDate);
+        date.setText(formattedDate);
     }
 
     private void showTimePicker(){
@@ -84,6 +102,8 @@ public class SearchFragment extends BaseFragment implements OnDateSetListener, O
     @Override
     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
         TextView time = (TextView)view.findViewById(R.id.select_time_button);
+        startTime = Utils.formatTime(hour, minute);
+        startTime = startTime.replaceAll("[^\\d:]", "");
         time.setText(Utils.formatTime(hour, minute));
     }
 
@@ -104,6 +124,7 @@ public class SearchFragment extends BaseFragment implements OnDateSetListener, O
                  * To get the text value from the spinner use the following code
                  * String value = spinner.getItemAtPosition(position).toString();
                  */
+                activityTypeName = spinner.getItemAtPosition(position).toString();
             }
 
             @Override
@@ -120,6 +141,8 @@ public class SearchFragment extends BaseFragment implements OnDateSetListener, O
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 spinner.setSelection(position);
+                distance = spinner.getItemAtPosition(position).toString();
+
             }
 
             @Override
@@ -136,6 +159,7 @@ public class SearchFragment extends BaseFragment implements OnDateSetListener, O
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 spinner.setSelection(position);
+                duration = spinner.getItemAtPosition(position).toString();
             }
 
             @Override
@@ -152,6 +176,7 @@ public class SearchFragment extends BaseFragment implements OnDateSetListener, O
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 spinner.setSelection(position);
+                radius = spinner.getItemAtPosition(position).toString();
             }
 
             @Override
@@ -163,31 +188,23 @@ public class SearchFragment extends BaseFragment implements OnDateSetListener, O
 
     private void searchActivityButtonListener() {
         final Button search = (Button)view.findViewById(R.id.search);
-        /**
-         * The resultFound boolean is meant as indicator for the search results
-         * When in production this should the indicator for the xml results
-         * and should be removed to somewhere else.
-         */
-        final boolean resultFound = true;
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(resultFound){
-                    FragmentManager fragmentManager = getFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    Fragment searchFragment = fragmentManager.findFragmentById(R.id.create_fragment_container);
-                    SearchResultFragment searchResultFragment = new SearchResultFragment();
-                    fragmentTransaction.remove(searchFragment);
-                    fragmentTransaction.add(R.id.activities_container, searchResultFragment);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
-                }else{
-                    TextView searchResultOne = (TextView)view.findViewById(R.id.no_result_found);
-                    TextView searchResultTwo = (TextView)view.findViewById(R.id.no_result_found_2);
-                    searchResultOne.setVisibility(View.VISIBLE);
-                    searchResultTwo.setVisibility(View.VISIBLE);
+                if(!activityTypeName.equals("Activity Type") && !distance.equals("Distance (KM)")
+                        && !duration.equals("Duration") && !radius.equals("Radius")){
 
+                        FragmentManager fragmentManager = getFragmentManager();
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        Fragment searchFragment = fragmentManager.findFragmentById(R.id.create_fragment_container);
+                        SearchResultFragment searchResultFragment = new SearchResultFragment(assembleUrl());
+                        fragmentTransaction.remove(searchFragment);
+                        fragmentTransaction.add(R.id.activities_container, searchResultFragment);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
+                }else{
+                    Toast.makeText(getActivity(), "All the search fields are required!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -202,5 +219,62 @@ public class SearchFragment extends BaseFragment implements OnDateSetListener, O
         }
     }
 
+    /**
+     *
+     * @return a string represents the full address to the backend.
+     * The final address look something like the following
+     * http://localhost:9000/searchActivities?activityType=
+     * Cycling&distance=7&durationMin=20&durationMax=30&radiusMin=20&
+     * radiusMax=30&startDate=16-8-2014&time=12:58
+     */
+    private String assembleUrl(){
 
+        String minDuration = "";
+        String maxDuration = "";
+        String minRadius = "";
+        String maxRadius = "";
+
+        /**
+         * Duration has start and end value so we need to extract
+         * the value in min and max value which represent from to
+         */
+        String[] durationParts = parseSelectedValues(duration);
+        minDuration = durationParts[0];
+        maxDuration = durationParts[1];
+
+        /**
+         * Duration has start and end value so we need to extract
+         * the value in min and max value which represent from to
+         */
+        String[] radiusParts = parseSelectedValues(duration);
+        minRadius = radiusParts[0];
+        maxRadius = radiusParts[1];
+
+        /**
+         * Trim and remove the KM letters from distance
+         */
+        distance = distance.replaceAll("\\D+", "");
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(urlAddress).append(KEY_ACTIVITY_TYPE).append("=").append(activityTypeName).append("&")
+                .append(KYE_DISTANCE).append("=").append(distance).append("&")
+                .append(KEY_Min_DURATION).append("=").append(minDuration).append("&")
+                .append(KEY_Max_DURATION).append("=").append(maxDuration).append("&")
+                .append(KEY_Min_RADIUS).append("=").append(minRadius).append("&")
+                .append(KEY_Max_RADIUS).append("=").append(maxRadius).append("&")
+                .append(KEY_START_DATE).append("=").append(startDate).append("&")
+                .append(KEY_START_TIME).append("=").append(startTime);
+        return sb.toString();
+    }
+    /**
+     *
+     * @param value
+     * @return an array contains the min and max value
+     * separated by "-"
+     */
+    private String[] parseSelectedValues(String value){
+        value = value.replaceAll("[^\\d-]", "");
+        String[] parts = value.split("-");
+        return parts;
+    }
 }

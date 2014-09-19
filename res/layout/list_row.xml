@@ -6,7 +6,7 @@
         android:layout_height="fill_parent"
         android:orientation="horizontal"
         android:padding="5dip"
-        android:background="@android:color/transparent"
+        android:background="@android:color/white"
         android:id="@+id/activities_list_row">
 
         <TextView
@@ -17,9 +17,7 @@
                 android:id="@+id/title"
                 android:textColor="@color/notification_bar_bg"
                 android:textStyle="bold"
-                android:layout_alignTop="@+id/linearLayout"
-                android:layout_toRightOf="@+id/type"
-                android:layout_marginLeft="20dp"/>
+                android:layout_alignTop="@+id/linearLayout"/>
 
         <TextView
                 android:layout_width="wrap_content"
@@ -35,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Running"
+                android:text=""
                 android:id="@+id/typeName"
                 android:textColor="@android:color/black"
                 android:layout_marginTop="10dp"
@@ -170,7 +168,7 @@
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:textAppearance="?android:attr/textAppearanceSmall"
-              android:text="5 KM"
+              android:text=""
               android:id="@+id/km"
               android:textColor="@android:color/black"
               android:layout_marginTop="10dp"
@@ -190,7 +188,7 @@
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:textAppearance="?android:attr/textAppearanceSmall"
-              android:text="30 Min"
+              android:text=""
               android:id="@+id/dTime"
               android:textColor="@android:color/black"
               android:layout_marginTop="10dp"
@@ -210,7 +208,7 @@
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:textAppearance="?android:attr/textAppearanceSmall"
-              android:text="22/09/2014"
+              android:text=""
               android:id="@+id/aDate"
               android:textColor="@android:color/black"
               android:layout_marginTop="10dp"
@@ -230,7 +228,7 @@
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:textAppearance="?android:attr/textAppearanceSmall"
-              android:text="17:45"
+              android:text=""
               android:id="@+id/aTime"
               android:textColor="@android:color/black"
               android:layout_marginTop="10dp"

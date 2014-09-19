@@ -5,19 +5,17 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="horizontal"
-        android:padding="5dip" android:background="@android:color/transparent">
+        android:padding="5dip" android:background="@android:color/white">
 
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Test Run"
+            android:text="Swim the Town"
             android:id="@+id/title"
             android:textColor="@color/notification_bar_bg"
             android:textStyle="bold"
-            android:layout_alignTop="@+id/linearLayout"
-            android:layout_toRightOf="@+id/type"
-            android:layout_marginLeft="20dp"/>
+            android:layout_alignTop="@+id/linearLayout"/>
 
     <TextView
             android:layout_width="wrap_content"
@@ -81,7 +79,7 @@
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:textAppearance="?android:attr/textAppearanceSmall"
-              android:text="ds"
+              android:text=""
               android:id="@+id/aDate"
               android:textColor="@android:color/black"
               android:layout_above="@+id/km"
@@ -101,7 +99,7 @@
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:textAppearance="?android:attr/textAppearanceSmall"
-              android:text="ss"
+              android:text=""
               android:id="@+id/aTime"
               android:textColor="@android:color/black"
               android:layout_above="@+id/dTime"
@@ -132,7 +130,7 @@
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:textAppearance="?android:attr/textAppearanceSmall"
-              android:text="5 KM"
+              android:text=""
               android:id="@+id/km"
               android:textColor="@android:color/black"
               android:layout_marginTop="10dp"
@@ -152,7 +150,7 @@
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:textAppearance="?android:attr/textAppearanceSmall"
-              android:text="30 Min"
+              android:text=""
               android:id="@+id/dTime"
               android:textColor="@android:color/black"
               android:layout_marginTop="10dp"
@@ -172,7 +170,7 @@
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:textAppearance="?android:attr/textAppearanceSmall"
-              android:text="ss"
+              android:text=""
               android:id="@+id/participants_total"
               android:textColor="@android:color/black"
               android:layout_marginTop="10dp"

@@ -33,9 +33,9 @@ public class PersonalFragment extends BaseFragment {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         UserGeneralInformation userGeneralInformation = new UserGeneralInformation();
-        ActivitiesSummary activitiesSummary = new ActivitiesSummary();
+        UserActivitiesSummary userActivitiesSummary = new UserActivitiesSummary();
         fragmentTransaction.add(R.id.personal_general_info_container, userGeneralInformation);
-        fragmentTransaction.add(R.id.personal_activities_summary_container, activitiesSummary);
+        fragmentTransaction.add(R.id.personal_activities_summary_container, userActivitiesSummary);
         fragmentTransaction.commit();
     }
 

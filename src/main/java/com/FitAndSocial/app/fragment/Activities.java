@@ -1,12 +1,13 @@
 package com.FitAndSocial.app.fragment;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,9 +31,9 @@ import java.util.HashMap;
 /**
  * Created by mint on 12-7-14.
  */
-public class Activities extends BaseFragment {
+public class Activities extends BaseFragment{
 
-    private  final String XML_ADDRESS = "http://192.168.2.7:9000/xml";
+    private  final String XML_ADDRESS = "http://192.168.2.9:9000/allActivities";
     private ListView listView;
     private ActivitiesLazyAdapter activitiesLazyAdapter;
     private final String KEY_ACTIVITY = "activity"; //parent node name
@@ -48,11 +49,14 @@ public class Activities extends BaseFragment {
     private String results;
     private NodeList nodelist;
     private ProgressDialog pDialog;
+    private SwipeRefreshLayout swipeLayout;
+    private TextView notification;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceBundle){
         view = inflater.inflate(R.layout.activities, container, false);
+        notification = (TextView)view.findViewById(R.id.notification);
         new DownloadXML().execute(XML_ADDRESS);
         return view;
     }
@@ -69,27 +73,33 @@ public class Activities extends BaseFragment {
         }
     }
 
-
-
     // DownloadXML AsyncTask
-    private class DownloadXML extends AsyncTask<String, Void, Void> {
+    private class DownloadXML extends AsyncTask<String, Void, Boolean> implements SwipeRefreshLayout.OnRefreshListener{
 
         @Override
         protected void onPreExecute() {
+            System.out.println("Here is onPreExecute");
             super.onPreExecute();
-            // Create a progressbar
-            pDialog = new ProgressDialog(getActivity());
-            // Set progressbar title
-            pDialog.setTitle("Checking for upcoming activities");
-            // Set progressbar message
-            pDialog.setMessage("Loading...");
-            pDialog.setIndeterminate(false);
-            // Show progressbar
-            pDialog.show();
+            swipeLayout = (SwipeRefreshLayout)view.findViewById(R.id.activities_ln);
+            swipeLayout.setOnRefreshListener(this);
+            swipeLayout.setColorSchemeResources(android.R.color.holo_blue_dark,
+                    android.R.color.holo_green_dark,
+                    android.R.color.holo_blue_dark,
+                    android.R.color.holo_green_dark);
+//
+////            // Create a progressbar
+//            pDialog = new ProgressDialog(getActivity());
+//            // Set progressbar title
+//            pDialog.setTitle("Checking for upcoming activities");
+//            // Set progressbar message
+//            pDialog.setMessage("Loading...");
+//            pDialog.setIndeterminate(false);
+//            // Show progressbar
+//            pDialog.show();
         }
 
         @Override
-        protected Void doInBackground(String... Url) {
+        protected Boolean doInBackground(String... Url) {
             try {
                 URL url = new URL(Url[0]);
                 DocumentBuilderFactory dbf = DocumentBuilderFactory
@@ -104,25 +114,24 @@ public class Activities extends BaseFragment {
             } catch (Exception e) {
                 Log.e("Error", e.getMessage());
                 e.printStackTrace();
+                return false;
             }
-            return null;
+            return true;
 
         }
 
         @Override
-        protected void onPostExecute(Void args) {
-
+        protected void onPostExecute(Boolean canConnect) {
             /**
              * Are there any upcoming activities for the user?
              * If so display them and remove no activities found title
              * else remove the activities fragment and display
              * no activities found fragment
              */
-
-            if (nodelist != null) {
-
-                if (nodelist.getLength() > 0) {
-
+            if (canConnect) {
+                notification.setVisibility(View.INVISIBLE);
+                if (nodelist != null && nodelist.getLength() > 0) {
+                    canConnectToServer(true);
                     TextView noActivitiesFound = (TextView) getActivity().findViewById(R.id.no_upcoming_activities);
                     if (noActivitiesFound != null) {
                         noActivitiesFound.setText("You have " + nodelist.getLength() + " upcoming activities!");
@@ -166,18 +175,46 @@ public class Activities extends BaseFragment {
                     fragmentTransaction.add(R.id.last_activity_fragment_container, lastActivity, "create_fragment");
                     fragmentTransaction.remove(activities);
                     fragmentTransaction.commit();
-
                 }
-                pDialog.dismiss();
+//                pDialog.dismiss();
+                swipeLayout.setRefreshing(false);
 
             }else{
-                pDialog.dismiss();
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                pDialog.dismiss();
+                canConnectToServer(false);
+                swipeLayout.setRefreshing(false);
+                notification.setText("Could not connect to the server! try again later.");
+            }
+        }
+
+        @Override
+        public void onRefresh() {
+            new DownloadXML().execute(XML_ADDRESS);
+        }
+
+        private void canConnectToServer(boolean connection){
+               manageRequiredFragments(connection);
+        }
+
+        private void manageRequiredFragments(boolean hasConnection){
+
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            if(hasConnection){
+                if(fragmentManager.findFragmentById(R.id.no_activities_fragment_container) == null ||
+                        !fragmentManager.findFragmentById(R.id.no_activities_fragment_container).isVisible()){
+                    NoActivities noActivities = new NoActivities();
+                    fragmentTransaction.add(R.id.no_activities_fragment_container, noActivities, null);
+                    fragmentTransaction.commit();
+                }
+                view.findViewById(R.id.list).setVisibility(View.VISIBLE);
+            }else{
                 Fragment noActivities = fragmentManager.findFragmentById(R.id.no_activities_fragment_container);
-                fragmentTransaction.remove(noActivities);
-                fragmentTransaction.commit();
-                Toast.makeText(getActivity(), "Could not connect to the server! try again later.", Toast.LENGTH_LONG).show();
+                if(noActivities != null){
+                    fragmentTransaction.remove(noActivities);
+                    view.findViewById(R.id.list).setVisibility(View.INVISIBLE);
+                    fragmentTransaction.commit();
+                }
             }
         }
     }

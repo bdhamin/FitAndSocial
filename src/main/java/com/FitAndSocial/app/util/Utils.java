@@ -44,7 +44,7 @@ public final class Utils {
         Time activityDate = new Time();
         activityDate.set(dayOfMonth, month, year);
         long dateToMillis = activityDate.toMillis(true);
-        String dateFormatter = DateFormat.format("dd/MM/yyyy", dateToMillis).toString();
+        String dateFormatter = DateFormat.format("dd-MM-yyyy", dateToMillis).toString();
         return dateFormatter;
     }
 
