@@ -26,7 +26,7 @@ import java.net.URL;
 public class UserActivitiesSummary extends BaseFragment{
 
     private View view;
-    private  final String USER_ACTIVITIES = "http://192.168.2.9:9000/userActivitiesSummary/222";
+    private  final String USER_ACTIVITIES = "http://192.168.2.9:9000/userActivitiesSummary/341";
     private NodeList nodelist;
     private ProgressDialog pDialog;
     private final String KEY_ACTIVITY = "activity"; //parent node name
@@ -65,7 +65,7 @@ public class UserActivitiesSummary extends BaseFragment{
 
         createdActivitiesImage = (ImageView)view.findViewById(R.id.view_created_activities);
         participatedInActivitiesImage = (ImageView)view.findViewById(R.id.view_participated_in_activities);
-//        cancelledActivitiesImage = (ImageView)view.findViewById(R.id.view_created_activities);
+        cancelledActivitiesImage = (ImageView)view.findViewById(R.id.view_cancelled_activities);
 
         new DownloadXML().execute(USER_ACTIVITIES);
         return view;
@@ -130,6 +130,7 @@ public class UserActivitiesSummary extends BaseFragment{
                             createdActivitiesNumber.setText(getNode(KEY_CREATED, eElement));
                             participatedInActivitiesNumber.setText(getNode(KEY_PARTICIPATED, eElement));
                             cancelledActivitiesNumber.setText(getNode(KEY_CANCELLED, eElement));
+                            setViewVisibility(getNode(KEY_CREATED, eElement), getNode(KEY_PARTICIPATED, eElement), getNode(KEY_CANCELLED, eElement));
                         }
                     }
 //                }
@@ -138,6 +139,20 @@ public class UserActivitiesSummary extends BaseFragment{
                 pDialog.dismiss();
                 canConnectToServer(false);
             }
+        }
+
+        private void setViewVisibility(String createdActivities, String participatedInActivities, String cancelledActivities) {
+
+            if(createdActivities.trim().isEmpty() || createdActivities.equals("0")){
+                createdActivitiesImage.setVisibility(View.INVISIBLE);
+            }
+            if(participatedInActivities.trim().isEmpty() || participatedInActivities.equals("0")){
+                participatedInActivitiesImage.setVisibility(View.INVISIBLE);
+            }
+            if(cancelledActivities.trim().isEmpty() || cancelledActivities.equals("0")){
+                cancelledActivitiesImage.setVisibility(View.INVISIBLE);
+            }
+
         }
 
         private void canConnectToServer(boolean connection){
@@ -170,6 +185,7 @@ public class UserActivitiesSummary extends BaseFragment{
 
             createdActivitiesImage.setVisibility(visibility);
             participatedInActivitiesImage.setVisibility(visibility);
+            cancelledActivitiesImage.setVisibility(visibility);
 
             if(visibility == View.VISIBLE){
                 createdActivities.setText("Created Activities");

@@ -2,12 +2,16 @@ package com.FitAndSocial.app.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.FitAndSocial.app.fragment.ActivityInformationFragment;
+import com.FitAndSocial.app.fragment.BaseFragment;
 import com.FitAndSocial.app.mobile.R;
 
 import java.util.ArrayList;
@@ -18,7 +22,7 @@ import java.util.HashMap;
  */
 public class ActivitiesLazyAdapter extends BaseAdapter{
 
-    private Activity activity;
+    private BaseFragment activity;
     private ArrayList<HashMap<String, String>> data;
     private static LayoutInflater layoutInflater = null;
     private final String KEY_ACTIVITY = "activity"; //parent node name
@@ -45,13 +49,14 @@ public class ActivitiesLazyAdapter extends BaseAdapter{
     TextView memberThreeName;
     TextView members;
     private boolean test =false;
+    private View view;
 
 
 
-    public ActivitiesLazyAdapter(Activity activity, ArrayList<HashMap<String, String>> data){
+    public ActivitiesLazyAdapter(BaseFragment activity, ArrayList<HashMap<String, String>> data){
         this.activity = activity;
         this.data = data;
-        layoutInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        layoutInflater = (LayoutInflater) activity.getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     public void setIsInformation(boolean isInformation){
@@ -77,8 +82,8 @@ public class ActivitiesLazyAdapter extends BaseAdapter{
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup viewGroup) {
-        View view = convertView;
+    public View getView(final int position, View convertView, ViewGroup viewGroup) {
+        view = convertView;
         if(convertView == null)
             view = layoutInflater.inflate(R.layout.list_row, null);
 
@@ -143,6 +148,21 @@ public class ActivitiesLazyAdapter extends BaseAdapter{
             memberTwo.setImageDrawable(null);
             memberThree.setImageDrawable(null);
         }
+
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActivityInformationFragment activityInformation = new ActivityInformationFragment(data.get(position), false);
+                FragmentTransaction transaction = activity.getActivity().getSupportFragmentManager().beginTransaction();
+                Fragment activities = activity.getActivity().getSupportFragmentManager().findFragmentById(R.id.activities_container);
+                transaction.remove(activities);
+                transaction.add(R.id.create_fragment_container, activityInformation);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+
         return view;
     }
 

@@ -26,6 +26,7 @@ public class SearchResultAdapter extends BaseAdapter{
     private BaseFragment activity;
     private ArrayList<HashMap<String, String>> data;
     private static LayoutInflater layoutInflater = null;
+    private final String PARTICIPATION_URL = "http://192.168.2.9:9000/participationRequest";
 
     //HashMap Keys
     private final String KEY_ACTIVITY = "activity"; //parent node name
@@ -38,6 +39,7 @@ public class SearchResultAdapter extends BaseAdapter{
     private final String KEY_TIME = "time";
     private final String KEY_PARTICIPANT = "participants";
 
+
     //View TextView
     TextView title;
     TextView typeName;
@@ -47,8 +49,6 @@ public class SearchResultAdapter extends BaseAdapter{
     TextView aTime;
     TextView aDate;
     Button participate;
-
-
 
     public SearchResultAdapter(BaseFragment searchActivity, ArrayList<HashMap<String, String>> searchData){
         this.activity = searchActivity;
@@ -101,7 +101,7 @@ public class SearchResultAdapter extends BaseAdapter{
         participate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(activity.getActivity(), "Participation Success", Toast.LENGTH_SHORT).show();
+                new ParticipationHelper(269,Long.valueOf(data.get(position).get(KEY_ACTIVITY_ID)), activity).execute(PARTICIPATION_URL);
             }
         });
 
@@ -109,7 +109,7 @@ public class SearchResultAdapter extends BaseAdapter{
             @Override
             public void onClick(View view) {
 
-                ActivityInformationFragment activityInformation = new ActivityInformationFragment(data.get(position));
+                ActivityInformationFragment activityInformation = new ActivityInformationFragment(data.get(position), true);
                 FragmentTransaction transaction = activity.getActivity().getSupportFragmentManager().beginTransaction();
                 Fragment searchResult = activity.getActivity().getSupportFragmentManager().findFragmentById(R.id.activities_container);
                 transaction.remove(searchResult);
@@ -121,4 +121,6 @@ public class SearchResultAdapter extends BaseAdapter{
 
         return view;
     }
+
+
 }

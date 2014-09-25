@@ -1,22 +1,266 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent">
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:background="@android:color/white">
 
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_centerHorizontal="true"
             android:text="Last Activity"
-            android:id="@+id/last_activity" android:textColor="@android:color/black"
-            android:layout_alignParentTop="true" android:layout_centerHorizontal="true"/>
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:id="@+id/lastActivity"/>
 
-    <ListView
-            android:id="@+id/list"
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Test Run"
+            android:id="@+id/title"
+            android:textColor="@color/notification_bar_bg"
+            android:textStyle="bold"
+            android:layout_alignTop="@+id/linearLayout"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Type:"
+            android:id="@+id/type"
+            android:textColor="@android:color/black"
+            android:layout_below="@id/title"
+            android:layout_marginTop="10dp"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text=""
+            android:id="@+id/typeName"
+            android:textColor="@android:color/black"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/linearLayout"
+            android:layout_below="@id/title"/>
+
+
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:padding="1dip"
+            android:layout_below="@+id/lastActivity"
+            android:layout_marginTop="20dp"
+            android:id="@+id/linearLayout">
+
+        <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="180dp"
+                android:id="@+id/imageView"
+                android:background="@android:color/black"
+                android:src="@android:color/black"/>
+
+    </LinearLayout>
+
+    <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="3dp"
-            android:listSelector="@drawable/listview_selector" android:layout_marginTop="50dp"/>
+            android:layout_height="wrap_content"
+            android:padding="3dip"
+            android:id="@+id/horizontal_divider" android:orientation="vertical"
+            android:layout_below="@+id/duration" android:layout_alignParentLeft="true">
+
+    </LinearLayout>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Members"
+            android:id="@+id/members"
+            android:textColor="@color/tab_highlight"
+            android:textStyle="bold"
+            android:layout_marginLeft="58dp"
+            android:layout_alignTop="@+id/linearLayout"
+            android:layout_toRightOf="@+id/linearLayout"/>
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/memberOne"
+            android:layout_below="@+id/members"
+            android:layout_toRightOf="@+id/linearLayout"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:background="@android:color/black"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text=""
+            android:id="@+id/memberOneName"
+            android:textColor="@android:color/black"
+            android:layout_alignTop="@+id/memberOne"
+            android:layout_toRightOf="@id/memberOne"
+            android:layout_marginLeft="10dp"/>
+
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/memberTwo"
+            android:layout_below="@+id/memberOne"
+            android:layout_toRightOf="@+id/linearLayout"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:background="@android:color/black"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text=""
+            android:id="@+id/memberTwoName"
+            android:textColor="@android:color/black"
+            android:layout_alignTop="@+id/memberTwo"
+            android:layout_toRightOf="@id/memberTwo"
+            android:layout_marginLeft="10dp"/>
+
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/memberThree"
+            android:layout_below="@+id/memberTwo"
+            android:layout_toRightOf="@+id/linearLayout"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:background="@android:color/black"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text=""
+            android:id="@+id/memberThreeName"
+            android:textColor="@android:color/black"
+            android:layout_alignTop="@+id/memberThree"
+            android:layout_toRightOf="@id/memberThree"
+            android:layout_marginLeft="10dp"/>
+
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:text="Show More"
+            android:id="@+id/showMore"
+            android:textColor="@color/notification_bar_bg"
+            android:textStyle="bold"
+            android:layout_below="@id/memberThree"
+            android:layout_toRightOf="@id/memberThree"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:visibility="invisible"/>
+
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textAppearance="?android:attr/textAppearanceSmall"
+              android:text="Distance:"
+              android:id="@+id/distance"
+              android:textColor="@android:color/black"
+              android:layout_below="@id/type"
+              android:layout_marginTop="10dp"/>
+
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textAppearance="?android:attr/textAppearanceSmall"
+              android:text=""
+              android:id="@+id/km"
+              android:textColor="@android:color/black"
+              android:layout_marginTop="10dp"
+              android:layout_marginRight="10dp"
+              android:layout_toLeftOf="@+id/linearLayout"
+              android:layout_below="@id/typeName"/>
+
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textAppearance="?android:attr/textAppearanceSmall"
+              android:text="Duration:"
+              android:id="@+id/duration"
+              android:textColor="@android:color/black"
+              android:layout_below="@id/distance"
+              android:layout_marginTop="10dp"/>
+
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textAppearance="?android:attr/textAppearanceSmall"
+              android:text=""
+              android:id="@+id/dTime"
+              android:textColor="@android:color/black"
+              android:layout_marginTop="10dp"
+              android:layout_marginRight="10dp"
+              android:layout_toLeftOf="@+id/linearLayout"
+              android:layout_below="@id/km"/>
+
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textAppearance="?android:attr/textAppearanceSmall"
+              android:text="Date:"
+              android:id="@+id/date"
+              android:textColor="@android:color/black"
+              android:layout_below="@id/duration"
+              android:layout_marginTop="10dp"/>
+
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textAppearance="?android:attr/textAppearanceSmall"
+              android:text=""
+              android:id="@+id/aDate"
+              android:textColor="@android:color/black"
+              android:layout_marginTop="10dp"
+              android:layout_marginRight="10dp"
+              android:layout_toLeftOf="@+id/linearLayout"
+              android:layout_below="@id/dTime"/>
+
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textAppearance="?android:attr/textAppearanceSmall"
+              android:text="Time:"
+              android:id="@+id/time"
+              android:textColor="@android:color/black"
+              android:layout_below="@id/date"
+              android:layout_marginTop="10dp"/>
+
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textAppearance="?android:attr/textAppearanceSmall"
+              android:text=""
+              android:id="@+id/aTime"
+              android:textColor="@android:color/black"
+              android:layout_marginTop="10dp"
+              android:layout_marginRight="10dp"
+              android:layout_toLeftOf="@+id/linearLayout"
+              android:layout_below="@id/aDate"/>
+    <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/hDivider"
+            android:background="@android:color/black"
+            android:src="@android:color/black"
+            android:layout_below="@+id/linearLayout"
+            android:layout_alignParentRight="true"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="No members found"
+            android:id="@+id/no_members"
+            android:textColor="@android:color/black"
+            android:layout_alignBottom="@+id/showMore"
+            android:layout_toRightOf="@+id/memberTwoName"
+            android:visibility="invisible"/>
+
+
 </RelativeLayout>

@@ -12,6 +12,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.FitAndSocial.app.mobile.R;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
+import org.json.JSONObject;
 //import org.apache.http.HttpResponse;
 //import org.apache.http.HttpStatus;
 //import org.apache.http.NameValuePair;
@@ -23,6 +34,8 @@ import com.FitAndSocial.app.mobile.R;
 //import org.apache.http.message.BasicNameValuePair;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,8 +50,8 @@ public class ActivityInformationFragment extends BaseFragment{
     private View view;
     private HashMap<String, String> selectedSearchResult;
 
-    private String participateUrl = "http://192.168.2.9:9000/participateRequest";
-
+    private String participateUrl = "http://192.168.2.9:9000/participationRequest";
+    private String cancelParticipationUrl = "http://192.168.2.9:9000/cancelParticipation";
     private final String KEY_ACTIVITY_ID = "id";
     private final String KEY_TITLE = "title";
     private final String KEY_TYPE = "type";
@@ -57,11 +70,25 @@ public class ActivityInformationFragment extends BaseFragment{
     private TextView membersTotal;
 
     private ProgressDialog pDialog;
+    private boolean isParticipation;
+
+    private TextView participationButton;
 
 
-    public ActivityInformationFragment(HashMap<String, String> selectedSearchResult){
+    /**
+     *
+     * @param selectedSearchResult
+     * @param isParticipation
+     * First parameter contains the selected activity information and the
+     * second one is a boolean to determine if which action should be triggered
+     * when clicking the button.
+     * When true it means its a participation where as false means cancel participation
+     */
+    public ActivityInformationFragment(HashMap<String, String> selectedSearchResult, boolean isParticipation){
         this.selectedSearchResult = selectedSearchResult;
+        this.isParticipation = isParticipation;
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceBundle){
@@ -85,6 +112,10 @@ public class ActivityInformationFragment extends BaseFragment{
         date = (TextView)view.findViewById(R.id.aDate);
         time = (TextView)view.findViewById(R.id.aTime);
         membersTotal = (TextView)view.findViewById(R.id.members);
+        if(!isParticipation){
+            participationButton = (TextView)view.findViewById(R.id.participate_button);
+            participationButton.setText("Cancel Participation");
+        }
     }
 
     private void initEventDetails() {
@@ -103,17 +134,13 @@ public class ActivityInformationFragment extends BaseFragment{
         participateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new SendParticipationRequest().execute(participateUrl);
+                if(isParticipation){
+                    new SendParticipationRequest().execute(participateUrl);
+                }else{
+                    new SendParticipationRequest().execute(cancelParticipationUrl);
+                }
             }
         });
-    }
-
-    private String assembleUrl() {
-        String activityId = selectedSearchResult.get("id");
-        String userId = "228";
-        StringBuilder sb = new StringBuilder();
-        sb.append(participateUrl).append("activityId=").append(activityId).append("&").append("userId=").append(userId);
-        return sb.toString();
     }
 
     private void loadRequiredFragments() {
@@ -147,9 +174,15 @@ public class ActivityInformationFragment extends BaseFragment{
 
         @Override
         protected void onPreExecute(){
+            String participate = "Participate";
+            String cancelParticipation = "Cancelling Participation";
+            String createMessage = "Saving...";
+            String updateMessage = "Updating...";
+
+
             pDialog = new ProgressDialog(getActivity());
-            pDialog.setTitle("Participate");
-            pDialog.setMessage("Saving...");
+            pDialog.setTitle(isParticipation? participate : cancelParticipation);
+            pDialog.setMessage(isParticipation? createMessage : updateMessage);
             pDialog.setIndeterminate(true);
             pDialog.show();
         }
@@ -158,43 +191,51 @@ public class ActivityInformationFragment extends BaseFragment{
         @Override
         protected Boolean doInBackground(String... Url) {
 
-//            List<NameValuePair> nameValuePairs = new ArrayList<>();
-//            nameValuePairs.add(new BasicNameValuePair("activityId", selectedSearchResult.get("id")));
-//            nameValuePairs.add(new BasicNameValuePair("userId", "231"));
-//
-//            HttpClient client = new DefaultHttpClient();
-//            HttpPost post = new HttpPost(Url[0]);
-//
-//            try {
-//                post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-//                HttpResponse response = client.execute(post);
-//                StatusLine statusLine = response.getStatusLine();
-//
-//                if(statusLine.getStatusCode() == HttpStatus.SC_OK){
-//                    pDialog.dismiss();
-//                    return true;
-//                }else{
-//                    pDialog.dismiss();
-//                    return false;
-//                }
-//
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                pDialog.dismiss();
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.accumulate("activityId", Long.valueOf(selectedSearchResult.get("id")));
+                jsonObject.accumulate("userId", 341);
+                StringEntity stringEntity = new StringEntity(jsonObject.toString());
+
+                HttpClient httpClient = new DefaultHttpClient();
+                HttpPost httpPost = new HttpPost(Url[0]);
+                httpPost.setEntity(stringEntity);
+                httpPost.setHeader("Content-type", "application/json");
+
+                HttpResponse httpResponse = httpClient.execute(httpPost);
+                StatusLine statusLine = httpResponse.getStatusLine();
+                if(statusLine.getStatusCode() == HttpStatus.SC_OK){
+                    pDialog.dismiss();
+                    return true;
+                }else{
+                    pDialog.dismiss();
+                    return false;
+                }
+            } catch (JSONException|UnsupportedEncodingException|ClientProtocolException e) {
+                e.printStackTrace();
+                pDialog.dismiss();
                 return false;
-//            }
+
+            }catch (IOException ioException){
+                pDialog.dismiss();
+                return false;
+            }
         }
 
         @Override
         protected void onPostExecute(Boolean success){
+
+            String createParticipation = "Participation Success";
+            String cancelParticipation = "Successfully removed participation";
+
+
             if(success){
-                Toast.makeText(getActivity(), "Participation Success", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), isParticipation? createParticipation : cancelParticipation, Toast.LENGTH_SHORT).show();
                 disposeFragment();
             }else{
-                Toast.makeText(getActivity(), "Participation Failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
                 disposeFragment();
             }
-
         }
 
     }

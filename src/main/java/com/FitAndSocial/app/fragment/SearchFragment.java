@@ -18,6 +18,9 @@ import com.FitAndSocial.app.util.Utils;
 import com.actionbarsherlock.app.ActionBar;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 /**
  * Created by mint on 25-7-14.
  */
@@ -40,10 +43,10 @@ public class SearchFragment extends BaseFragment implements OnDateSetListener, O
     private final String KEY_START_TIME = "time";
     private String urlAddress = "http://192.168.2.9:9000/searchActivities?";
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceBundle){
         view = inflater.inflate(R.layout.search, container, false);
+        removeUnnecessaryFragments();
         activityTypeSpinnerListener();
         activityDistanceSpinnerListener();
         activityDurationSpinnerListener();
@@ -57,6 +60,16 @@ public class SearchFragment extends BaseFragment implements OnDateSetListener, O
         return view;
     }
 
+    private void removeUnnecessaryFragments() {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Fragment noActivities = fragmentManager.findFragmentById(R.id.no_activities_fragment_container);
+
+        if(noActivities != null){
+            fragmentTransaction.remove(noActivities);
+            fragmentTransaction.commit();
+        }
+    }
 
     private void showTimeDialogListener() {
         Button selectTime = (Button)view.findViewById(R.id.select_time_button);
@@ -238,7 +251,7 @@ public class SearchFragment extends BaseFragment implements OnDateSetListener, O
          * Duration has start and end value so we need to extract
          * the value in min and max value which represent from to
          */
-        String[] durationParts = parseSelectedValues(duration);
+        String[] durationParts = Utils.parseSelectedValues(duration);
         minDuration = durationParts[0];
         maxDuration = durationParts[1];
 
@@ -246,7 +259,7 @@ public class SearchFragment extends BaseFragment implements OnDateSetListener, O
          * Duration has start and end value so we need to extract
          * the value in min and max value which represent from to
          */
-        String[] radiusParts = parseSelectedValues(duration);
+        String[] radiusParts = Utils.parseSelectedValues(duration);
         minRadius = radiusParts[0];
         maxRadius = radiusParts[1];
 
@@ -255,8 +268,16 @@ public class SearchFragment extends BaseFragment implements OnDateSetListener, O
          */
         distance = distance.replaceAll("\\D+", "");
 
+        String typeName = "";
+        try {
+            typeName = URLEncoder.encode(activityTypeName, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            System.out.println("Invalid Encoding Exception!");
+            e.printStackTrace();
+        }
+
         StringBuilder sb = new StringBuilder();
-        sb.append(urlAddress).append(KEY_ACTIVITY_TYPE).append("=").append(activityTypeName).append("&")
+        sb.append(urlAddress).append(KEY_ACTIVITY_TYPE).append("=").append(typeName).append("&")
                 .append(KYE_DISTANCE).append("=").append(distance).append("&")
                 .append(KEY_Min_DURATION).append("=").append(minDuration).append("&")
                 .append(KEY_Max_DURATION).append("=").append(maxDuration).append("&")
@@ -264,17 +285,7 @@ public class SearchFragment extends BaseFragment implements OnDateSetListener, O
                 .append(KEY_Max_RADIUS).append("=").append(maxRadius).append("&")
                 .append(KEY_START_DATE).append("=").append(startDate).append("&")
                 .append(KEY_START_TIME).append("=").append(startTime);
+
         return sb.toString();
-    }
-    /**
-     *
-     * @param value
-     * @return an array contains the min and max value
-     * separated by "-"
-     */
-    private String[] parseSelectedValues(String value){
-        value = value.replaceAll("[^\\d-]", "");
-        String[] parts = value.split("-");
-        return parts;
     }
 }

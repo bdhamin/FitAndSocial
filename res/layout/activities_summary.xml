@@ -134,4 +134,14 @@
             android:layout_toRightOf="@+id/total_created_activities_number"
             android:layout_marginLeft="50dp"/>
 
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:id="@+id/view_cancelled_activities"
+            android:src="@android:drawable/ic_menu_view"
+            android:layout_marginTop="15dp"
+            android:layout_alignTop="@+id/total_participated_activities_number"
+            android:layout_toRightOf="@+id/total_created_activities_number"
+            android:layout_marginLeft="50dp"/>
+
 </RelativeLayout>

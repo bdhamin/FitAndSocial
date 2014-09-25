@@ -6,6 +6,8 @@ import android.text.format.Time;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -82,6 +84,42 @@ public final class Utils {
     }
 
 
+    public static long convertDateStringToLong(String sDate){
+        java.text.DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        Date date = null;
+        try {
+            date = df.parse(sDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date.getTime();
+    }
+
+
+    public static long convertTimeStringToLong(String sTime){
+        java.text.DateFormat df = new SimpleDateFormat("HH:mm");
+        Date date;
+        long activityTime = 1L;
+        try {
+            date = df.parse(sTime);
+            activityTime = date.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return activityTime;
+    }
+
+    /**
+     *
+     * @param value
+     * @return an array contains the min and max value
+     * separated by "-"
+     */
+    public static String[] parseSelectedValues(String value){
+        value = value.replaceAll("[^\\d-]", "");
+        String[] parts = value.split("-");
+        return parts;
+    }
 
 
 }

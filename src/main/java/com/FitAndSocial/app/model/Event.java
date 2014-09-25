@@ -8,23 +8,34 @@ import android.os.Parcelable;
  */
 public class Event{
 
-    private String activityTypeName;
+    private String title;
+    private String type;
+    private int durationMin;
+    private int durationMax;
     private int distance;
-    private int duration;
-    private String date;
-    private String time;
-    private long userId;
+    private long activityDate;
+    private long activityTime;
+    private long user;
     private long startLocationLatitude;
     private long startLocationMagnitude;
     private long endLocationLatitude;
     private long endLocationMagnitude;
 
-    public String getActivityTypeName() {
-        return activityTypeName;
+
+    public String getTitle() {
+        return title;
     }
 
-    public void setActivityTypeName(String activityTypeName) {
-        this.activityTypeName = activityTypeName;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public int getDistance() {
@@ -35,36 +46,28 @@ public class Event{
         this.distance = distance;
     }
 
-    public int getDuration() {
-        return duration;
+    public long getActivityDate() {
+        return activityDate;
     }
 
-    public void setDuration(int duration) {
-        this.duration = duration;
+    public void setActivityDate(long activityDate) {
+        this.activityDate = activityDate;
     }
 
-    public String getDate() {
-        return date;
+    public long getActivityTime() {
+        return activityTime;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setActivityTime(long activityTime) {
+        this.activityTime = activityTime;
     }
 
-    public String getTime() {
-        return time;
+    public long getUser() {
+        return user;
     }
 
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(long userId) {
-        this.userId = userId;
+    public void setUser(long user) {
+        this.user = user;
     }
 
     public long getStartLocationLatitude() {
@@ -99,4 +102,19 @@ public class Event{
         this.endLocationMagnitude = endLocationMagnitude;
     }
 
+    public int getDurationMin() {
+        return durationMin;
+    }
+
+    public void setDurationMin(int durationMin) {
+        this.durationMin = durationMin;
+    }
+
+    public int getDurationMax() {
+        return durationMax;
+    }
+
+    public void setDurationMax(int durationMax) {
+        this.durationMax = durationMax;
+    }
 }

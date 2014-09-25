@@ -1,5 +1,6 @@
 package com.FitAndSocial.app.fragment;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,14 @@ import com.FitAndSocial.app.util.Utils;
 //import org.apache.http.client.methods.HttpPost;
 //import org.apache.http.entity.StringEntity;
 //import org.apache.http.impl.client.DefaultHttpClient;
+import com.google.gson.Gson;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONObject;
 
 import java.net.URI;
@@ -32,11 +41,19 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
 
     private View view;
     private String createEvent = "http://192.168.2.9:9000/createActivity";
+    private TextView title;
+    private String activityType;
+    private String activityDistance;
+    private String activityDuration;
+    private String date;
+    private String time;
+    private ProgressDialog pDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceBundle){
         view = inflater.inflate(R.layout.create, container, false);
         addRequiredFragments();
+        title = (TextView)view.findViewById(R.id.title);
         activityTypeSpinnerListener();
         activityDistanceSpinnerListener();
         activityDurationSpinnerListener();
@@ -78,15 +95,17 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
     }
 
     private void showDatePicker() {
-        DatePickerFragment date = new DatePickerFragment();
-        date.setCallBack(this);
-        date.show(getActivity().getSupportFragmentManager(), "Date Picker");
+        DatePickerFragment datePickerFragment = new DatePickerFragment();
+        datePickerFragment.setCallBack(this);
+        datePickerFragment.show(getActivity().getSupportFragmentManager(), "Date Picker");
     }
 
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-        TextView date = (TextView)view.findViewById(R.id.select_date_button);
-        date.setText(Utils.formatDate(day, month, year));
+        TextView dateField = (TextView)view.findViewById(R.id.select_date_button);
+        String formattedDate = Utils.formatDate(day, month, year);
+        dateField.setText(formattedDate);
+        date = formattedDate;
     }
 
     private void showTimePicker(){
@@ -97,8 +116,10 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
 
     @Override
     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-        TextView time = (TextView)view.findViewById(R.id.select_time_button);
-        time.setText(Utils.formatTime(hour, minute));
+        TextView timeField = (TextView)view.findViewById(R.id.select_time_button);
+        String formattedTime = Utils.formatTime(hour, minute);
+        timeField.setText(formattedTime);
+        time = formattedTime;
     }
 
     public void onSaveInstanceState(Bundle state){
@@ -113,10 +134,7 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 spinner.setSelection(position);
-                /**
-                 * To get the text value from the spinner use the following code
-                 * String value = spinner.getItemAtPosition(position).toString();
-                 */
+                activityType = spinner.getItemAtPosition(position).toString();
             }
 
             @Override
@@ -133,6 +151,8 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                spinner.setSelection(position);
+                activityDistance = spinner.getItemAtPosition(position).toString();
+                activityDistance = activityDistance.replaceAll("\\D+", "");
             }
 
             @Override
@@ -149,6 +169,7 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 spinner.setSelection(position);
+                activityDuration = spinner.getItemAtPosition(position).toString();
             }
 
             @Override
@@ -163,25 +184,32 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new CreateEvent().execute(createEvent);
-
-
-
-
-//                Toast.makeText(getActivity(), "Activity Created", Toast.LENGTH_SHORT).show();
-//                getActivity().getSupportFragmentManager().popBackStack();
-//                disposeCurrentFragment();
+                boolean check = requiredFieldsOk();
+                if(check){
+                    new CreateEvent().execute(createEvent);
+                }else{
+                    Toast.makeText(getActivity(), "Please make sure you have filled in all the fields.", Toast.LENGTH_LONG).show();
+                }
             }
         });
+    }
+
+    private boolean requiredFieldsOk() {
+
+        System.out.println("Activity Distance: "+activityDistance);
+
+
+        if(!title.getText().toString().trim().equals("") && !activityType.equals("Activity Type")
+                && !activityDistance.equals("Distance (KM)") && !activityDistance.trim().equals("") && !activityDuration.equals("Duration")
+                && !date.equals("Set Date") && !date.equals("") && !time.equals("Set Time") && !time.equals("")){
+            return true;
+        }
+        return false;
     }
 
     private void disposeCurrentFragment(){
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.create_activity_container);
-        String fragmentName = "NONE";
-        if(currentFragment != null){
-            fragmentName = currentFragment.getClass().getName();
-        }
         if(currentFragment != null){
             transaction.remove(currentFragment);
             transaction.commit();
@@ -191,68 +219,77 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
     private class CreateEvent extends AsyncTask<String, Void, Boolean>{
 
         Event event = new Event();
-
+        String[] duration = Utils.parseSelectedValues(activityDuration);
 
         @Override
         protected void onPreExecute(){
-            event.setActivityTypeName("Running");
-            event.setDuration(5);
-            event.setDistance(10);
-            event.setDate("13-10-2014");
-            event.setTime("18:20");
-            event.setUserId(10);
-
+            pDialog = new ProgressDialog(getActivity());
+            pDialog.setTitle("Progressing your request");
+            pDialog.setMessage("Processing...");
+            pDialog.setIndeterminate(true);
+            pDialog.show();
+            event.setTitle(title.getText().toString());
+            event.setType(activityType);
+            event.setDurationMin(Integer.valueOf(duration[0]));
+            event.setDurationMax(Integer.valueOf(duration[1]));
+            event.setDistance(Integer.valueOf(activityDistance));
+            event.setActivityDate(Utils.convertDateStringToLong(date));
+            event.setActivityTime(Utils.convertTimeStringToLong(time));
+            event.setUser(344);
+            event.setStartLocationLatitude(10);
+            event.setStartLocationMagnitude(20);
+            event.setEndLocationLatitude(10);
+            event.setEndLocationMagnitude(20);
         }
 
         @Override
         protected Boolean doInBackground(String... Url){
+            Gson gson = new Gson();
+            String json = gson.toJson(event);
 
-//            try{
-//                HttpClient httpClient = new DefaultHttpClient();
-//                HttpPost httpPost = new HttpPost(Url[0]);
-//                String json = "";
-//
-////                JSONObject object = new JSONObject();
-////                object.accumulate("name", event.getActivityTypeName());
-////                object.accumulate("duration", event.getDuration());
-////                object.accumulate("distance", event.getDistance());
-////                object.accumulate("date", event.getDate());
-////                object.accumulate("time", event.getTime());
-////                object.accumulate("user", event.getUserId());
-////
-////                json = object.toString();
-//
-//                StringEntity stringEntity = new StringEntity(json);
-//                httpPost.setEntity(stringEntity);
-//                httpPost.setHeader("Content-type", "application/json");
-//
-//                HttpResponse httpResponse = httpClient.execute(httpPost);
-//                StatusLine statusLine = httpResponse.getStatusLine();
-//                if(statusLine.getStatusCode() == HttpStatus.SC_OK){
-//                    return true;
-//                }else{
-//                    return false;
-//                }
-//
-//            }catch (Exception e){
+            try{
+                HttpClient httpClient = new DefaultHttpClient();
+                HttpPost httpPost = new HttpPost(Url[0]);
+                StringEntity stringEntity = new StringEntity(json);
+                httpPost.setEntity(stringEntity);
+                httpPost.setHeader("Content-type", "application/json");
+                HttpResponse httpResponse = httpClient.execute(httpPost);
+                StatusLine statusLine = httpResponse.getStatusLine();
+                if(statusLine.getStatusCode() == HttpStatus.SC_OK){
+                    pDialog.dismiss();
+                    return true;
+                }else{
+                    pDialog.dismiss();
+                    return false;
+                }
+            }catch (Exception e){
+                pDialog.dismiss();
                 return false;
-//            }
+            }
         }
 
         @Override
         protected void onPostExecute(Boolean success){
+            getActivity().getSupportFragmentManager().popBackStack();
+
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+            Fragment lastActivity = fragmentManager.findFragmentById(R.id.last_activity_fragment_container);
+
+            if(lastActivity != null){
+                Activities activities = new Activities();
+                transaction.add(R.id.activities_container, activities);
+                transaction.remove(lastActivity);
+                transaction.commit();
+            }
+            disposeCurrentFragment();
 
             if(success){
-                System.out.println("You rock!");
+                Toast.makeText(getActivity(), "Activity Created Successfully!", Toast.LENGTH_LONG).show();
+            }else{
+                Toast.makeText(getActivity(), "Error occurred while trying to create the activity", Toast.LENGTH_LONG).show();
             }
-
         }
-
-
-
     }
-
-
-
-
 }

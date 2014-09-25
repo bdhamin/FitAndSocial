@@ -33,9 +33,11 @@ import java.util.HashMap;
  */
 public class Activities extends BaseFragment{
 
-    private  final String XML_ADDRESS = "http://192.168.2.9:9000/allActivities";
+//    private  final String XML_ADDRESS = "http://192.168.2.9:9000/allActivities";
+    private String url = "http://192.168.2.9:9000/upcomingActivities";
     private ListView listView;
     private ActivitiesLazyAdapter activitiesLazyAdapter;
+    private final String KEY_ACTIVITY_ID = "id";
     private final String KEY_ACTIVITY = "activity"; //parent node name
     private final String KEY_TITLE = "title";
     private final String KEY_TYPE = "type";
@@ -57,7 +59,7 @@ public class Activities extends BaseFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceBundle){
         view = inflater.inflate(R.layout.activities, container, false);
         notification = (TextView)view.findViewById(R.id.notification);
-        new DownloadXML().execute(XML_ADDRESS);
+        new DownloadXML().execute(url);
         return view;
     }
 
@@ -78,7 +80,6 @@ public class Activities extends BaseFragment{
 
         @Override
         protected void onPreExecute() {
-            System.out.println("Here is onPreExecute");
             super.onPreExecute();
             swipeLayout = (SwipeRefreshLayout)view.findViewById(R.id.activities_ln);
             swipeLayout.setOnRefreshListener(this);
@@ -86,22 +87,17 @@ public class Activities extends BaseFragment{
                     android.R.color.holo_green_dark,
                     android.R.color.holo_blue_dark,
                     android.R.color.holo_green_dark);
-//
-////            // Create a progressbar
-//            pDialog = new ProgressDialog(getActivity());
-//            // Set progressbar title
-//            pDialog.setTitle("Checking for upcoming activities");
-//            // Set progressbar message
-//            pDialog.setMessage("Loading...");
-//            pDialog.setIndeterminate(false);
-//            // Show progressbar
-//            pDialog.show();
         }
 
         @Override
         protected Boolean doInBackground(String... Url) {
+
+            StringBuilder sb = new StringBuilder();
+            sb.append(url).append("?id=").append("341");
+            String address = sb.toString();
+
             try {
-                URL url = new URL(Url[0]);
+                URL url = new URL(address);
                 DocumentBuilderFactory dbf = DocumentBuilderFactory
                         .newInstance();
                 DocumentBuilder db = dbf.newDocumentBuilder();
@@ -143,6 +139,7 @@ public class Activities extends BaseFragment{
                         Node nNode = nodelist.item(temp);
                         if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                             Element eElement = (Element) nNode;
+                            map.put(KEY_ACTIVITY_ID, getNode(KEY_ACTIVITY_ID, eElement));
                             map.put(KEY_TITLE, getNode(KEY_TITLE, eElement));
                             map.put(KEY_TYPE, getNode(KEY_TYPE, eElement));
                             map.put(KEY_DISTANCE, getNode(KEY_DISTANCE, eElement));
@@ -162,7 +159,7 @@ public class Activities extends BaseFragment{
                             activitiesList.add(map);
                         }
                         listView = (ListView) view.findViewById(R.id.list);
-                        activitiesLazyAdapter = new ActivitiesLazyAdapter(getActivity(), activitiesList);
+                        activitiesLazyAdapter = new ActivitiesLazyAdapter(Activities.this, activitiesList);
                         listView.setAdapter(activitiesLazyAdapter);
                         activitiesLazyAdapter.setIsInformation(true);
                     }
@@ -176,11 +173,9 @@ public class Activities extends BaseFragment{
                     fragmentTransaction.remove(activities);
                     fragmentTransaction.commit();
                 }
-//                pDialog.dismiss();
                 swipeLayout.setRefreshing(false);
 
             }else{
-//                pDialog.dismiss();
                 canConnectToServer(false);
                 swipeLayout.setRefreshing(false);
                 notification.setText("Could not connect to the server! try again later.");
@@ -189,7 +184,7 @@ public class Activities extends BaseFragment{
 
         @Override
         public void onRefresh() {
-            new DownloadXML().execute(XML_ADDRESS);
+            new DownloadXML().execute(url);
         }
 
         private void canConnectToServer(boolean connection){
@@ -200,11 +195,12 @@ public class Activities extends BaseFragment{
 
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
             if(hasConnection){
                 if(fragmentManager.findFragmentById(R.id.no_activities_fragment_container) == null ||
                         !fragmentManager.findFragmentById(R.id.no_activities_fragment_container).isVisible()){
                     NoActivities noActivities = new NoActivities();
-                    fragmentTransaction.add(R.id.no_activities_fragment_container, noActivities, null);
+                    fragmentTransaction.add(R.id.no_activities_fragment_container, noActivities);
                     fragmentTransaction.commit();
                 }
                 view.findViewById(R.id.list).setVisibility(View.VISIBLE);
