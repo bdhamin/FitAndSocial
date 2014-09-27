@@ -65,7 +65,12 @@
             <version>2.2.4</version>
         </dependency>
 
-
+        <dependency>
+            <groupId>fr.avianey</groupId>
+            <artifactId>facebook-android-api</artifactId>
+            <version>3.18.0</version>
+            <type>aar</type>
+        </dependency>
     </dependencies>
 
     <build>

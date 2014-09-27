@@ -83,7 +83,7 @@ public class FitAndSocial extends RoboSherlockFragmentActivity {
         tab = actionbar.newTab().setText("Personal").setTabListener(tabListener);
         actionbar.addTab(tab);
 
-        tab = actionbar.newTab().setText("Activities").setTabListener(tabListener);
+        tab = actionbar.newTab().setText("Facebook").setTabListener(tabListener);
         actionbar.addTab(tab);
 
         tab = actionbar.newTab().setText("Profile").setTabListener(tabListener);

@@ -14,7 +14,7 @@ public class ActivitiesFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceBundle) {
-        View view = layoutInflater.inflate(R.layout.activities, container, false);
+        View view = layoutInflater.inflate(R.layout.facebook, container, false);
         return view;
     }
 

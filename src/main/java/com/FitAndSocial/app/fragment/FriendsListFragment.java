@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.FitAndSocial.app.mobile.R;
+import com.FitAndSocial.app.socialLogin.facebook.FacebookLogin;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 
 /**
@@ -16,6 +17,12 @@ public class FriendsListFragment extends BaseFragment {
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceBundle){
 
         View view = layoutInflater.inflate(R.layout.friendslist, container, false);
+        FacebookLogin facebookLogin = new FacebookLogin();
+        getActivity()
+                .getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.facebook_container, facebookLogin)
+                .commit();
         return view;
     }
 

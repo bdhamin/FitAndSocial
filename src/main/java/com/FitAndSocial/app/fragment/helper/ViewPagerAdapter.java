@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import com.FitAndSocial.app.fragment.*;
+import com.FitAndSocial.app.socialLogin.facebook.FacebookLogin;
 
 /**
  * Created by mint on 4-7-14.
@@ -27,8 +28,8 @@ public class ViewPagerAdapter extends FragmentPagerAdapter{
                 PersonalFragment personalFragment = new PersonalFragment();
                 return personalFragment;
             case 2:
-                ActivitiesFragment activitiesFragment = new ActivitiesFragment();
-                return activitiesFragment;
+                FacebookLogin facebookLogin = new FacebookLogin();
+                return facebookLogin;
             case 3:
                 ProfileFragment profileFragment = new ProfileFragment();
                 return profileFragment;
