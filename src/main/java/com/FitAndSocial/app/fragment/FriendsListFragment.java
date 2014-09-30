@@ -17,12 +17,12 @@ public class FriendsListFragment extends BaseFragment {
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceBundle){
 
         View view = layoutInflater.inflate(R.layout.friendslist, container, false);
-        FacebookLogin facebookLogin = new FacebookLogin();
-        getActivity()
-                .getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.facebook_container, facebookLogin)
-                .commit();
+//        FacebookLogin facebookLogin = new FacebookLogin();
+//        getActivity()
+//                .getSupportFragmentManager()
+//                .beginTransaction()
+//                .add(R.id.facebook_container, facebookLogin)
+//                .commit();
         return view;
     }
 

@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.FitAndSocial.app.fragment.helper.NonSwipeableViewPager;
 import com.FitAndSocial.app.mobile.R;
 import android.support.v4.app.FragmentManager;
 
@@ -28,7 +29,13 @@ public class HomeFragment extends BaseFragment{
         fragmentTransaction.add(R.id.activities_container, activities, "activities");
         fragmentTransaction.add(R.id.no_activities_fragment_container, noActivities, NO_ACTIVITIES_FRAGMENT_ID);
 //        fragmentTransaction.add(R.id.last_activity_fragment_container,lastActivity);
+
         fragmentTransaction.commit();
+
+
+
+
+
         return view;
     }
 

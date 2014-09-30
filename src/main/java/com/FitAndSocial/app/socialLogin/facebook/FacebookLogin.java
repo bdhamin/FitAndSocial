@@ -1,13 +1,20 @@
 package com.FitAndSocial.app.socialLogin.facebook;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import com.FitAndSocial.app.fragment.Account;
 import com.FitAndSocial.app.fragment.BaseFragment;
 import android.view.View;
+import com.FitAndSocial.app.fragment.helper.AccountContainerManager;
 import com.FitAndSocial.app.mobile.R;
 import com.facebook.*;
 import com.facebook.model.GraphUser;
@@ -27,6 +34,14 @@ public class FacebookLogin extends BaseFragment{
     private static final String TAG = "FacebookLogin";
     private UiLifecycleHelper uiHelper;
     private TextView userInfoTextView;
+    private AccountContainerManager accountContainerManager;
+
+    public FacebookLogin(){}
+
+    public FacebookLogin(AccountContainerManager accountContainerManager){
+        this.accountContainerManager = accountContainerManager;
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle){
@@ -50,7 +65,11 @@ public class FacebookLogin extends BaseFragment{
         if(state.isOpened()){
             Log.d(TAG, "Logged in...");
             userInfoTextView.setVisibility(View.VISIBLE);
-
+            applicationPreference = getActivity().getSharedPreferences(APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = applicationPreference.edit();
+            editor.putString("loggedIn", "facebook");
+            editor.commit();
+            accountContainerManager.manageContainers("facebook", true);
             // Request user data and show the results
             Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
 
@@ -58,7 +77,6 @@ public class FacebookLogin extends BaseFragment{
                 public void onCompleted(GraphUser user, Response response) {
                     if (user != null) {
                         // Display the parsed user info
-                        System.out.println(user);
                         userInfoTextView.setText(buildUserInfoDisplay(user));
                     }
                 }
@@ -66,7 +84,12 @@ public class FacebookLogin extends BaseFragment{
 
         }else if(state.isClosed()){
             Log.d(TAG, "Logged out...");
+            applicationPreference = getActivity().getSharedPreferences(APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = applicationPreference.edit();
+            editor.remove("loggedIn");
+            editor.commit();
             userInfoTextView.setVisibility(View.INVISIBLE);
+            accountContainerManager.manageContainers("facebook", false);
         }
     }
 

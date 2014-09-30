@@ -1,15 +1,19 @@
 package com.FitAndSocial.app.mobile;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import com.FitAndSocial.app.fragment.BaseFragment;
 import com.FitAndSocial.app.fragment.helper.NonSwipeableViewPager;
 import com.FitAndSocial.app.fragment.helper.ViewPagerAdapter;
+import com.FitAndSocial.app.socialLogin.google.GoogleLogin;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import roboguice.inject.ContentView;
 
@@ -22,6 +26,8 @@ public class FitAndSocial extends RoboSherlockFragmentActivity {
     private ActionBar.Tab tab;
 //    private ViewPager viewPager;
     private NonSwipeableViewPager viewPager;
+    private SharedPreferences applicationPreference;
+    protected final String APPLICATION_PREFERENCE = "applicationPreference";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,6 +54,7 @@ public class FitAndSocial extends RoboSherlockFragmentActivity {
             @Override
             public void onPageSelected(int position){
                 super.onPageSelected(position);
+                System.out.println("Position is: " + position);
                 actionbar.setSelectedNavigationItem(position);
             }
         };
@@ -83,15 +90,28 @@ public class FitAndSocial extends RoboSherlockFragmentActivity {
         tab = actionbar.newTab().setText("Personal").setTabListener(tabListener);
         actionbar.addTab(tab);
 
-        tab = actionbar.newTab().setText("Facebook").setTabListener(tabListener);
-        actionbar.addTab(tab);
-
         tab = actionbar.newTab().setText("Profile").setTabListener(tabListener);
         actionbar.addTab(tab);
 
         tab = actionbar.newTab().setIcon(getResources().getDrawable(R.drawable.friends)).setTabListener(tabListener);
         actionbar.addTab(tab);
 
+        tab = actionbar.newTab().setText("Account").setTabListener(tabListener);
+        actionbar.addTab(tab);
+
+        applicationPreference = getSharedPreferences(APPLICATION_PREFERENCE, MODE_PRIVATE);
+
+        if(applicationPreference.contains("loggedIn")) {
+            String loginType = applicationPreference.getString("loggedIn", "");
+            if (loginType != null && !loginType.equals("")) {
+                System.out.println("LoginType is: " + loginType);
+                viewPager.setCurrentItem(0);
+            }else{
+                viewPager.setCurrentItem(4);
+            }
+        }else{
+            viewPager.setCurrentItem(4);
+        }
     }
 
     @Override
@@ -101,4 +121,21 @@ public class FitAndSocial extends RoboSherlockFragmentActivity {
         menuInflater.inflate(R.menu.main_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.logout:
+                BaseFragment.getGoogleLoginClient().logout();
+                break;
+        }
+
+
+        return super.onOptionsItemSelected(item);
+
+    }
+
+
+
 }

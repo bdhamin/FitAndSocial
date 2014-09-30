@@ -12,9 +12,12 @@ import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragmen
  */
 public class ActivitiesFragment extends BaseFragment {
 
+
+
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceBundle) {
         View view = layoutInflater.inflate(R.layout.facebook, container, false);
+
         return view;
     }
 
@@ -24,7 +27,4 @@ public class ActivitiesFragment extends BaseFragment {
         setUserVisibleHint(true);
 
     }
-
-
-
 }

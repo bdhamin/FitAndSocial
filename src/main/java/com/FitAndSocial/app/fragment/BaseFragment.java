@@ -1,10 +1,12 @@
 package com.FitAndSocial.app.fragment;
 
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.widget.TextView;
 import com.FitAndSocial.app.fragment.helper.NonSwipeableViewPager;
 import com.FitAndSocial.app.mobile.FitAndSocial;
 import com.FitAndSocial.app.mobile.R;
+import com.FitAndSocial.app.socialLogin.google.GoogleLogin;
 import com.actionbarsherlock.app.ActionBar;
 
 import java.util.ArrayList;
@@ -20,6 +22,9 @@ public class BaseFragment extends Fragment {
     private String title;
     private TextView fragmentTitle;
     private boolean isExternalInformationRequired;
+    private static GoogleLogin googleLoginClient;
+    protected SharedPreferences applicationPreference;
+    protected final String APPLICATION_PREFERENCE = "applicationPreference";
 
     /**
      * On a certain fragments we need to disable the navigation tabs and enable them
@@ -88,6 +93,15 @@ public class BaseFragment extends Fragment {
 
     protected boolean getIsExternalInformationRequired(){
         return isExternalInformationRequired;
+    }
+
+
+    public static void setGoogleLoginClient(GoogleLogin googleClient){
+        googleLoginClient = googleClient;
+    }
+
+    public static GoogleLogin getGoogleLoginClient(){
+        return googleLoginClient;
     }
 
 }
