@@ -26,7 +26,7 @@ import java.net.URL;
 public class UserActivitiesSummary extends BaseFragment{
 
     private View view;
-    private  final String USER_ACTIVITIES = "http://192.168.2.9:9000/userActivitiesSummary/341";
+    private  final String USER_ACTIVITIES_ADDRESS = "http://192.168.2.9:9000/userActivitiesSummary/";
     private NodeList nodelist;
     private ProgressDialog pDialog;
     private final String KEY_ACTIVITY = "activity"; //parent node name
@@ -67,7 +67,7 @@ public class UserActivitiesSummary extends BaseFragment{
         participatedInActivitiesImage = (ImageView)view.findViewById(R.id.view_participated_in_activities);
         cancelledActivitiesImage = (ImageView)view.findViewById(R.id.view_cancelled_activities);
 
-        new DownloadXML().execute(USER_ACTIVITIES);
+        new DownloadXML().execute(USER_ACTIVITIES_ADDRESS);
         return view;
     }
 
@@ -98,19 +98,27 @@ public class UserActivitiesSummary extends BaseFragment{
         @Override
         protected Boolean doInBackground(String... Url) {
             try {
-                URL url = new URL(Url[0]);
-                DocumentBuilderFactory dbf = DocumentBuilderFactory
-                        .newInstance();
-                DocumentBuilder db = dbf.newDocumentBuilder();
-                // Download the XML file
-                Document doc = db.parse(new InputSource(url.openStream()));
-                doc.getDocumentElement().normalize();
-                // Locate the Tag Name
-                nodelist = doc.getElementsByTagName(KEY_ACTIVITY);
+                String authenticationProviderKey = getLoggedInUserId();
+                if(authenticationProviderKey != null && !authenticationProviderKey.trim().isEmpty()) {
+                    String address = Url[0].concat(authenticationProviderKey);
+                    URL url = new URL(address);
+                    DocumentBuilderFactory dbf = DocumentBuilderFactory
+                            .newInstance();
+                    DocumentBuilder db = dbf.newDocumentBuilder();
+                    // Download the XML file
+                    Document doc = db.parse(new InputSource(url.openStream()));
+                    doc.getDocumentElement().normalize();
+                    // Locate the Tag Name
+                    nodelist = doc.getElementsByTagName(KEY_ACTIVITY);
+                }else{
+                    pDialog.dismiss();
+                    return false;
+                }
 
             } catch (Exception e) {
                 Log.e("Error", e.getMessage());
                 e.printStackTrace();
+                pDialog.dismiss();
                 return false;
             }
             return true;

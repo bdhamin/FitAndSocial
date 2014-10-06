@@ -1,5 +1,7 @@
 package com.FitAndSocial.app.fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -35,13 +37,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by mint on 12-7-14.
  */
 public class LastActivity extends BaseFragment {
 
-    private String url = "http://192.168.2.9:9000/lastActivity";
+    private  String LAST_ACTIVITY_URL = "http://192.168.2.9:9000/lastActivity";
     private final String KEY_ACTIVITY = "activity"; //parent node name
     private final String KEY_TITLE = "title";
     private final String KEY_TYPE = "type";
@@ -67,19 +71,25 @@ public class LastActivity extends BaseFragment {
     private TextView members;
     private NodeList nodelist;
     private View view;
+    private String authenticationKey;
 
 
     public LastActivity(){
-        String lastActivityAddress = assembleUrl(url);
-        new UserLastActivity().execute(lastActivityAddress);
+//        String activityUrl = assembleUrl(LAST_ACTIVITY_URL);
+
+        new UserLastActivity().execute(LAST_ACTIVITY_URL);
     }
 
-    private String assembleUrl(String url) {
+//    private String assembleUrl(String url) {
+//
+//        StringBuilder sb = new StringBuilder();
+////        String authenticationProviderKey = getLoggedInUserId();
+//        sb.append(url).append("?id=").append("225");
+//        return sb.toString();
+//    }
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(url).append("?id=").append("265");
-        return sb.toString();
-    }
+
+
 
 
     @Override
@@ -102,6 +112,7 @@ public class LastActivity extends BaseFragment {
         memberTwoName = (TextView) view.findViewById(R.id.memberTwoName);
         memberThreeName = (TextView) view.findViewById(R.id.memberThreeName);
         members = (TextView)view.findViewById(R.id.members);
+        this.authenticationKey = getLoggedInUserId();
         return view;
     }
 
@@ -122,7 +133,15 @@ public class LastActivity extends BaseFragment {
         protected Boolean doInBackground(String... url){
 
             try {
-                URL address = new URL(url[0]);
+                String authenticationKey = getLoggedUserId();
+
+                if (authenticationKey.trim().isEmpty()) {
+                    System.out.println("NO LOGGED IN USER FOUND!");
+                    return false;
+                }
+
+                String lastActivityAddress = url[0].concat("?id=").concat(authenticationKey);
+                URL address = new URL(lastActivityAddress);
                 DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
                 DocumentBuilder db = dbf.newDocumentBuilder();
                 // Download the XML file
@@ -131,8 +150,8 @@ public class LastActivity extends BaseFragment {
                 // Locate the Tag Name
                 nodelist = doc.getElementsByTagName(KEY_ACTIVITY);
 
-            }catch (MalformedURLException | ParserConfigurationException | SAXException | FileNotFoundException e ) {
-                Log.e("Error", e.getMessage());
+            }catch (MalformedURLException | ParserConfigurationException | SAXException | FileNotFoundException | NullPointerException e ) {
+//                Log.e("Error", e.getMessage());
                 e.printStackTrace();
                 return false;
             } catch (IOException e) {
@@ -193,5 +212,13 @@ public class LastActivity extends BaseFragment {
             Node nValue = (Node) nlList.item(0);
             return nValue.getNodeValue();
         }
+    }
+    private String getLoggedUserId(){
+        SharedPreferences preference = getActivity().getSharedPreferences(APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
+        if(preference.contains("userId")){
+            String userId = preference.getString("userId", "");
+            return userId;
+        }
+        return "";
     }
 }

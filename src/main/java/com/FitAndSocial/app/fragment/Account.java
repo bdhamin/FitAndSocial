@@ -10,10 +10,17 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.view.View;
 import com.FitAndSocial.app.fragment.helper.AccountContainerManager;
+import com.FitAndSocial.app.fragment.helper.CreateAccount;
+import com.FitAndSocial.app.fragment.helper.CreateAccountHelper;
 import com.FitAndSocial.app.fragment.helper.NonSwipeableViewPager;
 import com.FitAndSocial.app.mobile.R;
 import com.FitAndSocial.app.socialLogin.facebook.FacebookLogin;
 import com.FitAndSocial.app.socialLogin.google.GoogleLogin;
+import com.facebook.model.GraphUser;
+import com.google.android.gms.plus.model.people.Person;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by mint on 29-9-14.
@@ -24,10 +31,15 @@ public class Account extends BaseFragment implements AccountContainerManager{
     SharedPreferences applicationPreference;
     private FragmentManager manager;
     private FragmentTransaction transaction;
+    private SharedPreferences accounts;
+    private SharedPreferences.Editor editor;
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceBundle){
         view = layoutInflater.inflate(R.layout.account, container, false);
+        accounts = getActivity().getSharedPreferences(REGISTERED_USERS, Context.MODE_PRIVATE);
+        applicationPreference = getActivity().getSharedPreferences(APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
+        editor = accounts.edit();
         manager = getFragmentManager();
         transaction = manager.beginTransaction();
 
@@ -40,6 +52,88 @@ public class Account extends BaseFragment implements AccountContainerManager{
         transaction.commit();
         configureTabMode();
         return view;
+    }
+
+    public void setUserVisibleHint(boolean visibleHint){
+        super.setUserVisibleHint(visibleHint);
+    }
+
+
+//    @Override
+//    public boolean createUserAccountGoogle(Person person, String email) {
+//        CreateAccountHelper createAccountHelper = new CreateAccount();
+//        createAccountHelper.createAccountUsingGoogle(person,email);
+//    }
+//
+//    @Override
+//    public boolean createUserAccountFacebook(GraphUser graphUser) {
+//        CreateAccountHelper createAccountHelper = new CreateAccount();
+//        createAccountHelper.createAccountUsingFacebook(graphUser);
+//    }
+
+    @Override
+    public void processLoggedInGoogleUser(Person user, String email) {
+        if(user != null && !user.getId().equals("")){
+            if(!accountExist(user.getId())){
+                CreateAccountHelper createAccountHelper = new CreateAccount();
+                createAccountHelper.createAccountUsingGoogle(user, email);
+                addUserToSharedPreferences(user.getId());
+                configureLoginSharedPreferences(false, user.getId());
+                configureTabMode();
+            }else{
+                configureLoginSharedPreferences(false, user.getId());
+                configureTabMode();
+            }
+        }
+    }
+
+    @Override
+    public void processLoggedInFacebookUser(GraphUser user) {
+        if(user != null && !user.getId().equals("")){
+            if(!accountExist(user.getId())){
+                CreateAccountHelper createAccountHelper = new CreateAccount();
+                createAccountHelper.createAccountUsingFacebook(user);
+                addUserToSharedPreferences(user.getId());
+                configureLoginSharedPreferences(true, user.getId());
+                configureTabMode();
+            }else{
+                configureLoginSharedPreferences(true, user.getId());
+                configureTabMode();
+            }
+        }
+    }
+
+    private boolean accountExist(String userId) {
+        if (accounts.contains("users")) {
+            Set<String> existingUsers = accounts.getStringSet("users", null);
+            return existingUsers.contains(userId) ? true : false;
+        }
+        return false;
+    }
+
+    private void addUserToSharedPreferences(String userId){
+
+        Set<String> users;
+        if(accounts.contains("users")){
+            users = accounts.getStringSet("users", null);
+            users.add(userId);
+        }else{
+            users = new HashSet<>();
+            users.add(userId);
+        }
+        editor.putStringSet("users", users);
+        editor.commit();
+    }
+
+    private void configureLoginSharedPreferences(boolean isFacebookLogin, String userId){
+        SharedPreferences.Editor sharedEditor = applicationPreference.edit();
+        if(isFacebookLogin){
+            sharedEditor.putString("loginType", "facebook");
+        }else{
+            sharedEditor.putString("loginType", "google");
+        }
+        sharedEditor.putString("userId", userId);
+        sharedEditor.commit();
     }
 
     private void configureTabMode() {
@@ -55,22 +149,9 @@ public class Account extends BaseFragment implements AccountContainerManager{
         }
     }
 
-    private void manageLoginContainer() {
-        String connectedWith = applicationPreference.getString("loggedIn", "");
-        switch (connectedWith){
-            case "facebook":
-                view.findViewById(R.id.google_login_container).setVisibility(View.GONE);
-                break;
-            case "google":
-                view.findViewById(R.id.facebook_login_container).setVisibility(View.GONE);
-                break;
-        }
-    }
-
     private boolean isLoggedIn() {
-        applicationPreference = getActivity().getSharedPreferences(APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
-        if(applicationPreference.contains("loggedIn")){
-            String loginType = applicationPreference.getString("loggedIn", "");
+        if(applicationPreference.contains("loginType")){
+            String loginType = applicationPreference.getString("loginType", "");
             if(loginType != null && !loginType.equals("")){
                 return true;
             }
@@ -78,19 +159,47 @@ public class Account extends BaseFragment implements AccountContainerManager{
         return false;
     }
 
-
-    public void setUserVisibleHint(boolean visibleHint){
-        super.setUserVisibleHint(visibleHint);
-    }
-
-    @Override
-    public void manageContainers(String loginType, boolean isLogin) {
-        if(isLogin){
-            configureTabMode();
-        }else{
-            configureTabMode();
-            view.findViewById(R.id.google_login_container).setVisibility(View.VISIBLE);
-            view.findViewById(R.id.facebook_login_container).setVisibility(View.VISIBLE);
+    private void manageLoginContainer() {
+        String connectedWith = applicationPreference.getString("loginType", "");
+        switch (connectedWith){
+            case "facebook":
+                view.findViewById(R.id.google_login_container).setVisibility(View.GONE);
+                view.findViewById(R.id.facebook_login_container).setVisibility(View.VISIBLE);
+                break;
+            case "google":
+                view.findViewById(R.id.facebook_login_container).setVisibility(View.GONE);
+                view.findViewById(R.id.google_login_container).setVisibility(View.VISIBLE);
+                break;
+            default:
+                view.findViewById(R.id.facebook_login_container).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.google_login_container).setVisibility(View.VISIBLE);
+                break;
         }
     }
-}
+
+
+    @Override
+    public void processLogoutUser() {
+        SharedPreferences.Editor editor = applicationPreference.edit();
+        editor.remove("loginType");
+        editor.remove("userId");
+        editor.commit();
+        configureTabMode();
+        view.findViewById(R.id.google_login_container).setVisibility(View.VISIBLE);
+        view.findViewById(R.id.facebook_login_container).setVisibility(View.VISIBLE);
+
+    }
+
+
+//    @Override
+//    public void manageContainers(String loginType, boolean isLogin) {
+//        if(isLogin){
+//            configureTabMode();
+//        }else{
+//            configureTabMode();
+//            view.findViewById(R.id.google_login_container).setVisibility(View.VISIBLE);
+//            view.findViewById(R.id.facebook_login_container).setVisibility(View.VISIBLE);
+//        }
+    }
+
+

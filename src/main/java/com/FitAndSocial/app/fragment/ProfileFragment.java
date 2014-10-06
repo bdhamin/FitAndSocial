@@ -1,5 +1,7 @@
 package com.FitAndSocial.app.fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -36,7 +38,7 @@ public class ProfileFragment extends BaseFragment {
 
     private View view;
 
-    private String url = "http://192.168.2.9:9000/userProfile/368";
+    private final String USER_PROFILE_ADDRESS = "http://192.168.2.9:9000/userProfile/";
     private final String KEY_USER = "user"; //parent node name
     private final String KEY_NAME = "name";
     private final String KEY_AGE = "age";
@@ -62,7 +64,7 @@ public class ProfileFragment extends BaseFragment {
         initTextView();
         initFragments();
         //TODO: change this to own method where we first get the logged in user id and then execute the method
-        new UserProfile().execute(url);
+        new UserProfile().execute(USER_PROFILE_ADDRESS);
         return view;
     }
 
@@ -115,13 +117,21 @@ public class ProfileFragment extends BaseFragment {
         protected Boolean doInBackground(String... address){
 
             try {
-                URL url = new URL(address[0]);
-                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-                DocumentBuilder db = dbf.newDocumentBuilder();
+                String authenticationProviderKey = getLoggedInUserId();
+                if (authenticationProviderKey != null && !authenticationProviderKey.trim().isEmpty()) {
+                    SharedPreferences preferences = getActivity().getSharedPreferences(REGISTERED_USERS, Context.MODE_PRIVATE);
+                    System.out.println("PREFEEEE " + preferences.getAll());
 
-                Document doc = db.parse(new InputSource(url.openStream()));
-                doc.getDocumentElement().normalize();
-                nodelist = doc.getElementsByTagName(KEY_USER);
+
+                    String profileUrl = address[0].concat(authenticationProviderKey);
+                    URL url = new URL(profileUrl);
+                    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+                    DocumentBuilder db = dbf.newDocumentBuilder();
+
+                    Document doc = db.parse(new InputSource(url.openStream()));
+                    doc.getDocumentElement().normalize();
+                    nodelist = doc.getElementsByTagName(KEY_USER);
+                }
 
             }catch (MalformedURLException | ParserConfigurationException | SAXException | FileNotFoundException e ) {
 

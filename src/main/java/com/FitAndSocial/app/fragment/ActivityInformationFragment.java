@@ -191,10 +191,17 @@ public class ActivityInformationFragment extends BaseFragment{
         @Override
         protected Boolean doInBackground(String... Url) {
 
+            String authenticationKey = getLoggedInUserId();
+            if(authenticationKey.trim().isEmpty()){
+                pDialog.dismiss();
+                System.out.println("User Id Cannot Be Empty");
+                return false;
+            }
+
             JSONObject jsonObject = new JSONObject();
             try {
                 jsonObject.accumulate("activityId", Long.valueOf(selectedSearchResult.get("id")));
-                jsonObject.accumulate("userId", 341);
+                jsonObject.accumulate("userId", authenticationKey);
                 StringEntity stringEntity = new StringEntity(jsonObject.toString());
 
                 HttpClient httpClient = new DefaultHttpClient();

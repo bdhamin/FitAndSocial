@@ -15,7 +15,7 @@ public class Event{
     private int distance;
     private long activityDate;
     private long activityTime;
-    private long user;
+    private String user;
     private long startLocationLatitude;
     private long startLocationMagnitude;
     private long endLocationLatitude;
@@ -62,11 +62,11 @@ public class Event{
         this.activityTime = activityTime;
     }
 
-    public long getUser() {
+    public String getUser() {
         return user;
     }
 
-    public void setUser(long user) {
+    public void setUser(String user) {
         this.user = user;
     }
 

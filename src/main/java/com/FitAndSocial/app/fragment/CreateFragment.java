@@ -1,11 +1,13 @@
 package com.FitAndSocial.app.fragment;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.*;
@@ -48,6 +50,7 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
     private String date;
     private String time;
     private ProgressDialog pDialog;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceBundle){
@@ -228,6 +231,19 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
             pDialog.setMessage("Processing...");
             pDialog.setIndeterminate(true);
             pDialog.show();
+        }
+
+        @Override
+        protected Boolean doInBackground(String... Url){
+            Gson gson = new Gson();
+            String authenticationKey = getLoggedInUserId();
+
+            if (authenticationKey.trim().isEmpty()) {
+                pDialog.dismiss();
+                System.out.println("NO LOGGED IN USER FOUND!");
+                return false;
+            }
+
             event.setTitle(title.getText().toString());
             event.setType(activityType);
             event.setDurationMin(Integer.valueOf(duration[0]));
@@ -235,16 +251,13 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
             event.setDistance(Integer.valueOf(activityDistance));
             event.setActivityDate(Utils.convertDateStringToLong(date));
             event.setActivityTime(Utils.convertTimeStringToLong(time));
-            event.setUser(344);
+            event.setUser(authenticationKey);
             event.setStartLocationLatitude(10);
             event.setStartLocationMagnitude(20);
             event.setEndLocationLatitude(10);
             event.setEndLocationMagnitude(20);
-        }
 
-        @Override
-        protected Boolean doInBackground(String... Url){
-            Gson gson = new Gson();
+
             String json = gson.toJson(event);
 
             try{
@@ -260,10 +273,13 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
                     return true;
                 }else{
                     pDialog.dismiss();
+                    System.out.println("Something went wrong while creating activity");
                     return false;
                 }
             }catch (Exception e){
                 pDialog.dismiss();
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
                 return false;
             }
         }

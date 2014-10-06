@@ -1,6 +1,8 @@
 package com.FitAndSocial.app.fragment;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -33,7 +35,6 @@ import java.util.HashMap;
  */
 public class Activities extends BaseFragment{
 
-//    private  final String XML_ADDRESS = "http://192.168.2.9:9000/allActivities";
     private String url = "http://192.168.2.9:9000/upcomingActivities";
     private ListView listView;
     private ActivitiesLazyAdapter activitiesLazyAdapter;
@@ -48,17 +49,18 @@ public class Activities extends BaseFragment{
     private final String KEY_MEMBERS_TOTAL="members_total";
     private boolean isInformation = false;
     private View view;
-    private String results;
     private NodeList nodelist;
-    private ProgressDialog pDialog;
     private SwipeRefreshLayout swipeLayout;
     private TextView notification;
+    private SharedPreferences applicationPreference;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceBundle){
         view = inflater.inflate(R.layout.activities, container, false);
         notification = (TextView)view.findViewById(R.id.notification);
+        setActionbarNavigationMode(2);
+        setFragmentTitle("Username");
         new DownloadXML().execute(url);
         return view;
     }
@@ -92,24 +94,31 @@ public class Activities extends BaseFragment{
         @Override
         protected Boolean doInBackground(String... Url) {
 
+            String address = "";
             StringBuilder sb = new StringBuilder();
-            sb.append(url).append("?id=").append("341");
-            String address = sb.toString();
 
-            try {
-                URL url = new URL(address);
-                DocumentBuilderFactory dbf = DocumentBuilderFactory
-                        .newInstance();
-                DocumentBuilder db = dbf.newDocumentBuilder();
-                // Download the XML file
-                Document doc = db.parse(new InputSource(url.openStream()));
-                doc.getDocumentElement().normalize();
-                // Locate the Tag Name
-                nodelist = doc.getElementsByTagName(KEY_ACTIVITY);
+            applicationPreference = getActivity().getSharedPreferences(APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
+            if(applicationPreference.contains("userId")){
+                String userId = applicationPreference.getString("userId", "");
+                sb.append(url).append("?id=").append(userId);
+                address = sb.toString();
+                try {
+                    URL url = new URL(address);
+                    DocumentBuilderFactory dbf = DocumentBuilderFactory
+                            .newInstance();
+                    DocumentBuilder db = dbf.newDocumentBuilder();
+                    // Download the XML file
+                    Document doc = db.parse(new InputSource(url.openStream()));
+                    doc.getDocumentElement().normalize();
+                    // Locate the Tag Name
+                    nodelist = doc.getElementsByTagName(KEY_ACTIVITY);
 
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
+                } catch (Exception e) {
+                    Log.e("Error", e.getMessage());
+                    e.printStackTrace();
+                    return false;
+                }
+            }else{
                 return false;
             }
             return true;

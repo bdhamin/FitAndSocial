@@ -156,7 +156,9 @@ public class ActivitiesLazyAdapter extends BaseAdapter{
                 ActivityInformationFragment activityInformation = new ActivityInformationFragment(data.get(position), false);
                 FragmentTransaction transaction = activity.getActivity().getSupportFragmentManager().beginTransaction();
                 Fragment activities = activity.getActivity().getSupportFragmentManager().findFragmentById(R.id.activities_container);
+                Fragment noActivities = activity.getActivity().getSupportFragmentManager().findFragmentById(R.id.no_activities_fragment_container);
                 transaction.remove(activities);
+                transaction.remove(noActivities);
                 transaction.add(R.id.create_fragment_container, activityInformation);
                 transaction.addToBackStack(null);
                 transaction.commit();

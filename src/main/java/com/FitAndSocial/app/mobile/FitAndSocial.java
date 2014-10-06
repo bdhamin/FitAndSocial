@@ -104,7 +104,6 @@ public class FitAndSocial extends RoboSherlockFragmentActivity {
         if(applicationPreference.contains("loggedIn")) {
             String loginType = applicationPreference.getString("loggedIn", "");
             if (loginType != null && !loginType.equals("")) {
-                System.out.println("LoginType is: " + loginType);
                 viewPager.setCurrentItem(0);
             }else{
                 viewPager.setCurrentItem(4);

@@ -24,6 +24,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Set;
 
 /**
  * Created by mint on 26-9-14.
@@ -61,35 +62,72 @@ public class FacebookLogin extends BaseFragment{
         }
     };
 
-    private void onSessionStateChange(Session session, SessionState state, Exception exception){
+    private void onSessionStateChange(Session session, final SessionState state, Exception exception){
         if(state.isOpened()){
             Log.d(TAG, "Logged in...");
             userInfoTextView.setVisibility(View.VISIBLE);
             applicationPreference = getActivity().getSharedPreferences(APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = applicationPreference.edit();
-            editor.putString("loggedIn", "facebook");
-            editor.commit();
-            accountContainerManager.manageContainers("facebook", true);
+
             // Request user data and show the results
             Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
 
                 @Override
                 public void onCompleted(GraphUser user, Response response) {
-                    if (user != null) {
-                        // Display the parsed user info
-                        userInfoTextView.setText(buildUserInfoDisplay(user));
-                    }
+                   accountContainerManager.processLoggedInFacebookUser(user);
+
+
+
+
+//                    if(applicationPreference.contains("loginType")){
+//                        if(applicationPreference.getString("loginType", "").equals("facebook")){
+//                            editor.putString("loggedIn", "facebook");
+//                            editor.commit();
+//                            accountContainerManager.manageContainers("facebook", true);
+//                        }else{
+//                            if (user != null) {
+//                                // Display the parsed user info
+//                                userInfoTextView.setText(buildUserInfoDisplay(user));
+//                                if(accountContainerManager.createUserAccountFacebook(user)){
+//                                    editor.remove("loginType");
+//                                    editor.remove("userId");
+//
+//                                    editor.putString("loggedIn", "facebook");
+//                                    editor.putString("loginType", "facebook");
+//                                    editor.putString("userId", user.getId());
+//                                    editor.commit();
+//                                    accountContainerManager.manageContainers("facebook", true);
+//                                }
+//                            }
+//                        }
+//                    }else {
+//                        if (user != null) {
+//                            // Display the parsed user info
+//                            userInfoTextView.setText(buildUserInfoDisplay(user));
+//                            if(accountContainerManager.createUserAccountFacebook(user)){
+//                                editor.putString("loggedIn", "facebook");
+//                                editor.putString("loginType", "facebook");
+//                                editor.putString("userId", user.getId());
+//                                editor.commit();
+//                                accountContainerManager.manageContainers("facebook", true);
+//                            }
+//                        }
+//                    }
                 }
             });
 
         }else if(state.isClosed()){
             Log.d(TAG, "Logged out...");
-            applicationPreference = getActivity().getSharedPreferences(APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = applicationPreference.edit();
-            editor.remove("loggedIn");
-            editor.commit();
-            userInfoTextView.setVisibility(View.INVISIBLE);
-            accountContainerManager.manageContainers("facebook", false);
+            accountContainerManager.processLogoutUser();
+//            applicationPreference = getActivity().getSharedPreferences(APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
+//            SharedPreferences.Editor editor = applicationPreference.edit();
+//
+//            editor.remove("loggedIn");
+//            editor.remove("loginType");
+//            editor.remove("userId");
+//
+//            editor.commit();
+//            userInfoTextView.setVisibility(View.INVISIBLE);
+//            accountContainerManager.manageContainers("facebook", false);
         }
     }
 

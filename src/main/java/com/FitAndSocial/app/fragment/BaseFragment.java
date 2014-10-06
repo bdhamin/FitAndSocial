@@ -1,5 +1,6 @@
 package com.FitAndSocial.app.fragment;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.widget.TextView;
@@ -25,6 +26,7 @@ public class BaseFragment extends Fragment {
     private static GoogleLogin googleLoginClient;
     protected SharedPreferences applicationPreference;
     protected final String APPLICATION_PREFERENCE = "applicationPreference";
+    protected final String REGISTERED_USERS = "registeredUsers";
 
     /**
      * On a certain fragments we need to disable the navigation tabs and enable them
@@ -103,5 +105,24 @@ public class BaseFragment extends Fragment {
     public static GoogleLogin getGoogleLoginClient(){
         return googleLoginClient;
     }
+
+    protected String getLoggedInUserId(){
+        applicationPreference = this.getActivity().getSharedPreferences(APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
+        if(applicationPreference.contains("userId")){
+            String userId = applicationPreference.getString("userId", "");
+            return userId;
+        }
+        return "";
+    }
+
+    protected String getUsername(){
+        applicationPreference = this.getActivity().getSharedPreferences(APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
+        if(applicationPreference.contains("username")){
+            String username = applicationPreference.getString("username", "");
+            return username;
+        }
+        return "";
+    }
+
 
 }
