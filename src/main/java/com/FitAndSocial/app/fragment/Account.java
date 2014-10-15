@@ -1,24 +1,33 @@
 package com.FitAndSocial.app.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import com.FitAndSocial.app.fragment.helper.AccountContainerManager;
 import com.FitAndSocial.app.fragment.helper.CreateAccount;
 import com.FitAndSocial.app.fragment.helper.CreateAccountHelper;
 import com.FitAndSocial.app.fragment.helper.NonSwipeableViewPager;
+import com.FitAndSocial.app.gcm.DeviceRegistration;
 import com.FitAndSocial.app.mobile.R;
 import com.FitAndSocial.app.socialLogin.facebook.FacebookLogin;
 import com.FitAndSocial.app.socialLogin.google.GoogleLogin;
 import com.facebook.model.GraphUser;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.plus.model.people.Person;
+import android.view.View.OnClickListener;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,6 +46,8 @@ public class Account extends BaseFragment implements AccountContainerManager{
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceBundle){
         view = layoutInflater.inflate(R.layout.account, container, false);
+
+
         accounts = getActivity().getSharedPreferences(REGISTERED_USERS, Context.MODE_PRIVATE);
         applicationPreference = getActivity().getSharedPreferences(APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
         editor = accounts.edit();
@@ -58,19 +69,6 @@ public class Account extends BaseFragment implements AccountContainerManager{
         super.setUserVisibleHint(visibleHint);
     }
 
-
-//    @Override
-//    public boolean createUserAccountGoogle(Person person, String email) {
-//        CreateAccountHelper createAccountHelper = new CreateAccount();
-//        createAccountHelper.createAccountUsingGoogle(person,email);
-//    }
-//
-//    @Override
-//    public boolean createUserAccountFacebook(GraphUser graphUser) {
-//        CreateAccountHelper createAccountHelper = new CreateAccount();
-//        createAccountHelper.createAccountUsingFacebook(graphUser);
-//    }
-
     @Override
     public void processLoggedInGoogleUser(Person user, String email) {
         if(user != null && !user.getId().equals("")){
@@ -80,7 +78,9 @@ public class Account extends BaseFragment implements AccountContainerManager{
                 addUserToSharedPreferences(user.getId());
                 configureLoginSharedPreferences(false, user.getId());
                 configureTabMode();
+                new DeviceRegistration(this.getActivity());
             }else{
+                processLoggedInUserInformation(user.getName().getGivenName());
                 configureLoginSharedPreferences(false, user.getId());
                 configureTabMode();
             }
@@ -96,7 +96,9 @@ public class Account extends BaseFragment implements AccountContainerManager{
                 addUserToSharedPreferences(user.getId());
                 configureLoginSharedPreferences(true, user.getId());
                 configureTabMode();
+                new DeviceRegistration(this.getActivity());
             }else{
+                processLoggedInUserInformation(user.getFirstName());
                 configureLoginSharedPreferences(true, user.getId());
                 configureTabMode();
             }
@@ -140,7 +142,7 @@ public class Account extends BaseFragment implements AccountContainerManager{
         if(isLoggedIn()){
             manageLoginContainer();
             setActionbarNavigationMode(2);
-            setFragmentTitle("");
+            setFragmentTitle(getUsername());
             enableViewPagerSwipe(true);
         }else{
             setActionbarNavigationMode(0);
@@ -178,6 +180,8 @@ public class Account extends BaseFragment implements AccountContainerManager{
     }
 
 
+
+
     @Override
     public void processLogoutUser() {
         SharedPreferences.Editor editor = applicationPreference.edit();
@@ -190,16 +194,14 @@ public class Account extends BaseFragment implements AccountContainerManager{
 
     }
 
-
-//    @Override
-//    public void manageContainers(String loginType, boolean isLogin) {
-//        if(isLogin){
-//            configureTabMode();
-//        }else{
-//            configureTabMode();
-//            view.findViewById(R.id.google_login_container).setVisibility(View.VISIBLE);
-//            view.findViewById(R.id.facebook_login_container).setVisibility(View.VISIBLE);
-//        }
+    @Override
+    public void processLoggedInUserInformation(String username) {
+        System.out.println("USERNAME ACCOUNT: " + username);
+        applicationPreference = getActivity().getSharedPreferences(APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor info = applicationPreference.edit();
+        info.putString("username", username);
+        info.commit();
     }
+}
 
 

@@ -28,7 +28,7 @@ public class NoActivities extends BaseFragment {
          * Note this should be changed to get the logged in username
          * and display it as title.
          */
-        setFragmentTitle("Username");
+//        setFragmentTitle("Username");
         return view;
     }
 

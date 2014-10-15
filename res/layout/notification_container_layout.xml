@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+        android:id="@+id/notificationContainer">
+
+    <View android:id="@+id/dummyView"
+          android:layout_width="0dp"
+          android:layout_height="0dp"
+          android:layout_centerInParent="true"/>
+
+    <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/notificationList_fragment_container"
+            android:layout_alignBottom="@id/dummyView">
+
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/notificationDetails_fragment_container"
+            android:layout_alignTop="@id/dummyView">
+
+    </RelativeLayout>
+
+        <!--<fragment android:layout_width="fill_parent"-->
+                  <!--android:layout_height="fill_parent"-->
+                  <!--android:layout_alignBottom="@id/dummyView"-->
+                  <!--android:name="com.FitAndSocial.app.fragment.NotificationsListFragment"-->
+                  <!--android:id="@+id/notificationList_fragment_container"-->
+                  <!--tools:layout="@layout/notificationslist"/>-->
+
+
+        <!--<fragment android:layout_width="fill_parent"-->
+                  <!--android:layout_height="fill_parent"-->
+                  <!--android:layout_alignTop="@id/dummyView"-->
+                  <!--android:name="com.FitAndSocial.app.fragment.NotificationDetailsFragment"-->
+                  <!--android:id="@+id/notificationDetails_fragment_container"-->
+                  <!--tools:layout="@layout/notification_details"/>-->
+</RelativeLayout>

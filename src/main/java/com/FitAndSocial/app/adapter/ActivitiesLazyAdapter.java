@@ -1,4 +1,4 @@
-package com.FitAndSocial.app.util;
+package com.FitAndSocial.app.adapter;
 
 import android.app.Activity;
 import android.content.Context;

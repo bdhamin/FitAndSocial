@@ -122,4 +122,20 @@ public final class Utils {
     }
 
 
+    public static String getDateFromLong(long date){
+        String pattern = "dd-MM-yyyy";
+        java.text.DateFormat dateFormat = new SimpleDateFormat(pattern);
+        String formattedDate = dateFormat.format(date);
+        return formattedDate;
+    }
+
+    public static String getTimeFromLong(long date){
+        String pattern = "HH:mm";
+        java.text.DateFormat dateFormat = new SimpleDateFormat(pattern);
+        String formattedTime = dateFormat.format(date);
+        return formattedTime;
+    }
+
+
+
 }

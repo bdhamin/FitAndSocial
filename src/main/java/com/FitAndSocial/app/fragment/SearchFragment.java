@@ -41,7 +41,6 @@ public class SearchFragment extends BaseFragment implements OnDateSetListener, O
     private final String KEY_Max_RADIUS = "radiusMax";
     private final String KEY_START_DATE = "startDate";
     private final String KEY_START_TIME = "time";
-    private String urlAddress = "http://192.168.2.9:9000/searchActivities?";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceBundle){
@@ -277,6 +276,7 @@ public class SearchFragment extends BaseFragment implements OnDateSetListener, O
         }
 
         StringBuilder sb = new StringBuilder();
+        String urlAddress = getBaseUrl().concat("/searchActivities?");
         sb.append(urlAddress).append(KEY_ACTIVITY_TYPE).append("=").append(typeName).append("&")
                 .append(KYE_DISTANCE).append("=").append(distance).append("&")
                 .append(KEY_Min_DURATION).append("=").append(minDuration).append("&")

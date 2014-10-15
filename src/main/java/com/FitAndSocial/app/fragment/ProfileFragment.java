@@ -37,8 +37,6 @@ import java.util.List;
 public class ProfileFragment extends BaseFragment {
 
     private View view;
-
-    private final String USER_PROFILE_ADDRESS = "http://192.168.2.9:9000/userProfile/";
     private final String KEY_USER = "user"; //parent node name
     private final String KEY_NAME = "name";
     private final String KEY_AGE = "age";
@@ -64,7 +62,8 @@ public class ProfileFragment extends BaseFragment {
         initTextView();
         initFragments();
         //TODO: change this to own method where we first get the logged in user id and then execute the method
-        new UserProfile().execute(USER_PROFILE_ADDRESS);
+        String userProfileAddress = getBaseUrl().concat("/userProfile/");
+        new UserProfile().execute(userProfileAddress);
         return view;
     }
 
@@ -121,8 +120,6 @@ public class ProfileFragment extends BaseFragment {
                 if (authenticationProviderKey != null && !authenticationProviderKey.trim().isEmpty()) {
                     SharedPreferences preferences = getActivity().getSharedPreferences(REGISTERED_USERS, Context.MODE_PRIVATE);
                     System.out.println("PREFEEEE " + preferences.getAll());
-
-
                     String profileUrl = address[0].concat(authenticationProviderKey);
                     URL url = new URL(profileUrl);
                     DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -134,7 +131,6 @@ public class ProfileFragment extends BaseFragment {
                 }
 
             }catch (MalformedURLException | ParserConfigurationException | SAXException | FileNotFoundException e ) {
-
                 Log.e("Error", e.getMessage());
                 e.printStackTrace();
                 return false;
@@ -142,7 +138,6 @@ public class ProfileFragment extends BaseFragment {
                 e.printStackTrace();
                 return false;
             }
-
             return true;
         }
 

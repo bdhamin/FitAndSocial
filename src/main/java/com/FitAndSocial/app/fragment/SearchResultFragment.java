@@ -1,35 +1,23 @@
 package com.FitAndSocial.app.fragment;
 
 import android.app.ProgressDialog;
-import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.FitAndSocial.app.mobile.R;
-import com.FitAndSocial.app.util.ActivitiesLazyAdapter;
-import com.FitAndSocial.app.util.SearchResultAdapter;
-import com.FitAndSocial.app.util.Utils;
-import com.FitAndSocial.app.util.XMLParser;
-import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
+import com.FitAndSocial.app.adapter.SearchResultAdapter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;

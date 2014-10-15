@@ -1,4 +1,4 @@
-package com.FitAndSocial.app.util;
+package com.FitAndSocial.app.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,6 +14,7 @@ import com.FitAndSocial.app.fragment.BaseFragment;
 import com.FitAndSocial.app.fragment.GoogleMapsFragment;
 import com.FitAndSocial.app.fragment.SearchResultFragment;
 import com.FitAndSocial.app.mobile.R;
+import com.FitAndSocial.app.util.ParticipationHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;

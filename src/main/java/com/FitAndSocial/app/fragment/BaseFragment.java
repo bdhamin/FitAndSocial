@@ -3,8 +3,10 @@ package com.FitAndSocial.app.fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.FitAndSocial.app.fragment.helper.NonSwipeableViewPager;
+import com.FitAndSocial.app.integration.DatabaseHandler;
 import com.FitAndSocial.app.mobile.FitAndSocial;
 import com.FitAndSocial.app.mobile.R;
 import com.FitAndSocial.app.socialLogin.google.GoogleLogin;
@@ -27,6 +29,7 @@ public class BaseFragment extends Fragment {
     protected SharedPreferences applicationPreference;
     protected final String APPLICATION_PREFERENCE = "applicationPreference";
     protected final String REGISTERED_USERS = "registeredUsers";
+    private final String BASE_URL = "http://192.168.2.6:9000";
 
     /**
      * On a certain fragments we need to disable the navigation tabs and enable them
@@ -122,6 +125,19 @@ public class BaseFragment extends Fragment {
             return username;
         }
         return "";
+    }
+
+    protected String getBaseUrl(){
+        return this.BASE_URL;
+    }
+
+    protected void updateNotificationCounter(){
+
+    }
+
+    protected DatabaseHandler getDBInstance(){
+        DatabaseHandler db = new DatabaseHandler(getActivity().getApplicationContext());
+        return db;
     }
 
 

@@ -23,7 +23,7 @@ import java.net.MalformedURLException;
  */
 public class CreateAccount extends EmptyFragmentHelper implements CreateAccountHelper{
 
-    private final String CREATE_ACCOUNT_URL = "http://192.168.2.9:9000/register";
+    private final String CREATE_ACCOUNT_URL = "http://192.168.2.6:9000/register";
     private GraphUser user;
     private Person person;
     private boolean isCreateFacebookAccount;

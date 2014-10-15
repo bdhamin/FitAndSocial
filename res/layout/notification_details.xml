@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/notificationDetails_rl">
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/notificationDetails_sv">
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">
+            <TextView
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/notificationDetailsTitle"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_centerHorizontal="true"
+                    android:singleLine="true" android:inputType="text"
+                    android:textColor="@android:color/black"
+                    android:gravity="center"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:id="@+id/notificationDetailsDate"
+                    android:layout_below="@+id/notificationDetailsTitle"
+                    android:layout_toLeftOf="@+id/notificationDetailsTitle"
+                    android:textColor="@android:color/black"
+                    android:layout_marginTop="20dp"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:id="@+id/notificationDetailsTime"
+                    android:layout_below="@+id/notificationDetailsTitle"
+                    android:layout_marginTop="20dp"
+                    android:textColor="@android:color/black"
+                    android:layout_toRightOf="@+id/notificationDetailsTitle"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:id="@+id/notificationDetailsBody"
+                    android:layout_marginTop="34dp"
+                    android:layout_below="@+id/notificationDetailsTime"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="true"
+                    android:textColor="@android:color/black"
+                    android:gravity="center_horizontal" android:textSize="14sp"/>
+        </RelativeLayout>
+
+
+            </ScrollView>
+
+
+</RelativeLayout>

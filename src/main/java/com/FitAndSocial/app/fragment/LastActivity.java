@@ -2,50 +2,37 @@ package com.FitAndSocial.app.fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import com.FitAndSocial.app.mobile.R;
-import com.FitAndSocial.app.util.ActivitiesLazyAdapter;
-import com.FitAndSocial.app.util.Utils;
-import com.FitAndSocial.app.util.XMLParser;
-import com.actionbarsherlock.app.SherlockFragment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by mint on 12-7-14.
  */
 public class LastActivity extends BaseFragment {
 
-    private  String LAST_ACTIVITY_URL = "http://192.168.2.9:9000/lastActivity";
+
     private final String KEY_ACTIVITY = "activity"; //parent node name
     private final String KEY_TITLE = "title";
     private final String KEY_TYPE = "type";
@@ -75,21 +62,9 @@ public class LastActivity extends BaseFragment {
 
 
     public LastActivity(){
-//        String activityUrl = assembleUrl(LAST_ACTIVITY_URL);
-
-        new UserLastActivity().execute(LAST_ACTIVITY_URL);
+        String lastActivityUrl = getBaseUrl().concat("/lastActivity");
+        new UserLastActivity().execute(lastActivityUrl);
     }
-
-//    private String assembleUrl(String url) {
-//
-//        StringBuilder sb = new StringBuilder();
-////        String authenticationProviderKey = getLoggedInUserId();
-//        sb.append(url).append("?id=").append("225");
-//        return sb.toString();
-//    }
-
-
-
 
 
     @Override

@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import com.FitAndSocial.app.fragment.helper.NonSwipeableViewPager;
 import com.FitAndSocial.app.mobile.R;
 import android.support.v4.app.FragmentManager;
@@ -28,6 +29,7 @@ public class HomeFragment extends BaseFragment{
         fragmentTransaction.add(R.id.activities_container, activities, "activities");
         fragmentTransaction.add(R.id.no_activities_fragment_container, noActivities, NO_ACTIVITIES_FRAGMENT_ID);
         fragmentTransaction.commit();
+        setFragmentTitle(getUsername());
         return view;
     }
 

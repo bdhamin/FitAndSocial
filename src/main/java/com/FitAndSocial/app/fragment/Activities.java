@@ -18,7 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.FitAndSocial.app.mobile.R;
-import com.FitAndSocial.app.util.ActivitiesLazyAdapter;
+import com.FitAndSocial.app.adapter.ActivitiesLazyAdapter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -35,7 +35,7 @@ import java.util.HashMap;
  */
 public class Activities extends BaseFragment{
 
-    private String url = "http://192.168.2.9:9000/upcomingActivities";
+    private String url;
     private ListView listView;
     private ActivitiesLazyAdapter activitiesLazyAdapter;
     private final String KEY_ACTIVITY_ID = "id";
@@ -60,7 +60,7 @@ public class Activities extends BaseFragment{
         view = inflater.inflate(R.layout.activities, container, false);
         notification = (TextView)view.findViewById(R.id.notification);
         setActionbarNavigationMode(2);
-        setFragmentTitle("Username");
+        url = getBaseUrl().concat("/upcomingActivities");
         new DownloadXML().execute(url);
         return view;
     }

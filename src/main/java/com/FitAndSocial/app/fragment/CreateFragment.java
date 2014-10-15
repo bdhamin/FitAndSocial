@@ -42,7 +42,6 @@ import java.net.URI;
 public class CreateFragment extends BaseFragment implements OnDateSetListener, OnTimeSetListener {
 
     private View view;
-    private String createEvent = "http://192.168.2.9:9000/createActivity";
     private TextView title;
     private String activityType;
     private String activityDistance;
@@ -189,6 +188,7 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
             public void onClick(View view) {
                 boolean check = requiredFieldsOk();
                 if(check){
+                    String createEvent = getBaseUrl().concat("/createActivity");
                     new CreateEvent().execute(createEvent);
                 }else{
                     Toast.makeText(getActivity(), "Please make sure you have filled in all the fields.", Toast.LENGTH_LONG).show();

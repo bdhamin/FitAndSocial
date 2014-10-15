@@ -26,7 +26,6 @@ import java.net.URL;
 public class UserActivitiesSummary extends BaseFragment{
 
     private View view;
-    private  final String USER_ACTIVITIES_ADDRESS = "http://192.168.2.9:9000/userActivitiesSummary/";
     private NodeList nodelist;
     private ProgressDialog pDialog;
     private final String KEY_ACTIVITY = "activity"; //parent node name
@@ -34,6 +33,7 @@ public class UserActivitiesSummary extends BaseFragment{
     private final String KEY_CREATED = "created";
     private final String KEY_PARTICIPATED = "participated";
     private final String KEY_CANCELLED = "cancelled";
+    private String userActivitiesAddress;
 
     private TextView totalActivities;
     private TextView createdActivities;
@@ -66,8 +66,8 @@ public class UserActivitiesSummary extends BaseFragment{
         createdActivitiesImage = (ImageView)view.findViewById(R.id.view_created_activities);
         participatedInActivitiesImage = (ImageView)view.findViewById(R.id.view_participated_in_activities);
         cancelledActivitiesImage = (ImageView)view.findViewById(R.id.view_cancelled_activities);
-
-        new DownloadXML().execute(USER_ACTIVITIES_ADDRESS);
+        userActivitiesAddress = getBaseUrl().concat("/userActivitiesSummary/");
+        new DownloadXML().execute(userActivitiesAddress);
         return view;
     }
 

@@ -49,9 +49,6 @@ public class ActivityInformationFragment extends BaseFragment{
 
     private View view;
     private HashMap<String, String> selectedSearchResult;
-
-    private String participateUrl = "http://192.168.2.9:9000/participationRequest";
-    private String cancelParticipationUrl = "http://192.168.2.9:9000/cancelParticipation";
     private final String KEY_ACTIVITY_ID = "id";
     private final String KEY_TITLE = "title";
     private final String KEY_TYPE = "type";
@@ -135,8 +132,11 @@ public class ActivityInformationFragment extends BaseFragment{
             @Override
             public void onClick(View view) {
                 if(isParticipation){
+
+                    String participateUrl = getBaseUrl().concat("/participationRequest");
                     new SendParticipationRequest().execute(participateUrl);
                 }else{
+                    String cancelParticipationUrl = getBaseUrl().concat("/cancelParticipation");
                     new SendParticipationRequest().execute(cancelParticipationUrl);
                 }
             }

@@ -2,11 +2,15 @@ package com.FitAndSocial.app.mobile;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.TextView;
 import com.FitAndSocial.app.fragment.BaseFragment;
+import com.FitAndSocial.app.fragment.NotificationDetailsFragment;
+import com.FitAndSocial.app.fragment.activityCommunicationInterface.OnSelectedNotificationListener;
 import com.FitAndSocial.app.fragment.helper.NonSwipeableViewPager;
 import com.FitAndSocial.app.fragment.helper.ViewPagerAdapter;
 import com.FitAndSocial.app.socialLogin.google.GoogleLogin;
@@ -20,7 +24,7 @@ import roboguice.inject.ContentView;
 import static android.support.v4.view.ViewPager.SimpleOnPageChangeListener;
 
 @ContentView(R.layout.main)
-public class FitAndSocial extends RoboSherlockFragmentActivity {
+public class FitAndSocial extends RoboSherlockFragmentActivity implements OnSelectedNotificationListener{
 
     private ActionBar actionbar;
     private ActionBar.Tab tab;
@@ -129,12 +133,12 @@ public class FitAndSocial extends RoboSherlockFragmentActivity {
                 BaseFragment.getGoogleLoginClient().logout();
                 break;
         }
-
-
         return super.onOptionsItemSelected(item);
-
     }
 
-
-
+    @Override
+    public void setSelectedNotification(int id) {
+        NotificationDetailsFragment notificationDetailsFragment = new NotificationDetailsFragment();
+        notificationDetailsFragment.displayNotificationDetails(id);
+    }
 }

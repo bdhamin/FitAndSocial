@@ -177,46 +177,6 @@
               android:layout_marginRight="10dp"
               android:layout_toLeftOf="@+id/linearLayout"
               android:layout_below="@id/dTime"/>
-
-    <!--<TextView android:layout_width="wrap_content"-->
-              <!--android:layout_height="wrap_content"-->
-              <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
-              <!--android:text="Date:"-->
-              <!--android:id="@+id/date"-->
-              <!--android:textColor="@android:color/black"-->
-              <!--android:layout_below="@id/duration"-->
-              <!--android:layout_marginTop="10dp"/>-->
-
-    <!--<TextView android:layout_width="wrap_content"-->
-              <!--android:layout_height="wrap_content"-->
-              <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
-              <!--android:text="22/09/2014"-->
-              <!--android:id="@+id/aDate"-->
-              <!--android:textColor="@android:color/black"-->
-              <!--android:layout_marginTop="10dp"-->
-              <!--android:layout_marginRight="10dp"-->
-              <!--android:layout_toLeftOf="@+id/linearLayout"-->
-              <!--android:layout_below="@id/dTime"/>-->
-
-    <!--<TextView android:layout_width="wrap_content"-->
-              <!--android:layout_height="wrap_content"-->
-              <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
-              <!--android:text="Time:"-->
-              <!--android:id="@+id/time"-->
-              <!--android:textColor="@android:color/black"-->
-              <!--android:layout_below="@id/date"-->
-              <!--android:layout_marginTop="10dp"/>-->
-
-    <!--<TextView android:layout_width="wrap_content"-->
-              <!--android:layout_height="wrap_content"-->
-              <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
-              <!--android:text="17:45"-->
-              <!--android:id="@+id/aTime"-->
-              <!--android:textColor="@android:color/black"-->
-              <!--android:layout_marginTop="10dp"-->
-              <!--android:layout_marginRight="10dp"-->
-              <!--android:layout_toLeftOf="@+id/linearLayout"-->
-              <!--android:layout_below="@id/aDate"/>-->
     <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
