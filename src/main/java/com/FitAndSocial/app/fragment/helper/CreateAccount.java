@@ -1,7 +1,12 @@
 package com.FitAndSocial.app.fragment.helper;
 
+import android.content.Context;
 import android.os.AsyncTask;
+import com.FitAndSocial.app.fragment.BaseFragment;
+import com.FitAndSocial.app.integration.DatabaseHandler;
 import com.FitAndSocial.app.model.FASAccount;
+import com.FitAndSocial.app.model.FASUser;
+import com.FitAndSocial.app.util.Utils;
 import com.facebook.model.GraphUser;
 import com.google.android.gms.plus.model.people.Person;
 import com.google.gson.Gson;
@@ -17,6 +22,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.util.Date;
 
 /**
  * Created by mint on 1-10-14.
@@ -50,6 +56,13 @@ public class CreateAccount extends EmptyFragmentHelper implements CreateAccountH
 
         } catch (Exception e) {
         }
+    }
+
+    @Override
+    public void saveUserInfoToLocalDB(Context context, String id, String displayName, long date) {
+        DatabaseHandler db = new DatabaseHandler(context);
+        FASUser fasUser = new FASUser(id, displayName, Utils.getDateFromLong(date));
+        db.addUser(fasUser);
     }
 
 

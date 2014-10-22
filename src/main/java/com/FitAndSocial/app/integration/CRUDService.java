@@ -1,5 +1,6 @@
 package com.FitAndSocial.app.integration;
 
+import com.FitAndSocial.app.model.FASUser;
 import com.FitAndSocial.app.model.Notification;
 
 import java.util.List;
@@ -26,4 +27,8 @@ public interface CRUDService {
 
     // Deleting single notification
     public void deleteNotification(Notification notification);
+
+    public void addUser(FASUser user);
+
+    public FASUser findUser(String userID);
 }

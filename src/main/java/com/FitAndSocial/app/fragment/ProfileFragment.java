@@ -73,7 +73,7 @@ public class ProfileFragment extends BaseFragment implements  View.OnClickListen
     private final String UPDATE_USER_PROFILE = "/updateProfile";
     private ProgressDialog progressDialog;
 
-    private UserGeneralInformation userGeneralInformation;
+
 
 
 
@@ -93,7 +93,7 @@ public class ProfileFragment extends BaseFragment implements  View.OnClickListen
     private void initFragments() {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        userGeneralInformation = new UserGeneralInformation();
+        UserGeneralInformation userGeneralInformation = new UserGeneralInformation();
         fragmentTransaction.add(R.id.profile_general_info_container, userGeneralInformation);
         fragmentTransaction.commit();
     }
@@ -243,7 +243,7 @@ public class ProfileFragment extends BaseFragment implements  View.OnClickListen
                         Node nNode = nodelist.item(temp);
                         if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                             Element eElement = (Element) nNode;
-                            userGeneralInformation.setGeneralInformation(getNode(KEY_NAME, eElement), getNode(ACTIVE_SINCE, eElement));
+//                            userGeneralInformation.setGeneralInformation(getNode(KEY_NAME, eElement), getNode(ACTIVE_SINCE, eElement));
                             name.setText(getNode(KEY_NAME, eElement));
                             age.setText(getNode(KEY_AGE, eElement));
                             gender.setText(getNode(KEY_GENDER, eElement));

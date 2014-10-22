@@ -28,6 +28,7 @@ import com.google.android.gms.plus.model.people.Person;
 import android.view.View.OnClickListener;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -74,6 +75,7 @@ public class Account extends BaseFragment implements AccountContainerManager{
             if(!accountExist(user.getId())){
                 CreateAccountHelper createAccountHelper = new CreateAccount();
                 createAccountHelper.createAccountUsingGoogle(user, email);
+                createAccountHelper.saveUserInfoToLocalDB(getActivity().getApplicationContext() ,user.getId(), user.getDisplayName(), new Date().getTime());
                 addUserToSharedPreferences(user.getId());
                 configureLoginSharedPreferences(false, user.getId());
                 configureTabMode();
@@ -92,6 +94,7 @@ public class Account extends BaseFragment implements AccountContainerManager{
             if(!accountExist(user.getId())){
                 CreateAccountHelper createAccountHelper = new CreateAccount();
                 createAccountHelper.createAccountUsingFacebook(user);
+                createAccountHelper.saveUserInfoToLocalDB(getActivity().getApplicationContext(), user.getId(), user.getFirstName() + " " + user.getLastName(), new Date().getTime());
                 addUserToSharedPreferences(user.getId());
                 configureLoginSharedPreferences(true, user.getId());
                 configureTabMode();

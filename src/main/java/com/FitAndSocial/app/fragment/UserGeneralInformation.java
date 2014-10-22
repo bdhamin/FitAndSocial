@@ -10,7 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import com.FitAndSocial.app.integration.DatabaseHandler;
 import com.FitAndSocial.app.mobile.R;
+import com.FitAndSocial.app.model.FASUser;
 
 public class UserGeneralInformation extends BaseFragment{
 
@@ -22,6 +24,7 @@ public class UserGeneralInformation extends BaseFragment{
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceBundle){
         view = layoutInflater.inflate(R.layout.user_general_information, null);
         initTextViews();
+        populateTextViews();
         if(getIsExternalInformationRequired()){
             loadDataFromServer();
         }else{
@@ -34,6 +37,16 @@ public class UserGeneralInformation extends BaseFragment{
         username =(TextView) view.findViewById(R.id.user_nickname);
         activeSince = (TextView) view.findViewById(R.id.user_active_since_date);
     }
+
+    private void populateTextViews() {
+        DatabaseHandler db = getDBInstance();
+        String userId = getLoggedInUserId();
+        FASUser user = db.findUser(userId);
+        username.setText(user.getUsername());
+        activeSince.setText(user.getActiveSince());
+    }
+
+
 
     @Override
     public void onSaveInstanceState(Bundle bundle){
@@ -48,11 +61,6 @@ public class UserGeneralInformation extends BaseFragment{
 
     private void loadDataFromServer(){
 
-    }
-
-    protected void setGeneralInformation(String name, String activeDate){
-        username.setText(name);
-        activeSince.setText(activeDate);
     }
 
 }
