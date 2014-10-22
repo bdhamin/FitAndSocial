@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 import com.FitAndSocial.app.fragment.BaseFragment;
 import com.FitAndSocial.app.fragment.NotificationDetailsFragment;
+import com.FitAndSocial.app.fragment.NotificationsListFragment;
 import com.FitAndSocial.app.fragment.activityCommunicationInterface.OnSelectedNotificationListener;
 import com.FitAndSocial.app.fragment.helper.NonSwipeableViewPager;
 import com.FitAndSocial.app.fragment.helper.ViewPagerAdapter;
@@ -58,7 +59,6 @@ public class FitAndSocial extends RoboSherlockFragmentActivity implements OnSele
             @Override
             public void onPageSelected(int position){
                 super.onPageSelected(position);
-                System.out.println("Position is: " + position);
                 actionbar.setSelectedNavigationItem(position);
             }
         };
@@ -97,7 +97,7 @@ public class FitAndSocial extends RoboSherlockFragmentActivity implements OnSele
         tab = actionbar.newTab().setText("Profile").setTabListener(tabListener);
         actionbar.addTab(tab);
 
-        tab = actionbar.newTab().setIcon(getResources().getDrawable(R.drawable.friends)).setTabListener(tabListener);
+        tab = actionbar.newTab().setText("Notifications").setTabListener(tabListener);
         actionbar.addTab(tab);
 
         tab = actionbar.newTab().setText("Account").setTabListener(tabListener);
@@ -138,7 +138,11 @@ public class FitAndSocial extends RoboSherlockFragmentActivity implements OnSele
 
     @Override
     public void setSelectedNotification(int id) {
-        NotificationDetailsFragment notificationDetailsFragment = new NotificationDetailsFragment();
-        notificationDetailsFragment.displayNotificationDetails(id);
+        new NotificationDetailsFragment().displayNotificationDetails(id);
+    }
+
+    @Override
+    public void updateNotificationListView(int id) {
+        new NotificationsListFragment().updateView(id);
     }
 }

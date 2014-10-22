@@ -7,6 +7,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import com.FitAndSocial.app.fragment.activityCommunicationInterface.OnSelectedNotificationListener;
 import com.FitAndSocial.app.integration.DatabaseHandler;
@@ -20,17 +21,28 @@ import java.util.List;
 /**
  * Created by mint on 4-7-14.
  */
-public class NotificationsListFragment extends BaseFragment {
+public class NotificationsListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener{
 
     private SwipeRefreshLayout swipeLayout;
-    private View view;
+    private static View view;
     private OnSelectedNotificationListener notificationListener;
     private ListView notificationsList;
+    private static NotificationAdapter notificationAdapter;
+    private static List<Notification> notifications;
+    private static DatabaseHandler db;
+
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceBundle){
         view = layoutInflater.inflate(R.layout.notificationslist, container, false);
+        swipeLayout = (SwipeRefreshLayout)view.findViewById(R.id.notification_swipe);
+        swipeLayout.setOnRefreshListener(this);
+        swipeLayout.setColorSchemeResources(android.R.color.holo_blue_dark,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_blue_dark,
+                android.R.color.holo_green_dark);
         new LoadNotification().execute();
+
         return view;
     }
 
@@ -50,31 +62,23 @@ public class NotificationsListFragment extends BaseFragment {
         }
     }
 
-    private class LoadNotification extends AsyncTask<Void, Boolean, Boolean> implements SwipeRefreshLayout.OnRefreshListener{
+    private class LoadNotification extends AsyncTask<Void, Boolean, Boolean> {
 
 //        TextView noNotification;
-        List<Notification> notifications;
-        NotificationAdapter notificationAdapter;
 
         @Override
         protected void onPreExecute(){
             super.onPreExecute();
-            swipeLayout = (SwipeRefreshLayout)view.findViewById(R.id.notification_swipe);
-            swipeLayout.setOnRefreshListener(this);
-            swipeLayout.setColorSchemeResources(android.R.color.holo_blue_dark,
-                    android.R.color.holo_green_dark,
-                    android.R.color.holo_blue_dark,
-                    android.R.color.holo_green_dark);
+
 //            noNotification = (TextView)view.findViewById(R.id.no_notification);
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             try{
-                DatabaseHandler db = new DatabaseHandler(getActivity().getApplicationContext());
+                db = new DatabaseHandler(getActivity().getApplicationContext());
                 notifications = db.getAllNotifications();
                 if(notifications != null && notifications.size() > 0){
-                    System.out.println("Notification is not null " + notifications.size());
                     swipeLayout.setRefreshing(false);
                     return true;
                 }else{
@@ -95,21 +99,31 @@ public class NotificationsListFragment extends BaseFragment {
             if(success){
 //                noNotification.setText("");
                 notificationsList = (ListView)view.findViewById(R.id.notificationsList_lv);
-                notificationAdapter = new NotificationAdapter(NotificationsListFragment.this, notifications, notificationListener);
+                notificationAdapter = new NotificationAdapter(NotificationsListFragment.this, notifications, notificationListener, notificationsList);
                 notificationsList.setAdapter(notificationAdapter);
             }else{
 //                noNotification.setText("Nothing here...");
                 System.out.println("Cannot load notifications list!!");
             }
         }
-
-        @Override
-        public void onRefresh() {
-            new LoadNotification().execute();
-        }
     }
 
+    @Override
+    public void onRefresh() {
+        new LoadNotification().execute();
+    }
 
+    public void updateView(int position){
+        removeItemFromList(position);
+    }
+
+    private void removeItemFromList(int position) {
+        Notification notification = notifications.get(position);
+        notifications.remove(position);
+        notificationAdapter.notifyDataSetChanged();
+        notificationAdapter.notifyDataSetInvalidated();
+        db.deleteNotification(notification);
+    }
 
 
 }

@@ -9,7 +9,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/notificationDetails_sv">
-        <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent" android:background="@android:color/white">
             <TextView
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
@@ -51,6 +51,16 @@
                     android:layout_centerInParent="true"
                     android:textColor="@android:color/black"
                     android:gravity="center_horizontal" android:textSize="14sp"/>
+            <ImageButton
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/notification_delete_button"
+                    android:layout_below="@+id/notificationDetailsBody"
+                    android:layout_marginTop="30dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/ic_action_delete"/>
+
+
         </RelativeLayout>
 
 

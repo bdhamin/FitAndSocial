@@ -19,7 +19,7 @@
             android:maxWidth="50dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:textColor="@android:color/black"/>
+            android:textColor="@android:color/black" android:text="Title"/>
     <TextView
             android:layout_width="80dp"
             android:layout_height="wrap_content"
@@ -29,17 +29,24 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:textColor="@android:color/black"/>
+            android:textColor="@android:color/black" android:text="Date"/>
     <TextView
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:id="@+id/notificationTime"
-            android:layout_alignParentTop="true"
+            android:text="hoi"
+            android:textColor="@android:color/black"
+            android:layout_alignTop="@+id/notificationDate"
+            android:layout_toLeftOf="@+id/delete_image_view"
+            android:layout_marginRight="20dp"/>
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/delete_image_view"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:textColor="@android:color/black"/>
+            android:background="@drawable/ic_action_discard"
+            android:clickable="true"/>
 
     <ImageView
             android:layout_width="match_parent"
@@ -52,4 +59,5 @@
             android:layout_marginBottom="5dp"
             android:layout_alignParentRight="true"
             />
+
 </RelativeLayout>

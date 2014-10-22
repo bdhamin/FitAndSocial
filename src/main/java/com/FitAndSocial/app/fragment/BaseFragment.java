@@ -29,7 +29,7 @@ public class BaseFragment extends Fragment {
     protected SharedPreferences applicationPreference;
     protected final String APPLICATION_PREFERENCE = "applicationPreference";
     protected final String REGISTERED_USERS = "registeredUsers";
-    private final String BASE_URL = "http://192.168.2.6:9000";
+    private final String BASE_URL = "http://192.168.2.7:9000";
 
     /**
      * On a certain fragments we need to disable the navigation tabs and enable them

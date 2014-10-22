@@ -4,4 +4,5 @@
     <color name="Navy">#FF000080</color>
     <color name="transparent">#00000000</color>
     <color name="tab_highlight">#ff9ecfbf</color>
+    <color name="editText_focus">#D6F3FF</color>
 </resources>

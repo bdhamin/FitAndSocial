@@ -4,7 +4,8 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:orientation="vertical"
-              android:background="@android:color/white">
+              android:background="@android:color/white"
+              android:id="@+id/profile_root_layout">
 
     <ScrollView
             android:layout_width="wrap_content"
@@ -15,7 +16,8 @@
                       android:layout_width="fill_parent"
                       android:layout_height="fill_parent"
                       android:orientation="vertical"
-                      android:background="@android:color/white">
+                      android:background="@android:color/white"
+                      android:id="@+id/profile_root_container">
 
 
 
@@ -50,7 +52,8 @@
                         android:textStyle="bold"
                         android:paddingRight="10dp"
                         android:layout_marginTop="10dp"
-                        android:layout_alignParentRight="true" android:clickable="true"/>
+                        android:layout_alignParentRight="true"
+                        android:clickable="true" android:editable="false"/>
 
 
                 <TextView
@@ -68,7 +71,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="S.Daemon"
+                        android:text=""
                         android:id="@+id/profile_name_value"
                         android:textColor="@android:color/black"
                         android:layout_below="@id/profile_personal_information_title"
@@ -91,7 +94,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="28"
+                        android:text=""
                         android:id="@+id/profile_age_value"
                         android:textColor="@android:color/black"
                         android:layout_below="@id/profile_name_value"
@@ -114,7 +117,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="Male"
+                        android:text=""
                         android:id="@+id/profile_gender_value"
                         android:textColor="@android:color/black"
                         android:layout_below="@id/profile_age_value"
@@ -137,7 +140,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="mail.email.com"
+                        android:text=""
                         android:id="@+id/profile_email_value"
                         android:textColor="@android:color/black"
                         android:layout_below="@id/profile_gender_value"
@@ -156,17 +159,20 @@
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="5dp"/>
 
-                <TextView
+                <EditText
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="30dp"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="The Rock"
+                        android:text=""
                         android:id="@+id/profile_nickname_value"
                         android:textColor="@android:color/black"
                         android:layout_below="@id/profile_email_value"
                         android:layout_alignParentStart="true"
-                        android:layout_marginLeft="150dp"
-                        android:layout_marginTop="5dp"/>
+                        android:layout_marginLeft="140dp"
+                        android:textAlignment="viewStart"
+                        android:editable="true"
+                        android:layout_gravity="left"
+                        android:layout_alignParentBottom="false"/>
 
                 <ImageView
                         android:layout_width="match_parent"
@@ -269,7 +275,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_below="@+id/profile_activities_type_divider"/>
 
-                <TextView
+                <EditText
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -280,11 +286,9 @@
                         android:layout_marginTop="10dp"
                         android:gravity="fill_horizontal"
                         android:textSize="15dp"
-                        android:text="Nickname Nickname Nickname Nickname Nickname
-Nickname Nickname Nickname Nickname Nickname
-Nickname Nickname Nickname Nickname Nickname"
                         android:textColor="@android:color/black"
-                        android:id="@+id/profile_about_value"/>
+                        android:id="@+id/profile_about_value"
+                        android:editable="true"/>
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -296,7 +300,7 @@ Nickname Nickname Nickname Nickname Nickname"
                         android:paddingRight="10dp"
                         android:layout_marginTop="10dp"
                         android:layout_alignParentRight="true"
-                        android:layout_below="@+id/profile_activities_type_divider" android:clickable="true"/>
+                        android:layout_below="@+id/profile_activities_type_divider"/>
 
                 <ImageView
                         android:layout_width="match_parent"

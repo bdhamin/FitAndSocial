@@ -47,7 +47,6 @@ public class Account extends BaseFragment implements AccountContainerManager{
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceBundle){
         view = layoutInflater.inflate(R.layout.account, container, false);
 
-
         accounts = getActivity().getSharedPreferences(REGISTERED_USERS, Context.MODE_PRIVATE);
         applicationPreference = getActivity().getSharedPreferences(APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
         editor = accounts.edit();
@@ -196,7 +195,6 @@ public class Account extends BaseFragment implements AccountContainerManager{
 
     @Override
     public void processLoggedInUserInformation(String username) {
-        System.out.println("USERNAME ACCOUNT: " + username);
         applicationPreference = getActivity().getSharedPreferences(APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
         SharedPreferences.Editor info = applicationPreference.edit();
         info.putString("username", username);

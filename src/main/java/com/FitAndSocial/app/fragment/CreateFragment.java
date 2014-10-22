@@ -240,7 +240,6 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
 
             if (authenticationKey.trim().isEmpty()) {
                 pDialog.dismiss();
-                System.out.println("NO LOGGED IN USER FOUND!");
                 return false;
             }
 

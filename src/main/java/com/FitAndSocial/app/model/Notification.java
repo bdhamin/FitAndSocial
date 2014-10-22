@@ -12,15 +12,17 @@ public class Notification {
     private String title;
     private String message;
     private long date;
+    private int isRead;
 
     public Notification(){}
 
-    public Notification(int id, String userId, String title, String message, long date){
+    public Notification(int id, String userId, String title, String message, long date, int isRead){
         this.id = id;
         this.userId = userId;
         this.title = title;
         this.message = message;
         this.date = date;
+        this.isRead = isRead;
     }
 
 
@@ -60,4 +62,11 @@ public class Notification {
 
     public long getDate(){return date;}
 
+    public int isRead() {
+        return isRead;
+    }
+
+    public void setRead(int isRead) {
+        this.isRead = isRead;
+    }
 }
