@@ -39,7 +39,7 @@ public class UserGeneralInformation extends BaseFragment{
     }
 
     private void populateTextViews() {
-        DatabaseHandler db = getDBInstance();
+        DatabaseHandler db = DatabaseHandler.getInstance(getActivity().getApplicationContext());
         String userId = getLoggedInUserId();
         FASUser user = db.findUser(userId);
         username.setText(user.getUsername());

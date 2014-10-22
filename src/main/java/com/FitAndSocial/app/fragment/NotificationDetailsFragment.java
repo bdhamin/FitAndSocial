@@ -31,7 +31,7 @@ public class NotificationDetailsFragment extends BaseFragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceBundle){
-        db = new DatabaseHandler(getActivity().getBaseContext());
+        db = DatabaseHandler.getInstance(getActivity().getBaseContext());
         view = inflater.inflate(R.layout.notification_details, container, false);
         deleteButton = (ImageButton)view.findViewById(R.id.notification_delete_button);
         deleteButton.setVisibility(View.INVISIBLE);

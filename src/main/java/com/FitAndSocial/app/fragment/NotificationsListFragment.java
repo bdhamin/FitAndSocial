@@ -16,6 +16,7 @@ import com.FitAndSocial.app.mobile.R;
 import com.FitAndSocial.app.model.Notification;
 import com.FitAndSocial.app.adapter.NotificationAdapter;
 
+import javax.xml.crypto.Data;
 import java.util.List;
 
 /**
@@ -76,7 +77,7 @@ public class NotificationsListFragment extends BaseFragment implements SwipeRefr
         @Override
         protected Boolean doInBackground(Void... params) {
             try{
-                db = new DatabaseHandler(getActivity().getApplicationContext());
+                db = DatabaseHandler.getInstance(getActivity().getApplicationContext());
                 notifications = db.getAllNotifications();
                 if(notifications != null && notifications.size() > 0){
                     swipeLayout.setRefreshing(false);

@@ -30,8 +30,16 @@ public class DatabaseHandler extends SQLiteOpenHelper implements CRUDService{
     private static final String USER_NAME = "username";
     private static final String ACTIVE_SINCE = "activeSince";
 
+    private static DatabaseHandler _instance;
 
-    public DatabaseHandler(Context context) {
+    public static DatabaseHandler getInstance(Context context){
+        if(_instance == null){
+            _instance = new DatabaseHandler(context.getApplicationContext());
+        }
+        return _instance;
+    }
+
+    private DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -61,7 +69,6 @@ public class DatabaseHandler extends SQLiteOpenHelper implements CRUDService{
         return  query;
     }
 
-
     private String createUserQuery(){
 
         String query = "CREATE TABLE " + USER_TABLE + "("
@@ -70,8 +77,6 @@ public class DatabaseHandler extends SQLiteOpenHelper implements CRUDService{
                         + ACTIVE_SINCE + " VARCHAR(15)" + ")";
         return query;
     }
-
-
 
     @Override
     public void addNotification(Notification notification) {

@@ -75,7 +75,7 @@ public class GcmMessageHandler extends IntentService {
 
         @Override
         protected void onPreExecute(){
-            databaseHandler= new DatabaseHandler(getApplicationContext());
+            databaseHandler= DatabaseHandler.getInstance(getApplicationContext());
             notification = new Notification();
             notification.setTitle(title);
             notification.setMessage(message);

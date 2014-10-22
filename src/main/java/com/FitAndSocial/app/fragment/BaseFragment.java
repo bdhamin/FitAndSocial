@@ -135,10 +135,10 @@ public class BaseFragment extends Fragment {
 
     }
 
-    protected DatabaseHandler getDBInstance(){
-        DatabaseHandler db = new DatabaseHandler(getActivity().getApplicationContext());
-        return db;
-    }
+//    protected DatabaseHandler getDBInstance(){
+//        DatabaseHandler db = DatabaseHandler.getInstance(getActivity().getApplicationContext());
+//        return db;
+//    }
 
 
 }

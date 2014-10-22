@@ -60,7 +60,7 @@ public class CreateAccount extends EmptyFragmentHelper implements CreateAccountH
 
     @Override
     public void saveUserInfoToLocalDB(Context context, String id, String displayName, long date) {
-        DatabaseHandler db = new DatabaseHandler(context);
+        DatabaseHandler db = DatabaseHandler.getInstance(context);
         FASUser fasUser = new FASUser(id, displayName, Utils.getDateFromLong(date));
         db.addUser(fasUser);
     }
