@@ -11,17 +11,20 @@ import com.FitAndSocial.app.fragment.NotificationsListFragment;
 import com.FitAndSocial.app.fragment.activityCommunicationInterface.OnSelectedNotificationListener;
 import com.FitAndSocial.app.fragment.helper.NonSwipeableViewPager;
 import com.FitAndSocial.app.fragment.helper.ViewPagerAdapter;
+import com.FitAndSocial.app.integration.service.IFASUserRepo;
+import com.FitAndSocial.app.integration.service.INotificationRepo;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
+import com.google.inject.Inject;
 import roboguice.inject.ContentView;
 
 import static android.support.v4.view.ViewPager.SimpleOnPageChangeListener;
 
 @ContentView(R.layout.main)
-public class FitAndSocial extends RoboSherlockFragmentActivity implements OnSelectedNotificationListener{
+public class FitAndSocial extends RoboSherlockFragmentActivity implements OnSelectedNotificationListener {
 
     private ActionBar actionbar;
     private ActionBar.Tab tab;
@@ -29,10 +32,23 @@ public class FitAndSocial extends RoboSherlockFragmentActivity implements OnSele
     private NonSwipeableViewPager viewPager;
     private SharedPreferences applicationPreference;
     protected final String APPLICATION_PREFERENCE = "applicationPreference";
+    @Inject
+    private IFASUserRepo _userRepo;
+    @Inject
+    private INotificationRepo _notificationRepo;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        try{
+//            FASUser user = new FASUser("1", "B-Style", "30-09-1983");
+//            _userRepo.save(user);
+//            System.out.println("Saved Successfully");
+//            FASUser fasUser = _userRepo.find("1");
+//            System.out.println(fasUser.getUsername());
+//        }catch (Exception e){
+//            System.out.println("FitAndSocial main Error");
+//        }
         if(savedInstanceState != null){
             return;
         }
@@ -134,11 +150,15 @@ public class FitAndSocial extends RoboSherlockFragmentActivity implements OnSele
 
     @Override
     public void setSelectedNotification(int id) {
-        new NotificationDetailsFragment().displayNotificationDetails(id);
+        NotificationDetailsFragment notificationDetailsFragment =(NotificationDetailsFragment)
+                getSupportFragmentManager().findFragmentById(R.id.notificationDetails_fragment_container);
+        notificationDetailsFragment.displayNotificationDetails(id);
     }
 
     @Override
     public void updateNotificationListView(int id) {
-        new NotificationsListFragment().updateView(id);
+        NotificationsListFragment notificationsListFragment = (NotificationsListFragment)
+                getSupportFragmentManager().findFragmentById(R.id.notificationList_fragment_container);
+        notificationsListFragment.updateView(id);
     }
 }

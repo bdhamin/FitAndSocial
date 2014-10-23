@@ -3,22 +3,18 @@ package com.FitAndSocial.app.fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.FitAndSocial.app.fragment.helper.NonSwipeableViewPager;
-import com.FitAndSocial.app.integration.DatabaseHandler;
 import com.FitAndSocial.app.mobile.FitAndSocial;
 import com.FitAndSocial.app.mobile.R;
 import com.FitAndSocial.app.socialLogin.google.GoogleLogin;
 import com.actionbarsherlock.app.ActionBar;
-
-import java.util.ArrayList;
-import java.util.HashMap;
+import roboguice.fragment.RoboFragment;
 
 /**
  * Created by mint on 31-7-14.
  */
-public class BaseFragment extends Fragment {
+public class BaseFragment extends RoboFragment {
 
     private ActionBar actionbar;
     private NonSwipeableViewPager viewPager;
@@ -130,15 +126,6 @@ public class BaseFragment extends Fragment {
     protected String getBaseUrl(){
         return this.BASE_URL;
     }
-
-    protected void updateNotificationCounter(){
-
-    }
-
-//    protected DatabaseHandler getDBInstance(){
-//        DatabaseHandler db = DatabaseHandler.getInstance(getActivity().getApplicationContext());
-//        return db;
-//    }
 
 
 }

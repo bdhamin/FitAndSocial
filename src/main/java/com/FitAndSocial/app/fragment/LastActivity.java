@@ -111,7 +111,6 @@ public class LastActivity extends BaseFragment {
                 String authenticationKey = getLoggedUserId();
 
                 if (authenticationKey.trim().isEmpty()) {
-                    System.out.println("NO LOGGED IN USER FOUND!");
                     return false;
                 }
 
@@ -126,7 +125,6 @@ public class LastActivity extends BaseFragment {
                 nodelist = doc.getElementsByTagName(KEY_ACTIVITY);
 
             }catch (MalformedURLException | ParserConfigurationException | SAXException | FileNotFoundException | NullPointerException e ) {
-//                Log.e("Error", e.getMessage());
                 e.printStackTrace();
                 return false;
             } catch (IOException e) {
@@ -153,16 +151,6 @@ public class LastActivity extends BaseFragment {
                             aDate.setText(getNode(KEY_DATE, eElement));
                             aTime.setText(getNode(KEY_TIME, eElement));
                             members.setText("Members: " + getNode(KEY_MEMBERS_TOTAL, eElement));
-
-//                            NodeList members = ((Element) nodelist.item(temp)).getElementsByTagName("member");
-//                            if(members != null && members.getLength() > 0){
-//                                for(int j=0; j< members.getLength(); j++){
-//                                    Element member = (Element) members.item(j);
-//                                    map.put("member_"+j+"_id", xmlParser.getValue(member, "id"));
-//                                    map.put("member_"+j+"_name", xmlParser.getValue(member, "name"));
-//                                    map.put("member_"+j+"_pictureURL", xmlParser.getValue(member, "pictureURL"));
-//                                }
-//                            }
                         }
                     }
                 }

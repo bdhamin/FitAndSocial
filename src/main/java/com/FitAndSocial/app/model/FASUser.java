@@ -1,13 +1,22 @@
 package com.FitAndSocial.app.model;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 /**
  * Created by mint on 22-10-14.
  */
+@DatabaseTable(tableName = "fasUser")
 public class FASUser {
 
+    @DatabaseField(id =true, generatedId = false, canBeNull = false)
     private String id;
+    @DatabaseField(canBeNull = false)
     private String username;
+    @DatabaseField(canBeNull = false)
     private String activeSince;
+
+    public FASUser(){}
 
     public FASUser(String id, String username, String activeSince){
         this.id = id;

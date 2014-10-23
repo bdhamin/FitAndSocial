@@ -107,11 +107,6 @@ public class ActivitiesLazyAdapter extends BaseAdapter{
 
         HashMap<String, String> fas = new HashMap<>();
 
-//        if(test){
-//            members.setText("Participants: " + fas.get(KEY_PARTICIPANT));
-//            showMore.setVisibility(View.INVISIBLE);
-//        }
-
         fas = data.get(position);
         members.setText("Members: "+fas.get(KEY_MEMBERS_TOTAL));
         title.setText(fas.get(KEY_TITLE));

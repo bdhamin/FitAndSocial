@@ -6,18 +6,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.*;
 import android.view.View;
-import com.FitAndSocial.app.fragment.helper.NonSwipeableViewPager;
-import com.FitAndSocial.app.mobile.FitAndSocial;
 import com.FitAndSocial.app.mobile.R;
 import com.FitAndSocial.app.util.Utils;
-import com.actionbarsherlock.app.ActionBar;
-import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
@@ -133,12 +127,10 @@ public class SearchFragment extends BaseFragment implements OnDateSetListener, O
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 spinner.setSelection(position);
                 /**
-                 * To get the text value from the spinner use the following code
-                 * String value = spinner.getItemAtPosition(position).toString();
+                 * To get the text value from the spinner
                  */
                 activityTypeName = spinner.getItemAtPosition(position).toString();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 

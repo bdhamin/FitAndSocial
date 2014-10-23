@@ -2,7 +2,6 @@ package com.FitAndSocial.app.fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -14,7 +13,6 @@ import android.widget.*;
 import com.FitAndSocial.app.mobile.R;
 import com.FitAndSocial.app.model.UserProfileModel;
 import com.google.gson.Gson;
-import com.sun.xml.internal.ws.policy.jaxws.DefaultPolicyResolver;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
@@ -29,7 +27,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -72,8 +69,6 @@ public class ProfileFragment extends BaseFragment implements  View.OnClickListen
     private CheckBox swimming, cycling, running, climbing, walking, gym;
     private final String UPDATE_USER_PROFILE = "/updateProfile";
     private ProgressDialog progressDialog;
-
-
 
 
 

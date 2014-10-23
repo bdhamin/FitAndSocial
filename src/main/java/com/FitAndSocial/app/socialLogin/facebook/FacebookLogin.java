@@ -74,60 +74,12 @@ public class FacebookLogin extends BaseFragment{
                 @Override
                 public void onCompleted(GraphUser user, Response response) {
                    accountContainerManager.processLoggedInFacebookUser(user);
-
-
-
-
-//                    if(applicationPreference.contains("loginType")){
-//                        if(applicationPreference.getString("loginType", "").equals("facebook")){
-//                            editor.putString("loggedIn", "facebook");
-//                            editor.commit();
-//                            accountContainerManager.manageContainers("facebook", true);
-//                        }else{
-//                            if (user != null) {
-//                                // Display the parsed user info
-//                                userInfoTextView.setText(buildUserInfoDisplay(user));
-//                                if(accountContainerManager.createUserAccountFacebook(user)){
-//                                    editor.remove("loginType");
-//                                    editor.remove("userId");
-//
-//                                    editor.putString("loggedIn", "facebook");
-//                                    editor.putString("loginType", "facebook");
-//                                    editor.putString("userId", user.getId());
-//                                    editor.commit();
-//                                    accountContainerManager.manageContainers("facebook", true);
-//                                }
-//                            }
-//                        }
-//                    }else {
-//                        if (user != null) {
-//                            // Display the parsed user info
-//                            userInfoTextView.setText(buildUserInfoDisplay(user));
-//                            if(accountContainerManager.createUserAccountFacebook(user)){
-//                                editor.putString("loggedIn", "facebook");
-//                                editor.putString("loginType", "facebook");
-//                                editor.putString("userId", user.getId());
-//                                editor.commit();
-//                                accountContainerManager.manageContainers("facebook", true);
-//                            }
-//                        }
-//                    }
                 }
             });
 
         }else if(state.isClosed()){
             Log.d(TAG, "Logged out...");
             accountContainerManager.processLogoutUser();
-//            applicationPreference = getActivity().getSharedPreferences(APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
-//            SharedPreferences.Editor editor = applicationPreference.edit();
-//
-//            editor.remove("loggedIn");
-//            editor.remove("loginType");
-//            editor.remove("userId");
-//
-//            editor.commit();
-//            userInfoTextView.setVisibility(View.INVISIBLE);
-//            accountContainerManager.manageContainers("facebook", false);
         }
     }
 

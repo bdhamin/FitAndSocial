@@ -7,16 +7,15 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ListView;
 import com.FitAndSocial.app.fragment.activityCommunicationInterface.OnSelectedNotificationListener;
-import com.FitAndSocial.app.integration.DatabaseHandler;
-import com.FitAndSocial.app.mobile.FitAndSocial;
+import com.FitAndSocial.app.integration.service.INotificationRepo;
 import com.FitAndSocial.app.mobile.R;
 import com.FitAndSocial.app.model.Notification;
 import com.FitAndSocial.app.adapter.NotificationAdapter;
+import com.google.inject.Inject;
 
-import javax.xml.crypto.Data;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -25,12 +24,13 @@ import java.util.List;
 public class NotificationsListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener{
 
     private SwipeRefreshLayout swipeLayout;
-    private static View view;
+    private View view;
     private OnSelectedNotificationListener notificationListener;
     private ListView notificationsList;
-    private static NotificationAdapter notificationAdapter;
-    private static List<Notification> notifications;
-    private static DatabaseHandler db;
+    private NotificationAdapter notificationAdapter;
+    private List<Notification> notifications;
+    @Inject
+    INotificationRepo _notificationRepo;
 
 
     @Override
@@ -65,20 +65,15 @@ public class NotificationsListFragment extends BaseFragment implements SwipeRefr
 
     private class LoadNotification extends AsyncTask<Void, Boolean, Boolean> {
 
-//        TextView noNotification;
-
         @Override
         protected void onPreExecute(){
             super.onPreExecute();
-
-//            noNotification = (TextView)view.findViewById(R.id.no_notification);
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             try{
-                db = DatabaseHandler.getInstance(getActivity().getApplicationContext());
-                notifications = db.getAllNotifications();
+                notifications = _notificationRepo.getAllNotifications();
                 if(notifications != null && notifications.size() > 0){
                     swipeLayout.setRefreshing(false);
                     return true;
@@ -88,9 +83,6 @@ public class NotificationsListFragment extends BaseFragment implements SwipeRefr
                 }
             }catch (Exception e){
                 swipeLayout.setRefreshing(false);
-                System.out.println("Exception!");
-                System.out.println(e.getMessage());
-                System.out.println(e.getCause());
                 return false;
             }
         }
@@ -98,12 +90,10 @@ public class NotificationsListFragment extends BaseFragment implements SwipeRefr
         @Override
         protected void onPostExecute(Boolean success){
             if(success){
-//                noNotification.setText("");
                 notificationsList = (ListView)view.findViewById(R.id.notificationsList_lv);
                 notificationAdapter = new NotificationAdapter(NotificationsListFragment.this, notifications, notificationListener, notificationsList);
                 notificationsList.setAdapter(notificationAdapter);
             }else{
-//                noNotification.setText("Nothing here...");
                 System.out.println("Cannot load notifications list!!");
             }
         }
@@ -123,7 +113,11 @@ public class NotificationsListFragment extends BaseFragment implements SwipeRefr
         notifications.remove(position);
         notificationAdapter.notifyDataSetChanged();
         notificationAdapter.notifyDataSetInvalidated();
-        db.deleteNotification(notification);
+        try {
+            _notificationRepo.delete(notification);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 

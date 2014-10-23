@@ -1,7 +1,6 @@
 package com.FitAndSocial.app.fragment;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,13 +16,6 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import com.FitAndSocial.app.model.Event;
 import com.FitAndSocial.app.util.Utils;
-//import org.apache.http.HttpResponse;
-//import org.apache.http.HttpStatus;
-//import org.apache.http.StatusLine;
-//import org.apache.http.client.HttpClient;
-//import org.apache.http.client.methods.HttpPost;
-//import org.apache.http.entity.StringEntity;
-//import org.apache.http.impl.client.DefaultHttpClient;
 import com.google.gson.Gson;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -32,9 +24,6 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONObject;
-
-import java.net.URI;
 
 /**
  * Created by mint on 13-7-14.

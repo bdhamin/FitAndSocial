@@ -1,29 +1,39 @@
 package com.FitAndSocial.app.model;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
 import java.util.Date;
 
 /**
  * Created by mint on 12-10-14.
  */
+@DatabaseTable(tableName = "userNotification")
 public class Notification {
 
+    @DatabaseField(generatedId = true, canBeNull = false)
     private int id;
+    @DatabaseField(columnName = "authCode", canBeNull = false)
     private String userId;
+    @DatabaseField
     private String title;
+    @DatabaseField
     private String message;
+    @DatabaseField
     private long date;
+    @DatabaseField
     private int isRead;
 
     public Notification(){}
 
-    public Notification(int id, String userId, String title, String message, long date, int isRead){
-        this.id = id;
-        this.userId = userId;
-        this.title = title;
-        this.message = message;
-        this.date = date;
-        this.isRead = isRead;
-    }
+//    public Notification(int id, String userId, String title, String message, long date, int isRead){
+//        this.id = id;
+//        this.userId = userId;
+//        this.title = title;
+//        this.message = message;
+//        this.date = date;
+//        this.isRead = isRead;
+//    }
 
 
     public int getId() {

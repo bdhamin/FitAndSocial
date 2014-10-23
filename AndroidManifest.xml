@@ -6,6 +6,7 @@
     <uses-sdk android:minSdkVersion="15"/>
     <application
                  android:allowBackup="true"
+                 android:name=".InitApp"
                  android:label="@string/app_name"
                  android:icon="@drawable/ic_launcher"
                  android:theme="@style/notification_bar">
@@ -32,6 +33,7 @@
 
         </receiver>
         <service android:name="com.FitAndSocial.app.gcm.GcmMessageHandler" />
+        <service android:name="com.FitAndSocial.app.fragment.helper.CreateAccount" />
 
         <activity android:name="com.facebook.LoginActivity"
                   android:theme="@android:style/Theme.Translucent.NoTitleBar"

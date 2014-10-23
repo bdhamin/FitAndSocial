@@ -1,34 +1,23 @@
 package com.FitAndSocial.app.fragment;
 
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import com.FitAndSocial.app.fragment.helper.AccountContainerManager;
 import com.FitAndSocial.app.fragment.helper.CreateAccount;
-import com.FitAndSocial.app.fragment.helper.CreateAccountHelper;
-import com.FitAndSocial.app.fragment.helper.NonSwipeableViewPager;
 import com.FitAndSocial.app.gcm.DeviceRegistration;
 import com.FitAndSocial.app.mobile.R;
+import com.FitAndSocial.app.model.FASAccount;
 import com.FitAndSocial.app.socialLogin.facebook.FacebookLogin;
 import com.FitAndSocial.app.socialLogin.google.GoogleLogin;
 import com.facebook.model.GraphUser;
-import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.plus.model.people.Person;
-import android.view.View.OnClickListener;
-
-import java.io.IOException;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -47,7 +36,6 @@ public class Account extends BaseFragment implements AccountContainerManager{
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceBundle){
         view = layoutInflater.inflate(R.layout.account, container, false);
-
         accounts = getActivity().getSharedPreferences(REGISTERED_USERS, Context.MODE_PRIVATE);
         applicationPreference = getActivity().getSharedPreferences(APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
         editor = accounts.edit();
@@ -73,9 +61,10 @@ public class Account extends BaseFragment implements AccountContainerManager{
     public void processLoggedInGoogleUser(Person user, String email) {
         if(user != null && !user.getId().equals("")){
             if(!accountExist(user.getId())){
-                CreateAccountHelper createAccountHelper = new CreateAccount();
-                createAccountHelper.createAccountUsingGoogle(user, email);
-                createAccountHelper.saveUserInfoToLocalDB(getActivity().getApplicationContext() ,user.getId(), user.getDisplayName(), new Date().getTime());
+                FASAccount account = createAccountUsingGoogle(user, email);
+                Intent createAccountIntent = new Intent(this.getActivity(), CreateAccount.class);
+                createAccountIntent.putExtra("account", account);
+                getActivity().startService(createAccountIntent);
                 addUserToSharedPreferences(user.getId());
                 configureLoginSharedPreferences(false, user.getId());
                 configureTabMode();
@@ -92,13 +81,14 @@ public class Account extends BaseFragment implements AccountContainerManager{
     public void processLoggedInFacebookUser(GraphUser user) {
         if(user != null && !user.getId().equals("")){
             if(!accountExist(user.getId())){
-                CreateAccountHelper createAccountHelper = new CreateAccount();
-                createAccountHelper.createAccountUsingFacebook(user);
-                createAccountHelper.saveUserInfoToLocalDB(getActivity().getApplicationContext(), user.getId(), user.getFirstName() + " " + user.getLastName(), new Date().getTime());
+                FASAccount account = createAccountUsingFacebook(user);
+                Intent createAccountIntent = new Intent(this.getActivity(), CreateAccount.class);
+                createAccountIntent.putExtra("account", account);
+                getActivity().startService(createAccountIntent);
+
                 addUserToSharedPreferences(user.getId());
                 configureLoginSharedPreferences(true, user.getId());
                 configureTabMode();
-                new DeviceRegistration(this.getActivity());
             }else{
                 processLoggedInUserInformation(user.getFirstName());
                 configureLoginSharedPreferences(true, user.getId());
@@ -181,9 +171,6 @@ public class Account extends BaseFragment implements AccountContainerManager{
         }
     }
 
-
-
-
     @Override
     public void processLogoutUser() {
         SharedPreferences.Editor editor = applicationPreference.edit();
@@ -203,6 +190,37 @@ public class Account extends BaseFragment implements AccountContainerManager{
         info.putString("username", username);
         info.commit();
     }
+
+    private FASAccount createAccountUsingFacebook(GraphUser user){
+        FASAccount account = new FASAccount();
+        account.setProviderType("FACEBOOK");
+        account.setProviderKey(user.getId());
+        account.setAge(30);
+        account.setGender(user.getProperty("gender").toString());
+        account.setFirstName(user.getFirstName());
+        account.setLastName(user.getLastName());
+        account.setUserEmail(user.getProperty("email").toString());
+        account.setDetails("Please update this section with details about your self");
+        account.setNickname("New User");
+        account.setActivitiesOfInterest("Swimming, Running, Cycling, Climbing");
+        return account;
+    }
+
+    private FASAccount createAccountUsingGoogle(Person person, String email){
+        FASAccount account = new FASAccount();
+        account.setProviderType("GOOGLE");
+        account.setProviderKey(person.getId());
+        account.setAge(30);
+        account.setGender(person.getGender() == 0 ? "male" : "female");
+        account.setFirstName(person.getDisplayName());
+        account.setLastName(person.getDisplayName());
+        account.setUserEmail(email);
+        account.setDetails("Please update this section with details about your self");
+        account.setNickname("New User");
+        account.setActivitiesOfInterest("Swimming, Running, Cycling, Climbing");
+        return account;
+    }
+
 }
 
 

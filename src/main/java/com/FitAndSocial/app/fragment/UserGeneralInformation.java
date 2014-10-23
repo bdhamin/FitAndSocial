@@ -5,20 +5,24 @@ package com.FitAndSocial.app.fragment;
  */
 
 import android.os.Bundle;
-//import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.FitAndSocial.app.integration.DatabaseHandler;
+import com.FitAndSocial.app.integration.service.IFASUserRepo;
 import com.FitAndSocial.app.mobile.R;
 import com.FitAndSocial.app.model.FASUser;
+import com.google.inject.Inject;
+
+import java.sql.SQLException;
 
 public class UserGeneralInformation extends BaseFragment{
 
     private View view;
     private TextView username;
     private TextView activeSince;
+    @Inject
+    private IFASUserRepo _userRepo;
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceBundle){
@@ -39,14 +43,15 @@ public class UserGeneralInformation extends BaseFragment{
     }
 
     private void populateTextViews() {
-        DatabaseHandler db = DatabaseHandler.getInstance(getActivity().getApplicationContext());
         String userId = getLoggedInUserId();
-        FASUser user = db.findUser(userId);
-        username.setText(user.getUsername());
-        activeSince.setText(user.getActiveSince());
+        try {
+            FASUser user = _userRepo.find(userId);
+            username.setText(user.getUsername());
+            activeSince.setText(user.getActiveSince());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-
-
 
     @Override
     public void onSaveInstanceState(Bundle bundle){

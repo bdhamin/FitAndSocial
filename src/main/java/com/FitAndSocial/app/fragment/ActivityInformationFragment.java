@@ -1,6 +1,5 @@
 package com.FitAndSocial.app.fragment;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,30 +16,14 @@ import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
-//import org.apache.http.HttpResponse;
-//import org.apache.http.HttpStatus;
-//import org.apache.http.NameValuePair;
-//import org.apache.http.StatusLine;
-//import org.apache.http.client.HttpClient;
-//import org.apache.http.client.entity.UrlEncodedFormEntity;
-//import org.apache.http.client.methods.HttpPost;
-//import org.apache.http.impl.client.DefaultHttpClient;
-//import org.apache.http.message.BasicNameValuePair;
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-
 
 /**
  * Created by mint on 31-7-14.
@@ -132,7 +115,6 @@ public class ActivityInformationFragment extends BaseFragment{
             @Override
             public void onClick(View view) {
                 if(isParticipation){
-
                     String participateUrl = getBaseUrl().concat("/participationRequest");
                     new SendParticipationRequest().execute(participateUrl);
                 }else{
@@ -144,12 +126,9 @@ public class ActivityInformationFragment extends BaseFragment{
     }
 
     private void loadRequiredFragments() {
-//        Activities activityInfo = new Activities();
-//        activityInfo.isActivityInformation(true);
         GoogleMapsFragment maps = new GoogleMapsFragment();
         FragmentManager manager = getFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-//        transaction.add(R.id.activities_info_container, activityInfo);
         transaction.add(R.id.activity_info_map_container, maps);
         transaction.commit();
     }
@@ -178,8 +157,6 @@ public class ActivityInformationFragment extends BaseFragment{
             String cancelParticipation = "Cancelling Participation";
             String createMessage = "Saving...";
             String updateMessage = "Updating...";
-
-
             pDialog = new ProgressDialog(getActivity());
             pDialog.setTitle(isParticipation? participate : cancelParticipation);
             pDialog.setMessage(isParticipation? createMessage : updateMessage);

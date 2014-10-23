@@ -13,5 +13,5 @@ public interface CreateAccountHelper {
 
     public void createAccountUsingFacebook(GraphUser graphUser);
     public void createAccountUsingGoogle(Person person, String email);
-    void saveUserInfoToLocalDB(Context context, String id, String displayName, long date);
+    void saveUserInfoToLocalDB(String id, String displayName, long date);
 }

@@ -1,28 +1,30 @@
 package com.FitAndSocial.app.gcm;
 
-
-import android.app.IntentService;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
-import com.FitAndSocial.app.integration.DatabaseHandler;
+import com.FitAndSocial.app.integration.service.INotificationRepo;
 import com.FitAndSocial.app.model.Notification;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.inject.Inject;
+import roboguice.service.RoboIntentService;
 
+import java.sql.SQLException;
 import java.util.Date;
 
 /**
  * Created by mint on 6-10-14.
  */
-public class GcmMessageHandler extends IntentService {
+public class GcmMessageHandler extends RoboIntentService {
 
     private String title;
     private String message;
     private String userId;
     private Handler handler;
+    @Inject
+    INotificationRepo _notificationRepo;
 
    public GcmMessageHandler() {
         super("GCM");
@@ -30,10 +32,8 @@ public class GcmMessageHandler extends IntentService {
 
     @Override
     public void onCreate() {
-        // TODO Auto-generated method stub
         super.onCreate();
         handler = new Handler();
-
     }
 
     @Override
@@ -49,11 +49,24 @@ public class GcmMessageHandler extends IntentService {
         title = extras.getString("title");
         message = extras.getString("message");
         userId = extras.getString("userId");
+        Notification notification = new Notification();
+        notification.setTitle(title);
+        notification.setMessage(message);
+        notification.setUserId(userId);
+        notification.setDate(new Date().getTime());
+
+        try {
+            _notificationRepo.save(notification);
+            System.out.println("Successfully saved GCM to the db");
+        } catch (SQLException e) {
+            System.out.println("Error saving GCM to the db");
+            e.printStackTrace();
+        }
         showToast();
         Log.i("GCM", "Received : (" + messageType + ")  " + extras.getString("title"));
         GcmBroadcastReceiver.completeWakefulIntent(intent);
 
-        new ProgressNotification().execute();
+//        new ProgressNotification().execute();
 
     }
 
@@ -68,31 +81,33 @@ public class GcmMessageHandler extends IntentService {
 
 
 
-    private class ProgressNotification extends AsyncTask<Void, Boolean, Boolean>{
-
-        Notification notification;
-        DatabaseHandler databaseHandler;
-
-        @Override
-        protected void onPreExecute(){
-            databaseHandler= DatabaseHandler.getInstance(getApplicationContext());
-            notification = new Notification();
-            notification.setTitle(title);
-            notification.setMessage(message);
-            notification.setUserId(userId);
-            notification.setDate(new Date().getTime());
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            try{
-                databaseHandler.addNotification(notification);
-            }catch (Exception e){
-                return false;
-            }
-            return true;
-        }
-    }
+//    private class ProgressNotification extends AsyncTask<Void, Boolean, Boolean>{
+//
+//
+////        DatabaseHandler databaseHandler;
+//
+//        @Override
+//        protected void onPreExecute(){
+////            databaseHandler= DatabaseHandler.getInstance(getApplicationContext());
+//
+//        }
+//
+//        @Override
+//        protected Boolean doInBackground(Void... params) {
+//            try{
+//                Notification notification = new Notification();
+//                notification.setTitle(title);
+//                notification.setMessage(message);
+//                notification.setUserId(userId);
+//                notification.setDate(new Date().getTime());
+//
+//                _notificationRepo.save(notification);
+//            }catch (Exception e){
+//                return false;
+//            }
+//            return true;
+//        }
+//    }
 
 
 }

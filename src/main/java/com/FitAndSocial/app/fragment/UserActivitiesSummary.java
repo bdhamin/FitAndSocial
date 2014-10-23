@@ -129,7 +129,6 @@ public class UserActivitiesSummary extends BaseFragment{
 
             if (canConnect) {
                 canConnectToServer(true);
-//                if (nodelist != null && nodelist.getLength() > 0) {
                     for (int temp = 0; temp < nodelist.getLength(); temp++) {
                         Node nNode = nodelist.item(temp);
                         if (nNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -182,29 +181,22 @@ public class UserActivitiesSummary extends BaseFragment{
         private void manageTextVisibility(int visibility){
 
             totalActivities.setVisibility(visibility);
-//            createdActivities.setVisibility(visibility);
             participatedInActivities.setVisibility(visibility);
             cancelledActivities.setVisibility(visibility);
-
             totalActivitiesNumber.setVisibility(visibility);
             createdActivitiesNumber.setVisibility(visibility);
             participatedInActivitiesNumber.setVisibility(visibility);
             cancelledActivitiesNumber.setVisibility(visibility);
-
             createdActivitiesImage.setVisibility(visibility);
             participatedInActivitiesImage.setVisibility(visibility);
             cancelledActivitiesImage.setVisibility(visibility);
-
             if(visibility == View.VISIBLE){
                 createdActivities.setText("Created Activities");
             }else{
                 createdActivities.setText("Cannot connect to the server try again later!");
             }
-
         }
     }
-
-
 
     // getNode function
     private static String getNode(String sTag, Element eElement) {
