@@ -12,8 +12,7 @@ import com.google.inject.AbstractModule;
 public class BaseModule extends AbstractModule{
 
     /**
-     * Bind a repo (contains the db interface implementation for a specific class)
-     * to the owner class.
+     * Bind an interface to concrete implementation
      */
     @Override
     protected void configure() {

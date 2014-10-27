@@ -3,6 +3,10 @@ package com.FitAndSocial.app.model;
 /**
  * Created by mint on 17-10-14.
  */
+
+/**
+ * Represents the backend profile class
+ */
 public class UserProfileModel {
 
     private String nickname;

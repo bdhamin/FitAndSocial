@@ -36,7 +36,6 @@ public class ProcessRegistration extends RoboIntentService{
 
     private FASAccount fasAccount;
     private GoogleCloudMessaging gcm;
-    private final String PROJECT_NUMBER = "5876528920";
     private String deviceRegistrationId;
     private String deviceRegistrationUrl;
     private Context context;
@@ -68,7 +67,7 @@ public class ProcessRegistration extends RoboIntentService{
 
         }else{
             context = this;
-            deviceRegistrationUrl = ApplicationConstants.SERVER_BASE_ADDRESS.concat("/deviceRegistrationId/");
+            deviceRegistrationUrl = ApplicationConstants.SERVER_BASE_ADDRESS+ApplicationConstants.SERVER_ADDRESS_ACTION_DEVICE_REGISTRATION;
             new ProcessCreatingAccount().execute("registerDevice");
         }
     }
@@ -109,7 +108,7 @@ public class ProcessRegistration extends RoboIntentService{
                     }
                     SharedPreferences sharedPreferences = context.getSharedPreferences("applicationPreference", context.MODE_PRIVATE);
                     String authenticationProviderKey = sharedPreferences.getString("userId", "");
-                    deviceRegistrationId = gcm.register(PROJECT_NUMBER);
+                    deviceRegistrationId = gcm.register(ApplicationConstants.PROJECT_NUMBER);
                     String registrationUrl = deviceRegistrationUrl.concat(authenticationProviderKey).concat("/").concat(deviceRegistrationId);
                     HttpClient httpClient = new DefaultHttpClient();
                     HttpPost httpPost = new HttpPost(registrationUrl);

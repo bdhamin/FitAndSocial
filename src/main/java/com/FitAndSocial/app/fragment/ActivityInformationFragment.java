@@ -45,6 +45,9 @@ public class ActivityInformationFragment extends BaseFragment{
     private boolean isParticipation;
 
     private TextView participationButton;
+    private final String ACTIVITY_ID = "activityId";
+    private final String USER_ID = "userId";
+    private final String CANCEL_PARTICIPATION = "Cancel Participation";
 
 
     @Override
@@ -52,7 +55,7 @@ public class ActivityInformationFragment extends BaseFragment{
         view = inflater.inflate(R.layout.activity_information, container, false);
         enableViewPagerSwipe(false);
         setActionbarNavigationMode(0);
-        setFragmentTitle("Event Details");
+        setFragmentTitle(ApplicationConstants.FRAGMENT_TITLE_ACTIVITY_DETAILS);
         Bundle bundle = this.getArguments();
         this.selectedSearchResult = (HashMap<String, String>)bundle.getSerializable("activity");
         this.isParticipation = bundle.getBoolean("participation");
@@ -74,7 +77,7 @@ public class ActivityInformationFragment extends BaseFragment{
         membersTotal = (TextView)view.findViewById(R.id.members);
         if(!isParticipation){
             participationButton = (TextView)view.findViewById(R.id.participate_button);
-            participationButton.setText("Cancel Participation");
+            participationButton.setText(CANCEL_PARTICIPATION);
         }
     }
 
@@ -156,8 +159,8 @@ public class ActivityInformationFragment extends BaseFragment{
 
             JSONObject jsonObject = new JSONObject();
             try {
-                jsonObject.accumulate("activityId", Long.valueOf(selectedSearchResult.get("id")));
-                jsonObject.accumulate("userId", authenticationKey);
+                jsonObject.accumulate(ACTIVITY_ID, Long.valueOf(selectedSearchResult.get("id")));
+                jsonObject.accumulate(USER_ID, authenticationKey);
                 StringEntity stringEntity = new StringEntity(jsonObject.toString());
 
                 HttpClient httpClient = new DefaultHttpClient();
@@ -188,12 +191,12 @@ public class ActivityInformationFragment extends BaseFragment{
         @Override
         protected void onPostExecute(Boolean success){
 
-            String createParticipation = "Participation Success";
+            String participationSuccess = "Participation Success";
             String cancelParticipation = "Successfully removed participation";
 
 
             if(success){
-                Toast.makeText(getActivity(), isParticipation? createParticipation : cancelParticipation, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), isParticipation? participationSuccess : cancelParticipation, Toast.LENGTH_SHORT).show();
                 disposeFragment();
             }else{
                 Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();

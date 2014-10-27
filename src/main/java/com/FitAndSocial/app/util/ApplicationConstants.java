@@ -53,6 +53,7 @@ public final class ApplicationConstants {
     public static final String SERVER_ADDRESS_ACTION_USER_ACTIVITIES_SUMMARY = "/userActivitiesSummary/";
     public static final String SERVER_ADDRESS_ACTION_PARTICIPATION_REQUEST = "/participationRequest";
     public static final String SERVER_ADDRESS_ACTION_CANCEL_PARTICIPATION = "/cancelParticipation";
+    public static final String SERVER_ADDRESS_ACTION_DEVICE_REGISTRATION = "/deviceRegistrationId/";
 
     //SHARED PREFERENCE ATTRIBUTES
     public static final String APPLICATION_PREFERENCE = "applicationPreference";
@@ -66,5 +67,20 @@ public final class ApplicationConstants {
     public static final String APPLICATION_PREFERENCE_LOGGED_IN = "loggedIn";
 
 
+    //GCM
+    public static final String PROJECT_NUMBER = "5876528920";
+
+    //ViewPager Tab Title
+    public static final String VIEW_PAGER_TAB_PERSONAL = "Personal";
+    public static final String VIEW_PAGER_TAB_PROFILE = "Profile";
+    public static final String VIEW_PAGER_TAB_NOTIFICATIONS = "Notifications";
+    public static final String VIEW_PAGER_TAB_ACCOUNT = "Account";
+
+
+    //Fragments title
+    public static final String FRAGMENT_TITLE_ACCOUNT = "Account";
+    public static final String FRAGMENT_TITLE_ACTIVITY_DETAILS = "Event Details";
+    public static final String FRAGMENT_TITLE_CREATE_NEW_ACTIVITY = "Create New Activity";
+    public static final String FRAGMENT_TITLE_SEARCH = "Search";
 
 }

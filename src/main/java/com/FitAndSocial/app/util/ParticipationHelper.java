@@ -35,8 +35,8 @@ public class ParticipationHelper extends IntentService{
     protected void onHandleIntent(Intent intent) {
 
         Bundle bundle = intent.getExtras();
-        this.userId = bundle.getString("userId");
-        this.activityId = bundle.getLong("activityId");
+        this.userId = bundle.getString(USER_ID);
+        this.activityId = bundle.getLong(ACTIVITY_ID);
         new Participate().execute();
     }
 

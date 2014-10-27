@@ -90,16 +90,16 @@ public class FitAndSocial extends RoboSherlockFragmentActivity implements OnSele
         tab = actionbar.newTab().setIcon(getResources().getDrawable(R.drawable.home)).setTabListener(tabListener);
         actionbar.addTab(tab);
 
-        tab = actionbar.newTab().setText("Personal").setTabListener(tabListener);
+        tab = actionbar.newTab().setText(ApplicationConstants.VIEW_PAGER_TAB_PERSONAL).setTabListener(tabListener);
         actionbar.addTab(tab);
 
-        tab = actionbar.newTab().setText("Profile").setTabListener(tabListener);
+        tab = actionbar.newTab().setText(ApplicationConstants.VIEW_PAGER_TAB_PROFILE).setTabListener(tabListener);
         actionbar.addTab(tab);
 
-        tab = actionbar.newTab().setText("Notifications").setTabListener(tabListener);
+        tab = actionbar.newTab().setText(ApplicationConstants.VIEW_PAGER_TAB_NOTIFICATIONS).setTabListener(tabListener);
         actionbar.addTab(tab);
 
-        tab = actionbar.newTab().setText("Account").setTabListener(tabListener);
+        tab = actionbar.newTab().setText(ApplicationConstants.VIEW_PAGER_TAB_ACCOUNT).setTabListener(tabListener);
         actionbar.addTab(tab);
 
         applicationPreference = getSharedPreferences(ApplicationConstants.APPLICATION_PREFERENCE, MODE_PRIVATE);

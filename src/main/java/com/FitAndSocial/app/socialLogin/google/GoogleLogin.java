@@ -1,26 +1,20 @@
 package com.FitAndSocial.app.socialLogin.google;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.FitAndSocial.app.fragment.BaseFragment;
-import com.FitAndSocial.app.fragment.HomeFragment;
 import com.FitAndSocial.app.fragment.helper.AccountContainerManager;
-import com.FitAndSocial.app.fragment.helper.NonSwipeableViewPager;
 import com.FitAndSocial.app.mobile.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -32,29 +26,23 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
-
 import java.io.InputStream;
 
 
 /**
- * Created by mint on 26-9-14.
+ *  Created by mint on 26-9-14.
  *  public static final int MALE = 0;
- public static final int FEMALE = 1;
- public static final int OTHER = 2;
+ *  public static final int FEMALE = 1;
+ *  public static final int OTHER = 2;
  */
 public class GoogleLogin extends BaseFragment implements Button.OnClickListener, ConnectionCallbacks, OnConnectionFailedListener{
 
     private View view;
     private static final int RC_SIGN_IN = 0;
-    // Logcat tag
     private static final String TAG = "MainActivity";
-
     // Profile pic image size in pixels
     private static final int PROFILE_PIC_SIZE = 400;
-
-    // Google client to interact with Google API
     private GoogleApiClient mGoogleApiClient;
-
     /**
      * A flag indicating that a PendingIntent is in progress and prevents us
      * from starting further intents.
@@ -71,18 +59,6 @@ public class GoogleLogin extends BaseFragment implements Button.OnClickListener,
     private TextView txtName, txtEmail;
     private LinearLayout llProfileLayout;
     private AccountContainerManager accountContainerManager;
-
-
-    public void logout(){
-        this.signOutFromGplus();
-    }
-
-    public GoogleLogin(){}
-
-    public GoogleLogin(AccountContainerManager accountContainerManager){
-        this.accountContainerManager = accountContainerManager;
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceBundle){
@@ -131,13 +107,10 @@ public class GoogleLogin extends BaseFragment implements Button.OnClickListener,
         mSignInClicked = false;
         Toast.makeText(getActivity(), "User is connected!", Toast.LENGTH_LONG).show();
         // Get user's information
-        getProfileInformation();
+//        getProfileInformation();
         // Update the UI after signin
         updateUI(true);
         accountContainerManager.processLoggedInGoogleUser(Plus.PeopleApi.getCurrentPerson(mGoogleApiClient), Plus.AccountApi.getAccountName(mGoogleApiClient));
-
-//        manageApplicationPreference();
-
     }
 
     @Override
@@ -248,45 +221,40 @@ public class GoogleLogin extends BaseFragment implements Button.OnClickListener,
     /**
      * Fetching user's information name, email, profile pic
      * */
-    private void getProfileInformation() {
-        try {
-            if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
-                Person currentPerson = Plus.PeopleApi
-                        .getCurrentPerson(mGoogleApiClient);
-                String personName = currentPerson.getDisplayName();
-                String personPhotoUrl = currentPerson.getImage().getUrl();
-                String personGooglePlusProfile = currentPerson.getUrl();
-                System.out.println("Gender: " + currentPerson.getGender());
-                System.out.println("Birthday: " +currentPerson.getBirthday());
-                System.out.println("Nickname: " +currentPerson.getNickname());
-                System.out.println("ID: " +currentPerson.getId());
-                System.out.println("Nickname: " +currentPerson.getNickname());
-                String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
-
-                Log.e(TAG, "Name: " + personName + ", plusProfile: "
-                        + personGooglePlusProfile + ", email: " + email
-                        + ", Image: " + personPhotoUrl);
-
-//                txtName.setText(personName);
-//                txtEmail.setText(email);
+//    private void getProfileInformation() {
+//        try {
+//            if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+//                Person currentPerson = Plus.PeopleApi
+//                        .getCurrentPerson(mGoogleApiClient);
+//                String personName = currentPerson.getDisplayName();
+//                String personPhotoUrl = currentPerson.getImage().getUrl();
+//                String personGooglePlusProfile = currentPerson.getUrl();
+//                String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
 //
-//                // by default the profile url gives 50x50 px image only
-//                // we can replace the value with whatever dimension we want by
-//                // replacing sz=X
-//                personPhotoUrl = personPhotoUrl.substring(0,
-//                        personPhotoUrl.length() - 2)
-//                        + PROFILE_PIC_SIZE;
+//                Log.e(TAG, "Name: " + personName + ", plusProfile: "
+//                        + personGooglePlusProfile + ", email: " + email
+//                        + ", Image: " + personPhotoUrl);
 //
-//                new LoadProfileImage(imgProfilePic).execute(personPhotoUrl);
-
-            } else {
-                Toast.makeText(getActivity().getApplicationContext(),
-                        "Person information is null", Toast.LENGTH_LONG).show();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+////                txtName.setText(personName);
+////                txtEmail.setText(email);
+////
+////                // by default the profile url gives 50x50 px image only
+////                // we can replace the value with whatever dimension we want by
+////                // replacing sz=X
+////                personPhotoUrl = personPhotoUrl.substring(0,
+////                        personPhotoUrl.length() - 2)
+////                        + PROFILE_PIC_SIZE;
+////
+////                new LoadProfileImage(imgProfilePic).execute(personPhotoUrl);
+//
+//            } else {
+//                Toast.makeText(getActivity().getApplicationContext(),
+//                        "Person information is null", Toast.LENGTH_LONG).show();
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     /**
      * Background Async task to load user profile picture from url
@@ -320,22 +288,12 @@ public class GoogleLogin extends BaseFragment implements Button.OnClickListener,
      * Sign-out from google
      * */
     private void signOutFromGplus() {
-        System.out.println("no connected");
-
-            System.out.println("connected");
             Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
             mGoogleApiClient.disconnect();
             mGoogleApiClient.connect();
             updateUI(false);
             accountContainerManager.processLogoutUser();
 
-
-
-//            applicationPreference = getActivity().getSharedPreferences(APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
-//            SharedPreferences.Editor editor = applicationPreference.edit();
-//            editor.remove("loggedIn");
-//            editor.commit();
-//            accountContainerManager.manageContainers("google", false);
     }
 
     /**
@@ -357,5 +315,12 @@ public class GoogleLogin extends BaseFragment implements Button.OnClickListener,
         }
     }
 
+    public void setFragment(Fragment fragment){
+        try{
+            this.accountContainerManager = (AccountContainerManager) fragment;
+        }catch (ClassCastException e){
+            System.out.println("Class Cast Exception");
+        }
     }
+}
 

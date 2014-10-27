@@ -54,7 +54,7 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
         createActivityButtonListener();
         enableViewPagerSwipe(false);
         setActionbarNavigationMode(0);
-        setFragmentTitle("Create New Activity");
+        setFragmentTitle(ApplicationConstants.FRAGMENT_TITLE_CREATE_NEW_ACTIVITY);
         return view;
     }
 
@@ -146,7 +146,6 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
                 activityDistance = spinner.getItemAtPosition(position).toString();
                 activityDistance = activityDistance.replaceAll("\\D+", "");
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 

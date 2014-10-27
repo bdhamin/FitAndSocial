@@ -42,8 +42,10 @@ public class Account extends BaseFragment implements AccountContainerManager{
         manager = getFragmentManager();
         transaction = manager.beginTransaction();
 
-        FacebookLogin facebookLogin = new FacebookLogin(this);
-        GoogleLogin googleLogin = new GoogleLogin(this);
+        FacebookLogin facebookLogin = new FacebookLogin();
+        facebookLogin.setFragment(this);
+        GoogleLogin googleLogin = new GoogleLogin();
+        googleLogin.setFragment(this);
 
         transaction.add(R.id.facebook_login_container, facebookLogin);
         transaction.add(R.id.google_login_container, googleLogin);
@@ -157,7 +159,7 @@ public class Account extends BaseFragment implements AccountContainerManager{
             enableViewPagerSwipe(true);
         }else{
             setActionbarNavigationMode(0);
-            setFragmentTitle("Account");
+            setFragmentTitle(ApplicationConstants.FRAGMENT_TITLE_ACCOUNT);
             enableViewPagerSwipe(false);
         }
     }

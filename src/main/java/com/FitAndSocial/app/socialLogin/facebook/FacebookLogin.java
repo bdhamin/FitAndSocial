@@ -37,20 +37,17 @@ public class FacebookLogin extends BaseFragment{
     private UiLifecycleHelper uiHelper;
     private TextView userInfoTextView;
     private AccountContainerManager accountContainerManager;
-
-    public FacebookLogin(){}
-
-    public FacebookLogin(AccountContainerManager accountContainerManager){
-        this.accountContainerManager = accountContainerManager;
-    }
-
+    private final String USER_LOCATION = "user_location";
+    private final String USER_BIRTHDAY = "user_birthday";
+    private final String USER_LIKES = "user_likes";
+    private final String USER_EMAIL = "email";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle bundle){
         view = inflater.inflate(R.layout.facebook, container, false);
         userInfoTextView = (TextView) view.findViewById(R.id.userInfoTextView);
         LoginButton loginButton = (LoginButton)view.findViewById(R.id.authButton);
-        loginButton.setReadPermissions(Arrays.asList("user_location", "user_birthday", "user_likes", "email"));
+        loginButton.setReadPermissions(Arrays.asList(USER_LOCATION, USER_BIRTHDAY, USER_LIKES, USER_EMAIL));
         loginButton.setFragment(this);
         return view;
     }
@@ -131,75 +128,13 @@ public class FacebookLogin extends BaseFragment{
         uiHelper.onSaveInstanceState(outState);
     }
 
-
-    private String buildUserInfoDisplay(GraphUser user) {
-        StringBuilder userInfo = new StringBuilder("");
-
-        // Example: typed access (name)
-        // - no special permissions required
-        userInfo.append(String.format("Name: %s\n\n",
-                user.getName()));
-
-        // Example: typed access (birthday)
-        // - requires user_birthday permission
-        userInfo.append(String.format("Birthday: %s\n\n",
-                user.getBirthday()));
-
-        if(user.getProperty("gender") != null){
-            userInfo.append(String.format("Gender: %s\n\n", user.getProperty("gender")));
+    public void setFragment(Fragment fragment){
+        try{
+            this.accountContainerManager = (AccountContainerManager) fragment;
+        }catch (ClassCastException e){
+            System.out.println("Class Cast Exception");
         }
-
-        // Example: partially typed access, to location field,
-        // name key (location)
-        // - requires user_location permission
-        if(user.getLocation() != null){
-            userInfo.append(String.format("Location: %s\n\n",
-                    user.getLocation().getProperty("name")));
-        }
-
-
-        // Example: access via property name (locale)
-        // - no special permissions required
-        if(user.getProperty("locale") != null){
-            userInfo.append(String.format("Locale: %s\n\n",
-                    user.getProperty("locale")));
-        }
-
-        if(user.getId() != null){
-            userInfo.append(String.format("UserId: %s\n\n", user.getId()));
-        }
-
-        if(user.getProperty("email") != null){
-            userInfo.append(String.format("Email: %s\n\n", user.getProperty("email")));
-        }
-
-
-        // Example: access via key for array (languages)
-        // - requires user_likes permission
-        if(user.getProperty("languages") != null) {
-            JSONArray languages = (JSONArray) user.getProperty("languages");
-            if (languages.length() > 0) {
-                ArrayList<String> languageNames = new ArrayList<String>();
-                for (int i = 0; i < languages.length(); i++) {
-                    JSONObject language = languages.optJSONObject(i);
-                    // Add the language name to a list. Use JSON
-                    // methods to get access to the name field.
-                    languageNames.add(language.optString("name"));
-                }
-                userInfo.append(String.format("Languages: %s\n\n",
-                        languageNames.toString()));
-            }
-        }
-
-        return userInfo.toString();
     }
-
-
-
-
-
-
-
 
 
 }

@@ -34,6 +34,10 @@ public class SearchResultAdapter extends BaseAdapter{
     TextView aTime;
     TextView aDate;
     Button participate;
+    private final String USER_ID = "userId";
+    private final String ACTIVITY_ID ="activityId";
+    private final String ACTIVITY = "activity";
+    private final String PARTICIPATION = "participation";
 
     public SearchResultAdapter(BaseFragment searchActivity, ArrayList<HashMap<String, String>> searchData){
         this.activity = searchActivity;
@@ -87,8 +91,8 @@ public class SearchResultAdapter extends BaseAdapter{
             @Override
             public void onClick(View view) {
                 Intent processParticipation = new Intent(activity.getActivity(), ParticipationHelper.class);
-                processParticipation.putExtra("userId", activity.getLoggedInUserId());
-                processParticipation.putExtra("activityId", Long.valueOf(data.get(position).get(ApplicationConstants.KEY_ACTIVITY_ID)));
+                processParticipation.putExtra(USER_ID, activity.getLoggedInUserId());
+                processParticipation.putExtra(ACTIVITY_ID, Long.valueOf(data.get(position).get(ApplicationConstants.KEY_ACTIVITY_ID)));
                 activity.getActivity().startService(processParticipation);
             }
         });
@@ -97,8 +101,8 @@ public class SearchResultAdapter extends BaseAdapter{
             @Override
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("activity", data.get(position));
-                bundle.putBoolean("participation", true);
+                bundle.putSerializable(ACTIVITY, data.get(position));
+                bundle.putBoolean(PARTICIPATION, true);
 
                 ActivityInformationFragment activityInformation = new ActivityInformationFragment();
 

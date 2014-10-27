@@ -43,7 +43,7 @@ public class SearchFragment extends BaseFragment implements OnDateSetListener, O
         searchActivityButtonListener();
         enableViewPagerSwipe(false);
         setActionbarNavigationMode(0);
-        setFragmentTitle("Search");
+        setFragmentTitle(ApplicationConstants.FRAGMENT_TITLE_SEARCH);
         return view;
     }
 
