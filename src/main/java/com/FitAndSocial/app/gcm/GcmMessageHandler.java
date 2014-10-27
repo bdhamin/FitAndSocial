@@ -57,9 +57,7 @@ public class GcmMessageHandler extends RoboIntentService {
 
         try {
             _notificationRepo.save(notification);
-            System.out.println("Successfully saved GCM to the db");
         } catch (SQLException e) {
-            System.out.println("Error saving GCM to the db");
             e.printStackTrace();
         }
         showToast();

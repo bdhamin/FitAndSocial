@@ -44,7 +44,7 @@
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Set Date"
+            android:text="@string/btn_set_date"
             android:id="@+id/select_date_button"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/activity_duration_spinner"
@@ -55,7 +55,7 @@
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Set Time"
+            android:text="@string/btn_set_time"
             android:id="@+id/select_time_button"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/activity_radius_spinner"
@@ -65,7 +65,7 @@
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Search"
+            android:text="@string/btn_search"
             android:id="@+id/search"
             android:layout_below="@id/select_date_button"
             android:layout_centerHorizontal="true"

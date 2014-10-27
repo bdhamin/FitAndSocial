@@ -21,14 +21,12 @@ public class BaseFragment extends RoboFragment {
     private String title;
     private TextView fragmentTitle;
     private boolean isExternalInformationRequired;
-    private static GoogleLogin googleLoginClient;
     protected SharedPreferences applicationPreference;
     protected final String APPLICATION_PREFERENCE = "applicationPreference";
     protected final String REGISTERED_USERS = "registeredUsers";
-    private final String BASE_URL = "http://192.168.2.7:9000";
 
     /**
-     * On a certain fragments we need to disable the navigation tabs and enable them
+     * On some fragments we need to disable the navigation tabs and enable them
      * again when needed. At this fragment we need to make sure that its enabled
      * and that is why we check the status of the actionbar.
      *
@@ -97,14 +95,6 @@ public class BaseFragment extends RoboFragment {
     }
 
 
-    public static void setGoogleLoginClient(GoogleLogin googleClient){
-        googleLoginClient = googleClient;
-    }
-
-    public static GoogleLogin getGoogleLoginClient(){
-        return googleLoginClient;
-    }
-
     public String getLoggedInUserId(){
         applicationPreference = this.getActivity().getSharedPreferences(APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
         if(applicationPreference.contains("userId")){
@@ -122,10 +112,4 @@ public class BaseFragment extends RoboFragment {
         }
         return "";
     }
-
-    protected String getBaseUrl(){
-        return this.BASE_URL;
-    }
-
-
 }

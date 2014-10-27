@@ -50,7 +50,7 @@
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Set Date"
+            android:text="@string/btn_set_date"
             android:id="@+id/select_date_button"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/activity_duration_spinner"
@@ -61,20 +61,13 @@
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Set Time"
+            android:text="@string/btn_set_time"
             android:id="@+id/select_time_button"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/activity_duration_spinner"
             android:layout_marginTop="10dp"
             android:layout_marginRight="15dp"
             android:minWidth="100dp"/>
-
-    <!--<LinearLayout android:layout_width="fill_parent"-->
-                  <!--android:layout_height="wrap_content"-->
-                  <!--android:orientation="horizontal">-->
-        <!---->
-    <!--</LinearLayout>-->
-
     <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -86,7 +79,7 @@
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Create"
+            android:text="@string/btn_create"
             android:id="@+id/create_button"
             android:layout_below="@+id/google_map_container"
             android:layout_centerHorizontal="true"

@@ -4,9 +4,6 @@
               android:layout_height="fill_parent"
               android:orientation="vertical"
               android:background="@android:color/white">
-
-
-
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -21,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Type:"
+            android:text="@string/type"
             android:id="@+id/type"
             android:textColor="@android:color/black"
             android:layout_below="@id/title"
@@ -60,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Members"
+            android:text="@string/members"
             android:id="@+id/members"
             android:textColor="@color/tab_highlight"
             android:textStyle="bold"
@@ -148,7 +145,7 @@
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:textAppearance="?android:attr/textAppearanceSmall"
-              android:text="Distance:"
+              android:text="@string/activity_information_distance"
               android:id="@+id/distance"
               android:textColor="@android:color/black"
               android:layout_below="@id/type"
@@ -168,7 +165,7 @@
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:textAppearance="?android:attr/textAppearanceSmall"
-              android:text="Duration:"
+              android:text="@string/duration"
               android:id="@+id/duration"
               android:textColor="@android:color/black"
               android:layout_below="@id/distance"
@@ -188,7 +185,7 @@
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:textAppearance="?android:attr/textAppearanceSmall"
-              android:text="Date:"
+              android:text="@string/date"
               android:id="@+id/date"
               android:textColor="@android:color/black"
               android:layout_below="@id/duration"
@@ -208,7 +205,7 @@
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:textAppearance="?android:attr/textAppearanceSmall"
-              android:text="Time:"
+              android:text="@string/time"
               android:id="@+id/time"
               android:textColor="@android:color/black"
               android:layout_below="@id/date"
@@ -255,7 +252,7 @@
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Participate"
+            android:text="@string/btn_participate"
             android:id="@+id/participate_button"
             android:layout_below="@+id/activity_info_map_container"
             android:layout_centerHorizontal="true"

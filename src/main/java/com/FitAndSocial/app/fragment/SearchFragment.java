@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 import android.view.View;
 import com.FitAndSocial.app.mobile.R;
+import com.FitAndSocial.app.util.ApplicationConstants;
 import com.FitAndSocial.app.util.Utils;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -27,14 +28,7 @@ public class SearchFragment extends BaseFragment implements OnDateSetListener, O
     private String radius;
     private String startDate;
     private String startTime;
-    private final String KEY_ACTIVITY_TYPE = "activityType";
-    private final String KYE_DISTANCE = "distance";
-    private final String KEY_Min_DURATION = "durationMin";
-    private final String KEY_Max_DURATION = "durationMax";
-    private final String KEY_Min_RADIUS = "radiusMin";
-    private final String KEY_Max_RADIUS = "radiusMax";
-    private final String KEY_START_DATE = "startDate";
-    private final String KEY_START_TIME = "time";
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceBundle){
@@ -271,15 +265,15 @@ public class SearchFragment extends BaseFragment implements OnDateSetListener, O
         }
 
         StringBuilder sb = new StringBuilder();
-        String urlAddress = getBaseUrl().concat("/searchActivities?");
-        sb.append(urlAddress).append(KEY_ACTIVITY_TYPE).append("=").append(typeName).append("&")
-                .append(KYE_DISTANCE).append("=").append(distance).append("&")
-                .append(KEY_Min_DURATION).append("=").append(minDuration).append("&")
-                .append(KEY_Max_DURATION).append("=").append(maxDuration).append("&")
-                .append(KEY_Min_RADIUS).append("=").append(minRadius).append("&")
-                .append(KEY_Max_RADIUS).append("=").append(maxRadius).append("&")
-                .append(KEY_START_DATE).append("=").append(startDate).append("&")
-                .append(KEY_START_TIME).append("=").append(startTime);
+        String urlAddress = ApplicationConstants.SERVER_BASE_ADDRESS.concat("/searchActivities?");
+        sb.append(urlAddress).append(ApplicationConstants.KEY_ACTIVITY_TYPE).append("=").append(typeName).append("&")
+                .append(ApplicationConstants.KYE_DISTANCE).append("=").append(distance).append("&")
+                .append(ApplicationConstants.KEY_Min_DURATION).append("=").append(minDuration).append("&")
+                .append(ApplicationConstants.KEY_Max_DURATION).append("=").append(maxDuration).append("&")
+                .append(ApplicationConstants.KEY_Min_RADIUS).append("=").append(minRadius).append("&")
+                .append(ApplicationConstants.KEY_Max_RADIUS).append("=").append(maxRadius).append("&")
+                .append(ApplicationConstants.KEY_START_DATE).append("=").append(startDate).append("&")
+                .append(ApplicationConstants.KEY_START_TIME).append("=").append(startTime);
 
         return sb.toString();
     }

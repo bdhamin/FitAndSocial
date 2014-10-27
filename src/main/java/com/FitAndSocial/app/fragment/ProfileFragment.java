@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import com.FitAndSocial.app.mobile.R;
 import com.FitAndSocial.app.model.UserProfileModel;
+import com.FitAndSocial.app.util.ApplicationConstants;
 import com.google.gson.Gson;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -45,16 +46,6 @@ import java.util.List;
 public class ProfileFragment extends BaseFragment implements  View.OnClickListener, View.OnFocusChangeListener{
 
     private View view;
-    private final String KEY_USER = "user"; //parent node name
-    private final String KEY_NAME = "name";
-    private final String KEY_AGE = "age";
-    private final String KEY_GENDER = "gender";
-    private final String KEY_EMAIL = "email";
-    private final String KEY_NICKNAME = "nickname";
-    private final String KEY_ACTIVITIES = "activities";
-    private final String KEY_ABOUT = "about";
-    private final String ACTIVE_SINCE = "active_since";
-
     private NodeList nodelist;
     private TextView name;
     private TextView age;
@@ -67,7 +58,6 @@ public class ProfileFragment extends BaseFragment implements  View.OnClickListen
     private View rootView;
     private Button update;
     private CheckBox swimming, cycling, running, climbing, walking, gym;
-    private final String UPDATE_USER_PROFILE = "/updateProfile";
     private ProgressDialog progressDialog;
 
 
@@ -80,7 +70,7 @@ public class ProfileFragment extends BaseFragment implements  View.OnClickListen
         registerListeners();
         initFragments();
         //TODO: change this to own method where we first get the logged in user id and then execute the method
-        String userProfileAddress = getBaseUrl().concat("/userProfile/");
+        String userProfileAddress = ApplicationConstants.SERVER_BASE_ADDRESS+ApplicationConstants.SERVER_ADDRESS_ACTION_USER_PROFILE;
         new UserProfile().execute(userProfileAddress);
         return view;
     }
@@ -215,7 +205,7 @@ public class ProfileFragment extends BaseFragment implements  View.OnClickListen
 
                     Document doc = db.parse(new InputSource(url.openStream()));
                     doc.getDocumentElement().normalize();
-                    nodelist = doc.getElementsByTagName(KEY_USER);
+                    nodelist = doc.getElementsByTagName(ApplicationConstants.KEY_USER);
                 }
 
             }catch (MalformedURLException | ParserConfigurationException | SAXException | FileNotFoundException e ) {
@@ -238,15 +228,14 @@ public class ProfileFragment extends BaseFragment implements  View.OnClickListen
                         Node nNode = nodelist.item(temp);
                         if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                             Element eElement = (Element) nNode;
-//                            userGeneralInformation.setGeneralInformation(getNode(KEY_NAME, eElement), getNode(ACTIVE_SINCE, eElement));
-                            name.setText(getNode(KEY_NAME, eElement));
-                            age.setText(getNode(KEY_AGE, eElement));
-                            gender.setText(getNode(KEY_GENDER, eElement));
-                            email.setText(getNode(KEY_EMAIL, eElement));
-                            nickname.setText(getNode(KEY_NICKNAME, eElement));
-                            about.setText(getNode(KEY_ABOUT, eElement));
-                            if(getNode(KEY_ACTIVITIES, eElement) != null && getNode(KEY_ACTIVITIES, eElement) != ""){
-                                initActivitiesCheckBox(getNode(KEY_ACTIVITIES, eElement));
+                            name.setText(getNode(ApplicationConstants.KEY_NAME, eElement));
+                            age.setText(getNode(ApplicationConstants.KEY_AGE, eElement));
+                            gender.setText(getNode(ApplicationConstants.KEY_GENDER, eElement));
+                            email.setText(getNode(ApplicationConstants.KEY_EMAIL, eElement));
+                            nickname.setText(getNode(ApplicationConstants.KEY_NICKNAME, eElement));
+                            about.setText(getNode(ApplicationConstants.KEY_ABOUT, eElement));
+                            if(getNode(ApplicationConstants.KEY_ACTIVITIES, eElement) != null && getNode(ApplicationConstants.KEY_ACTIVITIES, eElement) != ""){
+                                initActivitiesCheckBox(getNode(ApplicationConstants.KEY_ACTIVITIES, eElement));
                             }
                         }
                     }
@@ -376,7 +365,7 @@ public class ProfileFragment extends BaseFragment implements  View.OnClickListen
 
         private String buildProfileUpdateURL(){
             StringBuilder sb = new StringBuilder();
-            sb.append(getBaseUrl()).append(UPDATE_USER_PROFILE).append("?authenticationID=").append(getLoggedInUserId());
+            sb.append(ApplicationConstants.SERVER_BASE_ADDRESS).append(ApplicationConstants.SERVER_ADDRESS_ACTION_UPDATE_PROFILE).append("?authenticationID=").append(getLoggedInUserId());
             return sb.toString();
 
         }

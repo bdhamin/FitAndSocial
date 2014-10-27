@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.FitAndSocial.app.mobile.R;
+import com.FitAndSocial.app.util.ApplicationConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -32,15 +33,6 @@ import java.net.URL;
  */
 public class LastActivity extends BaseFragment {
 
-
-    private final String KEY_ACTIVITY = "activity"; //parent node name
-    private final String KEY_TITLE = "title";
-    private final String KEY_TYPE = "type";
-    private final String KEY_DISTANCE = "distance";
-    private final String KEY_DURATION = "duration";
-    private final String KEY_DATE = "date";
-    private final String KEY_TIME = "time";
-    private final String KEY_MEMBERS_TOTAL="members_total";
     private TextView showMore;
     private TextView no_members;
     private TextView title;
@@ -62,7 +54,7 @@ public class LastActivity extends BaseFragment {
 
 
     public LastActivity(){
-        String lastActivityUrl = getBaseUrl().concat("/lastActivity");
+        String lastActivityUrl = ApplicationConstants.SERVER_BASE_ADDRESS+ApplicationConstants.SERVER_ADDRESS_ACTION_LAST_ACTIVITY;
         new UserLastActivity().execute(lastActivityUrl);
     }
 
@@ -122,7 +114,7 @@ public class LastActivity extends BaseFragment {
                 Document doc = db.parse(new InputSource(address.openStream()));
                 doc.getDocumentElement().normalize();
                 // Locate the Tag Name
-                nodelist = doc.getElementsByTagName(KEY_ACTIVITY);
+                nodelist = doc.getElementsByTagName(ApplicationConstants.KEY_ACTIVITY);
 
             }catch (MalformedURLException | ParserConfigurationException | SAXException | FileNotFoundException | NullPointerException e ) {
                 e.printStackTrace();
@@ -144,13 +136,13 @@ public class LastActivity extends BaseFragment {
                         if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                             Element eElement = (Element) nNode;
 
-                            title.setText(getNode(KEY_TITLE, eElement));
-                            typeName.setText(getNode(KEY_TYPE, eElement));
-                            distanceInKM.setText(getNode(KEY_DISTANCE, eElement));
-                            dTime.setText(getNode(KEY_DURATION, eElement));
-                            aDate.setText(getNode(KEY_DATE, eElement));
-                            aTime.setText(getNode(KEY_TIME, eElement));
-                            members.setText("Members: " + getNode(KEY_MEMBERS_TOTAL, eElement));
+                            title.setText(getNode(ApplicationConstants.KEY_TITLE, eElement));
+                            typeName.setText(getNode(ApplicationConstants.KEY_TYPE, eElement));
+                            distanceInKM.setText(getNode(ApplicationConstants.KEY_DISTANCE, eElement));
+                            dTime.setText(getNode(ApplicationConstants.KEY_DURATION, eElement));
+                            aDate.setText(getNode(ApplicationConstants.KEY_DATE, eElement));
+                            aTime.setText(getNode(ApplicationConstants.KEY_TIME, eElement));
+                            members.setText("Members: " + getNode(ApplicationConstants.KEY_MEMBERS_TOTAL, eElement));
                         }
                     }
                 }

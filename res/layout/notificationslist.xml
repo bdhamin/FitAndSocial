@@ -22,15 +22,5 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
-            <!--android:layout_centerInParent="true"-->
-            <!--android:gravity="center_horizontal"-->
-            <!--android:text=""-->
-            <!--android:textColor="@android:color/black"-->
-            <!--android:id="@+id/no_notification"/>-->
-
 
 </RelativeLayout>

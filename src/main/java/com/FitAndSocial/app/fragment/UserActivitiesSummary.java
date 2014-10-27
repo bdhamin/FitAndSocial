@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.FitAndSocial.app.mobile.R;
+import com.FitAndSocial.app.util.ApplicationConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -28,11 +29,6 @@ public class UserActivitiesSummary extends BaseFragment{
     private View view;
     private NodeList nodelist;
     private ProgressDialog pDialog;
-    private final String KEY_ACTIVITY = "activity"; //parent node name
-    private final String KEY_TOTAL = "total";
-    private final String KEY_CREATED = "created";
-    private final String KEY_PARTICIPATED = "participated";
-    private final String KEY_CANCELLED = "cancelled";
     private String userActivitiesAddress;
 
     private TextView totalActivities;
@@ -66,7 +62,7 @@ public class UserActivitiesSummary extends BaseFragment{
         createdActivitiesImage = (ImageView)view.findViewById(R.id.view_created_activities);
         participatedInActivitiesImage = (ImageView)view.findViewById(R.id.view_participated_in_activities);
         cancelledActivitiesImage = (ImageView)view.findViewById(R.id.view_cancelled_activities);
-        userActivitiesAddress = getBaseUrl().concat("/userActivitiesSummary/");
+        userActivitiesAddress = ApplicationConstants.SERVER_BASE_ADDRESS+ApplicationConstants.SERVER_ADDRESS_ACTION_USER_ACTIVITIES_SUMMARY;
         new DownloadXML().execute(userActivitiesAddress);
         return view;
     }
@@ -109,7 +105,7 @@ public class UserActivitiesSummary extends BaseFragment{
                     Document doc = db.parse(new InputSource(url.openStream()));
                     doc.getDocumentElement().normalize();
                     // Locate the Tag Name
-                    nodelist = doc.getElementsByTagName(KEY_ACTIVITY);
+                    nodelist = doc.getElementsByTagName(ApplicationConstants.KEY_ACTIVITY);
                 }else{
                     pDialog.dismiss();
                     return false;
@@ -133,11 +129,11 @@ public class UserActivitiesSummary extends BaseFragment{
                         Node nNode = nodelist.item(temp);
                         if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                             Element eElement = (Element) nNode;
-                            totalActivitiesNumber.setText(getNode(KEY_TOTAL, eElement));
-                            createdActivitiesNumber.setText(getNode(KEY_CREATED, eElement));
-                            participatedInActivitiesNumber.setText(getNode(KEY_PARTICIPATED, eElement));
-                            cancelledActivitiesNumber.setText(getNode(KEY_CANCELLED, eElement));
-                            setViewVisibility(getNode(KEY_CREATED, eElement), getNode(KEY_PARTICIPATED, eElement), getNode(KEY_CANCELLED, eElement));
+                            totalActivitiesNumber.setText(getNode(ApplicationConstants.KEY_TOTAL, eElement));
+                            createdActivitiesNumber.setText(getNode(ApplicationConstants.KEY_CREATED, eElement));
+                            participatedInActivitiesNumber.setText(getNode(ApplicationConstants.KEY_PARTICIPATED, eElement));
+                            cancelledActivitiesNumber.setText(getNode(ApplicationConstants.KEY_CANCELLED, eElement));
+                            setViewVisibility(getNode(ApplicationConstants.KEY_CREATED, eElement), getNode(ApplicationConstants.KEY_PARTICIPATED, eElement), getNode(ApplicationConstants.KEY_CANCELLED, eElement));
                         }
                     }
 //                }

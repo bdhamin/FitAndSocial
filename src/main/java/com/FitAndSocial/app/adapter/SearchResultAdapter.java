@@ -12,6 +12,7 @@ import android.widget.*;
 import com.FitAndSocial.app.fragment.ActivityInformationFragment;
 import com.FitAndSocial.app.fragment.BaseFragment;
 import com.FitAndSocial.app.mobile.R;
+import com.FitAndSocial.app.util.ApplicationConstants;
 import com.FitAndSocial.app.util.ParticipationHelper;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,20 +25,6 @@ public class SearchResultAdapter extends BaseAdapter{
     private BaseFragment activity;
     private ArrayList<HashMap<String, String>> data;
     private static LayoutInflater layoutInflater = null;
-//    private final String PARTICIPATION_URL = "http://192.168.2.7:9000/participationRequest";
-
-    //HashMap Keys
-    private final String KEY_ACTIVITY = "activity"; //parent node name
-    private final String KEY_ACTIVITY_ID = "id";
-    private final String KEY_TITLE = "title";
-    private final String KEY_TYPE = "type";
-    private final String KEY_DISTANCE = "distance";
-    private final String KEY_DURATION = "duration";
-    private final String KEY_DATE = "date";
-    private final String KEY_TIME = "time";
-    private final String KEY_PARTICIPANT = "participants";
-
-
     //View TextView
     TextView title;
     TextView typeName;
@@ -87,13 +74,13 @@ public class SearchResultAdapter extends BaseAdapter{
         HashMap<String, String> search = new HashMap<>();
         search = data.get(position);
 
-        title.setText(search.get(KEY_TITLE));
-        typeName.setText(search.get(KEY_TYPE));
-        km.setText(search.get(KEY_DISTANCE));
-        dTime.setText(search.get(KEY_DURATION));
-        participants_total.setText(search.get(KEY_PARTICIPANT));
-        aTime.setText(search.get(KEY_TIME));
-        aDate.setText(search.get(KEY_DATE));
+        title.setText(search.get(ApplicationConstants.KEY_TITLE));
+        typeName.setText(search.get(ApplicationConstants.KEY_TYPE));
+        km.setText(search.get(ApplicationConstants.KEY_DISTANCE));
+        dTime.setText(search.get(ApplicationConstants.KEY_DURATION));
+        participants_total.setText(search.get(ApplicationConstants.KEY_PARTICIPANT));
+        aTime.setText(search.get(ApplicationConstants.KEY_TIME));
+        aDate.setText(search.get(ApplicationConstants.KEY_DATE));
 
 
         participate.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +88,7 @@ public class SearchResultAdapter extends BaseAdapter{
             public void onClick(View view) {
                 Intent processParticipation = new Intent(activity.getActivity(), ParticipationHelper.class);
                 processParticipation.putExtra("userId", activity.getLoggedInUserId());
-                processParticipation.putExtra("activityId", Long.valueOf(data.get(position).get(KEY_ACTIVITY_ID)));
+                processParticipation.putExtra("activityId", Long.valueOf(data.get(position).get(ApplicationConstants.KEY_ACTIVITY_ID)));
                 activity.getActivity().startService(processParticipation);
             }
         });

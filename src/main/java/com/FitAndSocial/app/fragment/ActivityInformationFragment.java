@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.FitAndSocial.app.mobile.R;
+import com.FitAndSocial.app.util.ApplicationConstants;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
@@ -32,15 +33,6 @@ public class ActivityInformationFragment extends BaseFragment{
 
     private View view;
     private HashMap<String, String> selectedSearchResult;
-    private final String KEY_ACTIVITY_ID = "id";
-    private final String KEY_TITLE = "title";
-    private final String KEY_TYPE = "type";
-    private final String KEY_DISTANCE = "distance";
-    private final String KEY_DURATION = "duration";
-    private final String KEY_DATE = "date";
-    private final String KEY_TIME = "time";
-    private final String KEY_MEMBERS_TOTAL="members_total";
-
     private TextView title;
     private TextView type;
     private TextView distance;
@@ -88,13 +80,13 @@ public class ActivityInformationFragment extends BaseFragment{
 
     private void initEventDetails() {
 
-        title.setText(selectedSearchResult.get(KEY_TITLE));
-        type.setText(selectedSearchResult.get(KEY_TYPE));
-        distance.setText(selectedSearchResult.get(KEY_DISTANCE));
-        duration.setText(selectedSearchResult.get(KEY_DURATION));
-        date.setText(selectedSearchResult.get(KEY_DATE));
-        time.setText(selectedSearchResult.get(KEY_TIME));
-        membersTotal.setText("members " + selectedSearchResult.get(KEY_MEMBERS_TOTAL));
+        title.setText(selectedSearchResult.get(ApplicationConstants.KEY_TITLE));
+        type.setText(selectedSearchResult.get(ApplicationConstants.KEY_TYPE));
+        distance.setText(selectedSearchResult.get(ApplicationConstants.KEY_DISTANCE));
+        duration.setText(selectedSearchResult.get(ApplicationConstants.KEY_DURATION));
+        date.setText(selectedSearchResult.get(ApplicationConstants.KEY_DATE));
+        time.setText(selectedSearchResult.get(ApplicationConstants.KEY_TIME));
+        membersTotal.setText("members " + selectedSearchResult.get(ApplicationConstants.KEY_MEMBERS_TOTAL));
     }
 
     private void attachButtonListener() {
@@ -103,10 +95,10 @@ public class ActivityInformationFragment extends BaseFragment{
             @Override
             public void onClick(View view) {
                 if(isParticipation){
-                    String participateUrl = getBaseUrl().concat("/participationRequest");
+                    String participateUrl = ApplicationConstants.SERVER_BASE_ADDRESS+ApplicationConstants.SERVER_ADDRESS_ACTION_PARTICIPATION_REQUEST;
                     new SendParticipationRequest().execute(participateUrl);
                 }else{
-                    String cancelParticipationUrl = getBaseUrl().concat("/cancelParticipation");
+                    String cancelParticipationUrl = ApplicationConstants.SERVER_BASE_ADDRESS+ApplicationConstants.SERVER_ADDRESS_ACTION_CANCEL_PARTICIPATION;
                     new SendParticipationRequest().execute(cancelParticipationUrl);
                 }
             }
@@ -159,7 +151,6 @@ public class ActivityInformationFragment extends BaseFragment{
             String authenticationKey = getLoggedInUserId();
             if(authenticationKey.trim().isEmpty()){
                 pDialog.dismiss();
-                System.out.println("User Id Cannot Be Empty");
                 return false;
             }
 

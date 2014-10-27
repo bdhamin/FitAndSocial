@@ -25,7 +25,6 @@ public class ParticipationHelper extends IntentService{
     private long activityId;
     private final String ACTIVITY_ID = "activityId";
     private final String USER_ID = "userId";
-    private final String PARTICIPATION_URL = "http://192.168.2.7:9000/participationRequest";
 
     public ParticipationHelper(){
         super("ParticipationHelper");
@@ -53,7 +52,7 @@ public class ParticipationHelper extends IntentService{
             StringEntity stringEntity = new StringEntity(jsonObject.toString());
 
             HttpClient httpClient = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost(PARTICIPATION_URL);
+            HttpPost httpPost = new HttpPost(ApplicationConstants.SERVER_BASE_ADDRESS+ApplicationConstants.SERVER_ADDRESS_ACTION_PARTICIPATION_REQUEST);
             httpPost.setHeader("Content-type", "application/json");
             httpPost.setEntity(stringEntity);
 

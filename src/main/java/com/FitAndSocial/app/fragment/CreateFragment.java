@@ -15,6 +15,7 @@ import android.view.View;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import com.FitAndSocial.app.model.Event;
+import com.FitAndSocial.app.util.ApplicationConstants;
 import com.FitAndSocial.app.util.Utils;
 import com.google.gson.Gson;
 import org.apache.http.HttpResponse;
@@ -177,7 +178,7 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
             public void onClick(View view) {
                 boolean check = requiredFieldsOk();
                 if(check){
-                    String createEvent = getBaseUrl().concat("/createActivity");
+                    String createEvent = ApplicationConstants.SERVER_BASE_ADDRESS+ApplicationConstants.SERVER_ADDRESS_ACTION_CREATE_ACTIVITY;
                     new CreateEvent().execute(createEvent);
                 }else{
                     Toast.makeText(getActivity(), "Please make sure you have filled in all the fields.", Toast.LENGTH_LONG).show();
@@ -187,10 +188,6 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
     }
 
     private boolean requiredFieldsOk() {
-
-        System.out.println("Activity Distance: "+activityDistance);
-
-
         if(!title.getText().toString().trim().equals("") && !activityType.equals("Activity Type")
                 && !activityDistance.equals("Distance (KM)") && !activityDistance.trim().equals("") && !activityDuration.equals("Duration")
                 && !date.equals("Set Date") && !date.equals("") && !time.equals("Set Time") && !time.equals("")){

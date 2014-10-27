@@ -128,7 +128,7 @@ public class FitAndSocial extends RoboSherlockFragmentActivity implements OnSele
 
         switch (item.getItemId()){
             case R.id.logout:
-                BaseFragment.getGoogleLoginClient().logout();
+//                BaseFragment.getGoogleLoginClient().logout();
                 break;
         }
         return super.onOptionsItemSelected(item);

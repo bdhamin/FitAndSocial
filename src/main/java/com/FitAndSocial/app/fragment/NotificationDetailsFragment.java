@@ -30,7 +30,6 @@ public class NotificationDetailsFragment extends BaseFragment{
     @Inject
     INotificationRepo _notificationRepo;
     private Notification notification;
-//    private int _notificationPosition;
     private OnSelectedNotificationListener onSelectedNotificationListener;
 
 
@@ -58,7 +57,6 @@ public class NotificationDetailsFragment extends BaseFragment{
     }
 
     public void displayNotificationDetails(final int notificationPosition ,int id){
-//        this._notificationPosition = notificationPosition;
         try {
             notification = _notificationRepo.find(id);
             if(notification != null){

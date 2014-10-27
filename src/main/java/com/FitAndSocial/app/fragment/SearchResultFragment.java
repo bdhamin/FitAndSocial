@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.FitAndSocial.app.mobile.R;
 import com.FitAndSocial.app.adapter.SearchResultAdapter;
+import com.FitAndSocial.app.util.ApplicationConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -29,16 +30,6 @@ public class SearchResultFragment extends BaseFragment {
 
     private ListView listView;
     private SearchResultAdapter searchResultAdapter;
-    //HashMap Keys
-    private final String KEY_ACTIVITY = "activity"; //parent node name
-    private final String KEY_ACTIVITY_ID = "id";
-    private final String KEY_TITLE = "title";
-    private final String KEY_TYPE = "type";
-    private final String KEY_DISTANCE = "distance";
-    private final String KEY_DURATION = "duration";
-    private final String KEY_DATE = "date";
-    private final String KEY_TIME = "time";
-    private final String KEY_MEMBERS_TOTAL = "members_total";
     private NodeList nodelist;
     private ProgressDialog pDialog;
     private View view;
@@ -49,6 +40,7 @@ public class SearchResultFragment extends BaseFragment {
         view = inflater.inflate(R.layout.search_result, container, false);
         notification = (TextView)view.findViewById(R.id.notification);
         Bundle bundle = this.getArguments();
+        //TODO: search criteria should be passed to the main activity not via bundle
         String addressUrl = bundle.getString("search");
         new SearchResults().execute(addressUrl);
         return view;
@@ -83,7 +75,7 @@ public class SearchResultFragment extends BaseFragment {
                 Document doc = db.parse(new InputSource(url.openStream()));
                 doc.getDocumentElement().normalize();
                 // Locate the Tag Name
-                nodelist = doc.getElementsByTagName(KEY_ACTIVITY);
+                nodelist = doc.getElementsByTagName(ApplicationConstants.KEY_ACTIVITY);
 
             } catch (Exception e) {
                 Log.e("Error", e.getMessage());
@@ -115,14 +107,14 @@ public class SearchResultFragment extends BaseFragment {
                         Node nNode = nodelist.item(temp);
                         if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                             Element eElement = (Element) nNode;
-                            map.put(KEY_ACTIVITY_ID, getNode(KEY_ACTIVITY_ID, eElement));
-                            map.put(KEY_TITLE, getNode(KEY_TITLE, eElement));
-                            map.put(KEY_TYPE, getNode(KEY_TYPE, eElement));
-                            map.put(KEY_DISTANCE, getNode(KEY_DISTANCE, eElement));
-                            map.put(KEY_DURATION, getNode(KEY_DURATION, eElement));
-                            map.put(KEY_DATE, getNode(KEY_DATE, eElement));
-                            map.put(KEY_TIME, getNode(KEY_TIME, eElement));
-                            map.put(KEY_MEMBERS_TOTAL, getNode(KEY_MEMBERS_TOTAL, eElement));
+                            map.put(ApplicationConstants.KEY_ACTIVITY_ID, getNode(ApplicationConstants.KEY_ACTIVITY_ID, eElement));
+                            map.put(ApplicationConstants.KEY_TITLE, getNode(ApplicationConstants.KEY_TITLE, eElement));
+                            map.put(ApplicationConstants.KEY_TYPE, getNode(ApplicationConstants.KEY_TYPE, eElement));
+                            map.put(ApplicationConstants.KEY_DISTANCE, getNode(ApplicationConstants.KEY_DISTANCE, eElement));
+                            map.put(ApplicationConstants.KEY_DURATION, getNode(ApplicationConstants.KEY_DURATION, eElement));
+                            map.put(ApplicationConstants.KEY_DATE, getNode(ApplicationConstants.KEY_DATE, eElement));
+                            map.put(ApplicationConstants.KEY_TIME, getNode(ApplicationConstants.KEY_TIME, eElement));
+                            map.put(ApplicationConstants.KEY_MEMBERS_TOTAL, getNode(ApplicationConstants.KEY_MEMBERS_TOTAL, eElement));
                             searchResultList.add(map);
                         }
 

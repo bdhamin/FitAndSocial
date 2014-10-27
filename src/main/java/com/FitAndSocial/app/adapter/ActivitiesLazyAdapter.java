@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.FitAndSocial.app.fragment.ActivityInformationFragment;
 import com.FitAndSocial.app.fragment.BaseFragment;
 import com.FitAndSocial.app.mobile.R;
+import com.FitAndSocial.app.util.ApplicationConstants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,14 +27,6 @@ public class ActivitiesLazyAdapter extends BaseAdapter{
     private BaseFragment activity;
     private ArrayList<HashMap<String, String>> data;
     private static LayoutInflater layoutInflater = null;
-    private final String KEY_ACTIVITY = "activity"; //parent node name
-    private final String KEY_TITLE = "title";
-    private final String KEY_TYPE = "type";
-    private final String KEY_DISTANCE = "distance";
-    private final String KEY_DURATION = "duration";
-    private final String KEY_DATE = "date";
-    private final String KEY_TIME = "time";
-    private final String KEY_MEMBERS_TOTAL="members_total";
     private TextView showMore;
     TextView no_members;
     TextView title;
@@ -109,13 +102,13 @@ public class ActivitiesLazyAdapter extends BaseAdapter{
         HashMap<String, String> fas = new HashMap<>();
 
         fas = data.get(position);
-        members.setText("Members: "+fas.get(KEY_MEMBERS_TOTAL));
-        title.setText(fas.get(KEY_TITLE));
-        typeName.setText(fas.get(KEY_TYPE));
-        distanceInKM.setText(fas.get(KEY_DISTANCE));
-        dTime.setText(fas.get(KEY_DURATION));
-        aDate.setText(fas.get(KEY_DATE));
-        aTime.setText(fas.get(KEY_TIME));
+        members.setText("Members: "+fas.get(ApplicationConstants.KEY_MEMBERS_TOTAL));
+        title.setText(fas.get(ApplicationConstants.KEY_TITLE));
+        typeName.setText(fas.get(ApplicationConstants.KEY_TYPE));
+        distanceInKM.setText(fas.get(ApplicationConstants.KEY_DISTANCE));
+        dTime.setText(fas.get(ApplicationConstants.KEY_DURATION));
+        aDate.setText(fas.get(ApplicationConstants.KEY_DATE));
+        aTime.setText(fas.get(ApplicationConstants.KEY_TIME));
         if(fas.get("member_0_name") != "" && fas.get("member_0_name") != null){
             memberOneName.setText(fas.get("member_0_name"));
             memberOne.setImageDrawable(activity.getResources().getDrawable(R.drawable.friends));

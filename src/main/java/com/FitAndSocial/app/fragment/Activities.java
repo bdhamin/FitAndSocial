@@ -1,11 +1,9 @@
 package com.FitAndSocial.app.fragment;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -16,9 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.FitAndSocial.app.mobile.R;
 import com.FitAndSocial.app.adapter.ActivitiesLazyAdapter;
+import com.FitAndSocial.app.util.ApplicationConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -38,15 +36,6 @@ public class Activities extends BaseFragment{
     private String url;
     private ListView listView;
     private ActivitiesLazyAdapter activitiesLazyAdapter;
-    private final String KEY_ACTIVITY_ID = "id";
-    private final String KEY_ACTIVITY = "activity"; //parent node name
-    private final String KEY_TITLE = "title";
-    private final String KEY_TYPE = "type";
-    private final String KEY_DISTANCE = "distance";
-    private final String KEY_DURATION = "duration";
-    private final String KEY_DATE = "date";
-    private final String KEY_TIME = "time";
-    private final String KEY_MEMBERS_TOTAL="members_total";
     private boolean isInformation = false;
     private View view;
     private NodeList nodelist;
@@ -60,7 +49,7 @@ public class Activities extends BaseFragment{
         view = inflater.inflate(R.layout.activities, container, false);
         notification = (TextView)view.findViewById(R.id.notification);
         setActionbarNavigationMode(2);
-        url = getBaseUrl().concat("/upcomingActivities");
+        url = ApplicationConstants.SERVER_BASE_ADDRESS+ApplicationConstants.SERVER_ADDRESS_ACTION_UPCOMING_ACTIVITIES;
         new DownloadXML().execute(url);
         return view;
     }
@@ -111,7 +100,7 @@ public class Activities extends BaseFragment{
                     Document doc = db.parse(new InputSource(url.openStream()));
                     doc.getDocumentElement().normalize();
                     // Locate the Tag Name
-                    nodelist = doc.getElementsByTagName(KEY_ACTIVITY);
+                    nodelist = doc.getElementsByTagName(ApplicationConstants.KEY_ACTIVITY);
 
                 } catch (Exception e) {
                     Log.e("Error", e.getMessage());
@@ -148,14 +137,14 @@ public class Activities extends BaseFragment{
                         Node nNode = nodelist.item(temp);
                         if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                             Element eElement = (Element) nNode;
-                            map.put(KEY_ACTIVITY_ID, getNode(KEY_ACTIVITY_ID, eElement));
-                            map.put(KEY_TITLE, getNode(KEY_TITLE, eElement));
-                            map.put(KEY_TYPE, getNode(KEY_TYPE, eElement));
-                            map.put(KEY_DISTANCE, getNode(KEY_DISTANCE, eElement));
-                            map.put(KEY_DURATION, getNode(KEY_DURATION, eElement));
-                            map.put(KEY_DATE, getNode(KEY_DATE, eElement));
-                            map.put(KEY_TIME, getNode(KEY_TIME, eElement));
-                            map.put(KEY_MEMBERS_TOTAL, getNode(KEY_MEMBERS_TOTAL, eElement));
+                            map.put(ApplicationConstants.KEY_ACTIVITY_ID, getNode(ApplicationConstants.KEY_ACTIVITY_ID, eElement));
+                            map.put(ApplicationConstants.KEY_TITLE, getNode(ApplicationConstants.KEY_TITLE, eElement));
+                            map.put(ApplicationConstants.KEY_TYPE, getNode(ApplicationConstants.KEY_TYPE, eElement));
+                            map.put(ApplicationConstants.KEY_DISTANCE, getNode(ApplicationConstants.KEY_DISTANCE, eElement));
+                            map.put(ApplicationConstants.KEY_DURATION, getNode(ApplicationConstants.KEY_DURATION, eElement));
+                            map.put(ApplicationConstants.KEY_DATE, getNode(ApplicationConstants.KEY_DATE, eElement));
+                            map.put(ApplicationConstants.KEY_TIME, getNode(ApplicationConstants.KEY_TIME, eElement));
+                            map.put(ApplicationConstants.KEY_MEMBERS_TOTAL, getNode(ApplicationConstants.KEY_MEMBERS_TOTAL, eElement));
                             NodeList members = ((Element) nodelist.item(temp)).getElementsByTagName("member");
                             if (members != null && members.getLength() > 0) {
                                 for (int j = 0; j < members.getLength(); j++) {

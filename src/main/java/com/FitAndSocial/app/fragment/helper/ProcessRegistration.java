@@ -8,6 +8,7 @@ import android.os.Bundle;
 import com.FitAndSocial.app.integration.service.IFASUserRepo;
 import com.FitAndSocial.app.model.FASAccount;
 import com.FitAndSocial.app.model.FASUser;
+import com.FitAndSocial.app.util.ApplicationConstants;
 import com.FitAndSocial.app.util.Utils;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.gson.Gson;
@@ -39,11 +40,8 @@ public class ProcessRegistration extends RoboIntentService{
     private String deviceRegistrationId;
     private String deviceRegistrationUrl;
     private Context context;
-    private String url = "http://192.168.2.7:9000";
     @Inject
     IFASUserRepo _userRepo;
-    private final String CREATE_ACCOUNT_URL = "http://192.168.2.7:9000/register";
-
     public ProcessRegistration() {
         super("Create Account");
     }
@@ -70,7 +68,7 @@ public class ProcessRegistration extends RoboIntentService{
 
         }else{
             context = this;
-            deviceRegistrationUrl = url.concat("/deviceRegistrationId/");
+            deviceRegistrationUrl = ApplicationConstants.SERVER_BASE_ADDRESS.concat("/deviceRegistrationId/");
             new ProcessCreatingAccount().execute("registerDevice");
         }
     }
@@ -86,7 +84,7 @@ public class ProcessRegistration extends RoboIntentService{
                 json = gson.toJson(fasAccount);
                 try {
                     HttpClient httpClient = new DefaultHttpClient();
-                    HttpPost httpPost = new HttpPost(CREATE_ACCOUNT_URL);
+                    HttpPost httpPost = new HttpPost(ApplicationConstants.SERVER_BASE_ADDRESS+ApplicationConstants.SERVER_ADDRESS_ACTION_REGISTER);
                     StringEntity entity = new StringEntity(json);
                     httpPost.setEntity(entity);
                     httpPost.setHeader("Content-type", "application/json");
