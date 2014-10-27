@@ -10,7 +10,6 @@
                  android:label="@string/app_name"
                  android:icon="@drawable/ic_launcher"
                  android:theme="@style/notification_bar">
-
         <activity android:name=".FitAndSocial"
                   android:label="@string/app_name"
                   android:configChanges="keyboardHidden|orientation|screenSize"
@@ -20,12 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
-
         <receiver
                 android:name="com.FitAndSocial.app.gcm.GcmBroadcastReceiver"
                 android:permission="com.google.android.c2dm.permission.SEND" >
-
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <category android:name="com.FitAndSocial.app.gcm" />
@@ -33,7 +29,8 @@
 
         </receiver>
         <service android:name="com.FitAndSocial.app.gcm.GcmMessageHandler" />
-        <service android:name="com.FitAndSocial.app.fragment.helper.CreateAccount" />
+        <service android:name="com.FitAndSocial.app.fragment.helper.ProcessRegistration" />
+        <service android:name="com.FitAndSocial.app.util.ParticipationHelper" />
 
         <activity android:name="com.facebook.LoginActivity"
                   android:theme="@android:style/Theme.Translucent.NoTitleBar"

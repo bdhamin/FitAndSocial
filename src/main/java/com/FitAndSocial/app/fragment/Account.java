@@ -10,8 +10,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.view.View;
 import com.FitAndSocial.app.fragment.helper.AccountContainerManager;
-import com.FitAndSocial.app.fragment.helper.CreateAccount;
-import com.FitAndSocial.app.gcm.DeviceRegistration;
+import com.FitAndSocial.app.fragment.helper.ProcessRegistration;
 import com.FitAndSocial.app.mobile.R;
 import com.FitAndSocial.app.model.FASAccount;
 import com.FitAndSocial.app.socialLogin.facebook.FacebookLogin;
@@ -62,13 +61,20 @@ public class Account extends BaseFragment implements AccountContainerManager{
         if(user != null && !user.getId().equals("")){
             if(!accountExist(user.getId())){
                 FASAccount account = createAccountUsingGoogle(user, email);
-                Intent createAccountIntent = new Intent(this.getActivity(), CreateAccount.class);
-                createAccountIntent.putExtra("account", account);
-                getActivity().startService(createAccountIntent);
+                //Create User account
+                Intent processRegistration = new Intent(this.getActivity(), ProcessRegistration.class);
+                processRegistration.putExtra("account", account);
+                processRegistration.putExtra("registrationPart", "account");
+                getActivity().startService(processRegistration);
+
+                //Register User Device to receive notification from GCM
+                Intent deviceRegistration = new Intent(this.getActivity(), ProcessRegistration.class);
+                deviceRegistration.putExtra("registrationPart", "deviceRegistration");
+                getActivity().startService(deviceRegistration);
+
                 addUserToSharedPreferences(user.getId());
                 configureLoginSharedPreferences(false, user.getId());
                 configureTabMode();
-                new DeviceRegistration(this.getActivity());
             }else{
                 processLoggedInUserInformation(user.getName().getGivenName());
                 configureLoginSharedPreferences(false, user.getId());
@@ -82,9 +88,17 @@ public class Account extends BaseFragment implements AccountContainerManager{
         if(user != null && !user.getId().equals("")){
             if(!accountExist(user.getId())){
                 FASAccount account = createAccountUsingFacebook(user);
-                Intent createAccountIntent = new Intent(this.getActivity(), CreateAccount.class);
-                createAccountIntent.putExtra("account", account);
-                getActivity().startService(createAccountIntent);
+
+                //Create User account
+                Intent processRegistration = new Intent(this.getActivity(), ProcessRegistration.class);
+                processRegistration.putExtra("account", account);
+                processRegistration.putExtra("registrationPart", "account");
+                getActivity().startService(processRegistration);
+
+                //Register User Device to receive notification from GCM
+                Intent deviceRegistration = new Intent(this.getActivity(), ProcessRegistration.class);
+                deviceRegistration.putExtra("registrationPart", "deviceRegistration");
+                getActivity().startService(deviceRegistration);
 
                 addUserToSharedPreferences(user.getId());
                 configureLoginSharedPreferences(true, user.getId());
@@ -100,7 +114,8 @@ public class Account extends BaseFragment implements AccountContainerManager{
     private boolean accountExist(String userId) {
         if (accounts.contains("users")) {
             Set<String> existingUsers = accounts.getStringSet("users", null);
-            return existingUsers.contains(userId) ? true : false;
+//            return existingUsers.contains(userId) ? true : false;
+            return existingUsers.contains(userId);
         }
         return false;
     }
@@ -127,7 +142,11 @@ public class Account extends BaseFragment implements AccountContainerManager{
             sharedEditor.putString("loginType", "google");
         }
         sharedEditor.putString("userId", userId);
-        sharedEditor.commit();
+        /**
+         * Used apply instead of commit because apply do what commit does only
+         * it do it in the background
+         */
+        sharedEditor.apply();
     }
 
     private void configureTabMode() {
@@ -176,7 +195,11 @@ public class Account extends BaseFragment implements AccountContainerManager{
         SharedPreferences.Editor editor = applicationPreference.edit();
         editor.remove("loginType");
         editor.remove("userId");
-        editor.commit();
+        /**
+         * Used apply instead of commit because apply do what commit does only
+         * it do it in the background
+         */
+        editor.apply();
         configureTabMode();
         view.findViewById(R.id.google_login_container).setVisibility(View.VISIBLE);
         view.findViewById(R.id.facebook_login_container).setVisibility(View.VISIBLE);
@@ -188,7 +211,11 @@ public class Account extends BaseFragment implements AccountContainerManager{
         applicationPreference = getActivity().getSharedPreferences(APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
         SharedPreferences.Editor info = applicationPreference.edit();
         info.putString("username", username);
-        info.commit();
+        /**
+         * Used apply instead of commit because apply do what commit does only
+         * it do it in the background
+         */
+        info.apply();
     }
 
     private FASAccount createAccountUsingFacebook(GraphUser user){
@@ -220,7 +247,6 @@ public class Account extends BaseFragment implements AccountContainerManager{
         account.setActivitiesOfInterest("Swimming, Running, Cycling, Climbing");
         return account;
     }
-
 }
 
 

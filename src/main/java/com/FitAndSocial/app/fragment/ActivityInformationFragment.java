@@ -55,27 +55,15 @@ public class ActivityInformationFragment extends BaseFragment{
     private TextView participationButton;
 
 
-    /**
-     *
-     * @param selectedSearchResult
-     * @param isParticipation
-     * First parameter contains the selected activity information and the
-     * second one is a boolean to determine if which action should be triggered
-     * when clicking the button.
-     * When true it means its a participation where as false means cancel participation
-     */
-    public ActivityInformationFragment(HashMap<String, String> selectedSearchResult, boolean isParticipation){
-        this.selectedSearchResult = selectedSearchResult;
-        this.isParticipation = isParticipation;
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceBundle){
         view = inflater.inflate(R.layout.activity_information, container, false);
         enableViewPagerSwipe(false);
         setActionbarNavigationMode(0);
         setFragmentTitle("Event Details");
+        Bundle bundle = this.getArguments();
+        this.selectedSearchResult = (HashMap<String, String>)bundle.getSerializable("activity");
+        this.isParticipation = bundle.getBoolean("participation");
         initTextViews();
         initEventDetails();
         loadRequiredFragments();

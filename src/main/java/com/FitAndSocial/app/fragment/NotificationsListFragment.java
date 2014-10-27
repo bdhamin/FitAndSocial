@@ -115,10 +115,14 @@ public class NotificationsListFragment extends BaseFragment implements SwipeRefr
         notificationAdapter.notifyDataSetInvalidated();
         try {
             _notificationRepo.delete(notification);
+            notifyNotificationContainer(notification.getId());
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    public void notifyNotificationContainer(int id){
+        notificationListener.notifyNotificationDetailsContainer(id);
+    }
 
 }

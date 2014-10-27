@@ -1,6 +1,8 @@
 package com.FitAndSocial.app.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -22,7 +24,7 @@ public class SearchResultAdapter extends BaseAdapter{
     private BaseFragment activity;
     private ArrayList<HashMap<String, String>> data;
     private static LayoutInflater layoutInflater = null;
-    private final String PARTICIPATION_URL = "http://192.168.2.9:9000/participationRequest";
+//    private final String PARTICIPATION_URL = "http://192.168.2.7:9000/participationRequest";
 
     //HashMap Keys
     private final String KEY_ACTIVITY = "activity"; //parent node name
@@ -97,19 +99,29 @@ public class SearchResultAdapter extends BaseAdapter{
         participate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new ParticipationHelper(269,Long.valueOf(data.get(position).get(KEY_ACTIVITY_ID)), activity).execute(PARTICIPATION_URL);
+                Intent processParticipation = new Intent(activity.getActivity(), ParticipationHelper.class);
+                processParticipation.putExtra("userId", activity.getLoggedInUserId());
+                processParticipation.putExtra("activityId", Long.valueOf(data.get(position).get(KEY_ACTIVITY_ID)));
+                activity.getActivity().startService(processParticipation);
             }
         });
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("activity", data.get(position));
+                bundle.putBoolean("participation", true);
 
-                ActivityInformationFragment activityInformation = new ActivityInformationFragment(data.get(position), true);
+                ActivityInformationFragment activityInformation = new ActivityInformationFragment();
+
+                activityInformation.setArguments(bundle);
+
                 FragmentTransaction transaction = activity.getActivity().getSupportFragmentManager().beginTransaction();
                 Fragment searchResult = activity.getActivity().getSupportFragmentManager().findFragmentById(R.id.activities_container);
                 transaction.remove(searchResult);
                 transaction.add(R.id.create_fragment_container, activityInformation);
+                //TODO check if the fragment already added to the backStack: http://stackoverflow.com/questions/14518086/android-fragment-addtobackstacknull-how-to-add-the-same-fragment-to-stack-jus
                 transaction.addToBackStack(null);
                 transaction.commit();
             }

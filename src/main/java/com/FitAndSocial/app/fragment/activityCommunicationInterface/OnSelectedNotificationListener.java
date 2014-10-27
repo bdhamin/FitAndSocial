@@ -5,7 +5,8 @@ package com.FitAndSocial.app.fragment.activityCommunicationInterface;
  */
 public interface OnSelectedNotificationListener {
 
-    public void setSelectedNotification(int id);
+    public void setSelectedNotification(int notificationPosition, int notificationId);
     public void updateNotificationListView(int id);
+    public void notifyNotificationDetailsContainer(int notificationId);
 
 }

@@ -1,10 +1,10 @@
 package com.FitAndSocial.app.gcm;
 
-import android.app.Activity;
+import android.app.IntentService;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import com.FitAndSocial.app.fragment.BaseFragment;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -18,18 +18,24 @@ import java.io.IOException;
 /**
  * Created by mint on 9-10-14.
  */
-public class DeviceRegistration extends BaseFragment {
+public class _DeviceRegistration extends IntentService {
 
     private GoogleCloudMessaging gcm;
     private final String PROJECT_NUMBER = "5876528920";
     private String deviceRegistrationId;
     private String deviceRegistrationUrl;
-    private Context activity;
+    private Context context;
+    private String url = "http://192.168.2.7:9000";
 
-    public DeviceRegistration(Context activity) {
-        this.activity = activity;
-        deviceRegistrationUrl = getBaseUrl().concat("/deviceRegistrationId/");
-        new SendDeviceRegistrationRequest().execute(deviceRegistrationUrl);
+    public _DeviceRegistration() {
+        super("Device Registration");
+    }
+
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        context = this;
+        deviceRegistrationUrl = url.concat("/deviceRegistrationId/");
+        new SendDeviceRegistrationRequest().execute();
     }
 
 
@@ -44,9 +50,9 @@ public class DeviceRegistration extends BaseFragment {
         protected Boolean doInBackground(String... params) {
             try {
                 if (gcm == null) {
-                    gcm = new GoogleCloudMessaging().getInstance(activity);
+                    gcm = new GoogleCloudMessaging().getInstance(_DeviceRegistration.this);
                 }
-                SharedPreferences sharedPreferences = activity.getSharedPreferences("applicationPreference", activity.MODE_PRIVATE);
+                SharedPreferences sharedPreferences = context.getSharedPreferences("applicationPreference", context.MODE_PRIVATE);
                 String authenticationProviderKey = sharedPreferences.getString("userId", "");
                 deviceRegistrationId = gcm.register(PROJECT_NUMBER);
                 String registrationUrl = deviceRegistrationUrl.concat(authenticationProviderKey).concat("/").concat(deviceRegistrationId);

@@ -202,7 +202,10 @@ public class SearchFragment extends BaseFragment implements OnDateSetListener, O
                         FragmentManager fragmentManager = getFragmentManager();
                         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                         Fragment searchFragment = fragmentManager.findFragmentById(R.id.create_fragment_container);
-                        SearchResultFragment searchResultFragment = new SearchResultFragment(assembleUrl());
+                        Bundle bundle = new Bundle();
+                        bundle.putString("search", assembleUrl());
+                        SearchResultFragment searchResultFragment = new SearchResultFragment();
+                        searchResultFragment.setArguments(bundle);
                         fragmentTransaction.remove(searchFragment);
                         fragmentTransaction.add(R.id.activities_container, searchResultFragment);
                         fragmentTransaction.addToBackStack(null);

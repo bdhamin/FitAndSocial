@@ -105,7 +105,7 @@ public class BaseFragment extends RoboFragment {
         return googleLoginClient;
     }
 
-    protected String getLoggedInUserId(){
+    public String getLoggedInUserId(){
         applicationPreference = this.getActivity().getSharedPreferences(APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
         if(applicationPreference.contains("userId")){
             String userId = applicationPreference.getString("userId", "");

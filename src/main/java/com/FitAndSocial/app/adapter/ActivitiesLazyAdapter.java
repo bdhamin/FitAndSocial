@@ -2,6 +2,7 @@ package com.FitAndSocial.app.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -148,13 +149,21 @@ public class ActivitiesLazyAdapter extends BaseAdapter{
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityInformationFragment activityInformation = new ActivityInformationFragment(data.get(position), false);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("activity", data.get(position));
+                bundle.putBoolean("participation", false);
+
+                ActivityInformationFragment activityInformation = new ActivityInformationFragment();
+
+                activityInformation.setArguments(bundle);
+
                 FragmentTransaction transaction = activity.getActivity().getSupportFragmentManager().beginTransaction();
                 Fragment activities = activity.getActivity().getSupportFragmentManager().findFragmentById(R.id.activities_container);
                 Fragment noActivities = activity.getActivity().getSupportFragmentManager().findFragmentById(R.id.no_activities_fragment_container);
                 transaction.remove(activities);
                 transaction.remove(noActivities);
                 transaction.add(R.id.create_fragment_container, activityInformation);
+                //TODO check if the fragment already added to the backStack: http://stackoverflow.com/questions/14518086/android-fragment-addtobackstacknull-how-to-add-the-same-fragment-to-stack-jus
                 transaction.addToBackStack(null);
                 transaction.commit();
             }

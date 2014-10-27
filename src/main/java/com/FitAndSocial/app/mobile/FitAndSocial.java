@@ -21,6 +21,8 @@ import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmen
 import com.google.inject.Inject;
 import roboguice.inject.ContentView;
 
+import java.util.HashMap;
+
 import static android.support.v4.view.ViewPager.SimpleOnPageChangeListener;
 
 @ContentView(R.layout.main)
@@ -28,32 +30,18 @@ public class FitAndSocial extends RoboSherlockFragmentActivity implements OnSele
 
     private ActionBar actionbar;
     private ActionBar.Tab tab;
-//    private ViewPager viewPager;
     private NonSwipeableViewPager viewPager;
     private SharedPreferences applicationPreference;
     protected final String APPLICATION_PREFERENCE = "applicationPreference";
-    @Inject
-    private IFASUserRepo _userRepo;
-    @Inject
-    private INotificationRepo _notificationRepo;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-//        try{
-//            FASUser user = new FASUser("1", "B-Style", "30-09-1983");
-//            _userRepo.save(user);
-//            System.out.println("Saved Successfully");
-//            FASUser fasUser = _userRepo.find("1");
-//            System.out.println(fasUser.getUsername());
-//        }catch (Exception e){
-//            System.out.println("FitAndSocial main Error");
-//        }
         if(savedInstanceState != null){
             return;
         }
         actionbar = getSupportActionBar();
-//        actionbar.setDisplayShowHomeEnabled(false);
         actionbar.setDisplayShowTitleEnabled(false);
         actionbar.setDisplayShowCustomEnabled(true);
         getSupportActionBar().setCustomView(R.layout.notification_bar_layout);
@@ -61,8 +49,6 @@ public class FitAndSocial extends RoboSherlockFragmentActivity implements OnSele
         View homeIcon = findViewById(android.R.id.home);
         ((View) homeIcon.getParent()).setVisibility(View.GONE);
 
-
-//        viewPager = (ViewPager)findViewById(R.id.pager);
         viewPager = (NonSwipeableViewPager)findViewById(R.id.pager);
         FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -149,16 +135,26 @@ public class FitAndSocial extends RoboSherlockFragmentActivity implements OnSele
     }
 
     @Override
-    public void setSelectedNotification(int id) {
+    public void setSelectedNotification(int notificationPosition ,int id) {
+        //TODO: if does not exist create it
         NotificationDetailsFragment notificationDetailsFragment =(NotificationDetailsFragment)
                 getSupportFragmentManager().findFragmentById(R.id.notificationDetails_fragment_container);
-        notificationDetailsFragment.displayNotificationDetails(id);
+        notificationDetailsFragment.displayNotificationDetails(notificationPosition ,id);
     }
 
     @Override
     public void updateNotificationListView(int id) {
+        //TODO: if does not exist create it
         NotificationsListFragment notificationsListFragment = (NotificationsListFragment)
                 getSupportFragmentManager().findFragmentById(R.id.notificationList_fragment_container);
         notificationsListFragment.updateView(id);
+    }
+
+    @Override
+    public void notifyNotificationDetailsContainer(int notificationId) {
+        //TODO: if does not exist create it
+        NotificationDetailsFragment notificationDetailsFragment =(NotificationDetailsFragment)
+                getSupportFragmentManager().findFragmentById(R.id.notificationDetails_fragment_container);
+        notificationDetailsFragment.updateViewIfNeeded(notificationId);
     }
 }

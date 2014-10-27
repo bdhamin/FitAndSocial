@@ -91,7 +91,7 @@ public class NotificationAdapter extends BaseAdapter{
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                notificationListener.setSelectedNotification(notificationList.get(position).getId());
+                notificationListener.setSelectedNotification(position, notificationList.get(position).getId());
             }
         });
         return view;

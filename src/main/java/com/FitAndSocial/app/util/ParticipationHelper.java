@@ -1,9 +1,10 @@
 package com.FitAndSocial.app.util;
 
-import android.app.ProgressDialog;
+import android.app.IntentService;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.widget.Toast;
-import com.FitAndSocial.app.fragment.BaseFragment;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
@@ -13,83 +14,74 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 
 /**
  * Created by mint on 20-9-14.
  */
-public class ParticipationHelper extends AsyncTask<String, Void, Boolean>{
+public class ParticipationHelper extends IntentService{
 
-
-    private long userId;
+    private String userId;
     private long activityId;
-    private ProgressDialog pDialog;
-    private BaseFragment baseFragment;
     private final String ACTIVITY_ID = "activityId";
     private final String USER_ID = "userId";
+    private final String PARTICIPATION_URL = "http://192.168.2.7:9000/participationRequest";
 
-
-    public ParticipationHelper(long userId, long activityId, BaseFragment baseFragment){
-        this.userId = userId;
-        this.activityId = activityId;
-        this.baseFragment = baseFragment;
-    }
-
-    @Override
-    protected void onPreExecute(){
-        pDialog = new ProgressDialog(baseFragment.getActivity());
-        pDialog.setTitle("Participate");
-        pDialog.setMessage("Saving...");
-        pDialog.setIndeterminate(true);
-        pDialog.show();
+    public ParticipationHelper(){
+        super("ParticipationHelper");
     }
 
 
     @Override
-    protected Boolean doInBackground(String... url) {
+    protected void onHandleIntent(Intent intent) {
+
+        Bundle bundle = intent.getExtras();
+        this.userId = bundle.getString("userId");
+        this.activityId = bundle.getLong("activityId");
+        new Participate().execute();
+    }
+
+    private class Participate extends AsyncTask<String, Void, Boolean>{
+
+        @Override
+        protected Boolean doInBackground(String... params) {
 
         try{
-
             JSONObject jsonObject = new JSONObject();
             jsonObject.accumulate(ACTIVITY_ID, activityId);
             jsonObject.accumulate(USER_ID, userId);
             StringEntity stringEntity = new StringEntity(jsonObject.toString());
 
             HttpClient httpClient = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost(url[0]);
+            HttpPost httpPost = new HttpPost(PARTICIPATION_URL);
             httpPost.setHeader("Content-type", "application/json");
             httpPost.setEntity(stringEntity);
 
             HttpResponse httpResponse = httpClient.execute(httpPost);
             StatusLine httpStatus = httpResponse.getStatusLine();
             if(httpStatus.getStatusCode() == HttpStatus.SC_OK){
-                pDialog.dismiss();
                 return true;
             }else{
-                pDialog.dismiss();
                 return false;
             }
 
         }catch (JSONException ex) {
-            pDialog.dismiss();
             ex.printStackTrace();
             return false;
         }catch (IOException e){
             e.printStackTrace();
-            pDialog.dismiss();
             return false;
         }
-    }
+        }
 
-    @Override
-    protected void onPostExecute(Boolean success){
-        if(success){
-            Toast.makeText(baseFragment.getActivity(), "Participation Success", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(baseFragment.getActivity(), "Participation Failed", Toast.LENGTH_SHORT).show();
+        @Override
+        public void onPostExecute(Boolean success){
+            if(success){
+                Toast.makeText(getApplicationContext(), "Participation Success", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(getApplicationContext(), "Participation Failed", Toast.LENGTH_SHORT).show();
+            }
         }
 
     }
-
 }

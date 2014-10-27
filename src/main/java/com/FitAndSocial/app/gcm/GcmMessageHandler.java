@@ -66,8 +66,6 @@ public class GcmMessageHandler extends RoboIntentService {
         Log.i("GCM", "Received : (" + messageType + ")  " + extras.getString("title"));
         GcmBroadcastReceiver.completeWakefulIntent(intent);
 
-//        new ProgressNotification().execute();
-
     }
 
     public void showToast(){
@@ -78,36 +76,4 @@ public class GcmMessageHandler extends RoboIntentService {
         });
 
     }
-
-
-
-//    private class ProgressNotification extends AsyncTask<Void, Boolean, Boolean>{
-//
-//
-////        DatabaseHandler databaseHandler;
-//
-//        @Override
-//        protected void onPreExecute(){
-////            databaseHandler= DatabaseHandler.getInstance(getApplicationContext());
-//
-//        }
-//
-//        @Override
-//        protected Boolean doInBackground(Void... params) {
-//            try{
-//                Notification notification = new Notification();
-//                notification.setTitle(title);
-//                notification.setMessage(message);
-//                notification.setUserId(userId);
-//                notification.setDate(new Date().getTime());
-//
-//                _notificationRepo.save(notification);
-//            }catch (Exception e){
-//                return false;
-//            }
-//            return true;
-//        }
-//    }
-
-
 }

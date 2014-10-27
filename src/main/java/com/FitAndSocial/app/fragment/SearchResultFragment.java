@@ -39,29 +39,18 @@ public class SearchResultFragment extends BaseFragment {
     private final String KEY_DATE = "date";
     private final String KEY_TIME = "time";
     private final String KEY_MEMBERS_TOTAL = "members_total";
-    private String address;
     private NodeList nodelist;
     private ProgressDialog pDialog;
     private View view;
     private TextView notification;
 
-    /**
-     *
-     * @param address
-     * Create a constructor with as parameter an address string.
-     * The address should be the address of the xml document
-     * This address is coming from SearchFragment and contains
-     * all the necessary information like date, time, type, radius etc
-     */
-    public SearchResultFragment(String address){
-        this.address = address;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceBundle){
         view = inflater.inflate(R.layout.search_result, container, false);
         notification = (TextView)view.findViewById(R.id.notification);
-        new SearchResults().execute(address);
+        Bundle bundle = this.getArguments();
+        String addressUrl = bundle.getString("search");
+        new SearchResults().execute(addressUrl);
         return view;
     }
 

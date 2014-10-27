@@ -187,7 +187,7 @@ public class Activities extends BaseFragment{
             }else{
                 canConnectToServer(false);
                 swipeLayout.setRefreshing(false);
-                notification.setText("Could not connect to the server! try again later.");
+                notification.setText("Can not connect to the server! try again later.");
             }
         }
 
