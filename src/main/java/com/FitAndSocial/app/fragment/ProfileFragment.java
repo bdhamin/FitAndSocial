@@ -326,7 +326,6 @@ public class ProfileFragment extends BaseFragment implements  View.OnClickListen
                     return true;
                 }else{
                     progressDialog.dismiss();
-                    System.out.println("Something went wrong");
                     return false;
                 }
 

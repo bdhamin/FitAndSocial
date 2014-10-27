@@ -86,9 +86,9 @@ public class Activities extends BaseFragment{
             String address = "";
             StringBuilder sb = new StringBuilder();
 
-            applicationPreference = getActivity().getSharedPreferences(APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
-            if(applicationPreference.contains("userId")){
-                String userId = applicationPreference.getString("userId", "");
+            applicationPreference = getActivity().getSharedPreferences(ApplicationConstants.APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
+            if(applicationPreference.contains(ApplicationConstants.APPLICATION_PREFERENCE_USER_ID)){
+                String userId = applicationPreference.getString(ApplicationConstants.APPLICATION_PREFERENCE_USER_ID, "");
                 sb.append(url).append("?id=").append(userId);
                 address = sb.toString();
                 try {

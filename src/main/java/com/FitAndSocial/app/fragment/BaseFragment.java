@@ -8,6 +8,7 @@ import com.FitAndSocial.app.fragment.helper.NonSwipeableViewPager;
 import com.FitAndSocial.app.mobile.FitAndSocial;
 import com.FitAndSocial.app.mobile.R;
 import com.FitAndSocial.app.socialLogin.google.GoogleLogin;
+import com.FitAndSocial.app.util.ApplicationConstants;
 import com.actionbarsherlock.app.ActionBar;
 import roboguice.fragment.RoboFragment;
 
@@ -22,8 +23,6 @@ public class BaseFragment extends RoboFragment {
     private TextView fragmentTitle;
     private boolean isExternalInformationRequired;
     protected SharedPreferences applicationPreference;
-    protected final String APPLICATION_PREFERENCE = "applicationPreference";
-    protected final String REGISTERED_USERS = "registeredUsers";
 
     /**
      * On some fragments we need to disable the navigation tabs and enable them
@@ -96,18 +95,18 @@ public class BaseFragment extends RoboFragment {
 
 
     public String getLoggedInUserId(){
-        applicationPreference = this.getActivity().getSharedPreferences(APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
-        if(applicationPreference.contains("userId")){
-            String userId = applicationPreference.getString("userId", "");
+        applicationPreference = this.getActivity().getSharedPreferences(ApplicationConstants.APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
+        if(applicationPreference.contains(ApplicationConstants.APPLICATION_PREFERENCE_USER_ID)){
+            String userId = applicationPreference.getString(ApplicationConstants.APPLICATION_PREFERENCE_USER_ID, "");
             return userId;
         }
         return "";
     }
 
     protected String getUsername(){
-        applicationPreference = this.getActivity().getSharedPreferences(APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
-        if(applicationPreference.contains("username")){
-            String username = applicationPreference.getString("username", "");
+        applicationPreference = this.getActivity().getSharedPreferences(ApplicationConstants.APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
+        if(applicationPreference.contains(ApplicationConstants.APPLICATION_PREFERENCE_USERNAME)){
+            String username = applicationPreference.getString(ApplicationConstants.APPLICATION_PREFERENCE_USERNAME, "");
             return username;
         }
         return "";

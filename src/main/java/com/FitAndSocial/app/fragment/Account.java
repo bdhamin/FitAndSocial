@@ -15,6 +15,7 @@ import com.FitAndSocial.app.mobile.R;
 import com.FitAndSocial.app.model.FASAccount;
 import com.FitAndSocial.app.socialLogin.facebook.FacebookLogin;
 import com.FitAndSocial.app.socialLogin.google.GoogleLogin;
+import com.FitAndSocial.app.util.ApplicationConstants;
 import com.facebook.model.GraphUser;
 import com.google.android.gms.plus.model.people.Person;
 import java.util.HashSet;
@@ -35,8 +36,8 @@ public class Account extends BaseFragment implements AccountContainerManager{
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceBundle){
         view = layoutInflater.inflate(R.layout.account, container, false);
-        accounts = getActivity().getSharedPreferences(REGISTERED_USERS, Context.MODE_PRIVATE);
-        applicationPreference = getActivity().getSharedPreferences(APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
+        accounts = getActivity().getSharedPreferences(ApplicationConstants.APPLICATION_PREFERENCE_REGISTERED_USERS, Context.MODE_PRIVATE);
+        applicationPreference = getActivity().getSharedPreferences(ApplicationConstants.APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
         editor = accounts.edit();
         manager = getFragmentManager();
         transaction = manager.beginTransaction();
@@ -112,9 +113,8 @@ public class Account extends BaseFragment implements AccountContainerManager{
     }
 
     private boolean accountExist(String userId) {
-        if (accounts.contains("users")) {
-            Set<String> existingUsers = accounts.getStringSet("users", null);
-//            return existingUsers.contains(userId) ? true : false;
+        if (accounts.contains(ApplicationConstants.APPLICATION_PREFERENCE_USERS)) {
+            Set<String> existingUsers = accounts.getStringSet(ApplicationConstants.APPLICATION_PREFERENCE_USERS, null);
             return existingUsers.contains(userId);
         }
         return false;
@@ -123,25 +123,25 @@ public class Account extends BaseFragment implements AccountContainerManager{
     private void addUserToSharedPreferences(String userId){
 
         Set<String> users;
-        if(accounts.contains("users")){
-            users = accounts.getStringSet("users", null);
+        if(accounts.contains(ApplicationConstants.APPLICATION_PREFERENCE_USERS)){
+            users = accounts.getStringSet(ApplicationConstants.APPLICATION_PREFERENCE_USERS, null);
             users.add(userId);
         }else{
             users = new HashSet<>();
             users.add(userId);
         }
-        editor.putStringSet("users", users);
+        editor.putStringSet(ApplicationConstants.APPLICATION_PREFERENCE_USERS, users);
         editor.commit();
     }
 
     private void configureLoginSharedPreferences(boolean isFacebookLogin, String userId){
         SharedPreferences.Editor sharedEditor = applicationPreference.edit();
         if(isFacebookLogin){
-            sharedEditor.putString("loginType", "facebook");
+            sharedEditor.putString(ApplicationConstants.APPLICATION_PREFERENCE_LOGIN_TYPE, ApplicationConstants.APPLICATION_PREFERENCE_LOGIN_TYPE_FACEBOOK);
         }else{
-            sharedEditor.putString("loginType", "google");
+            sharedEditor.putString(ApplicationConstants.APPLICATION_PREFERENCE_LOGIN_TYPE, ApplicationConstants.APPLICATION_PREFERENCE_LOGIN_TYPE_GOOGLE);
         }
-        sharedEditor.putString("userId", userId);
+        sharedEditor.putString(ApplicationConstants.APPLICATION_PREFERENCE_USER_ID, userId);
         /**
          * Used apply instead of commit because apply do what commit does only
          * it do it in the background
@@ -163,8 +163,8 @@ public class Account extends BaseFragment implements AccountContainerManager{
     }
 
     private boolean isLoggedIn() {
-        if(applicationPreference.contains("loginType")){
-            String loginType = applicationPreference.getString("loginType", "");
+        if(applicationPreference.contains(ApplicationConstants.APPLICATION_PREFERENCE_LOGIN_TYPE)){
+            String loginType = applicationPreference.getString(ApplicationConstants.APPLICATION_PREFERENCE_LOGIN_TYPE, "");
             if(loginType != null && !loginType.equals("")){
                 return true;
             }
@@ -173,7 +173,7 @@ public class Account extends BaseFragment implements AccountContainerManager{
     }
 
     private void manageLoginContainer() {
-        String connectedWith = applicationPreference.getString("loginType", "");
+        String connectedWith = applicationPreference.getString(ApplicationConstants.APPLICATION_PREFERENCE_LOGIN_TYPE, "");
         switch (connectedWith){
             case "facebook":
                 view.findViewById(R.id.google_login_container).setVisibility(View.GONE);
@@ -193,8 +193,8 @@ public class Account extends BaseFragment implements AccountContainerManager{
     @Override
     public void processLogoutUser() {
         SharedPreferences.Editor editor = applicationPreference.edit();
-        editor.remove("loginType");
-        editor.remove("userId");
+        editor.remove(ApplicationConstants.APPLICATION_PREFERENCE_LOGIN_TYPE);
+        editor.remove(ApplicationConstants.APPLICATION_PREFERENCE_USER_ID);
         /**
          * Used apply instead of commit because apply do what commit does only
          * it do it in the background
@@ -208,9 +208,9 @@ public class Account extends BaseFragment implements AccountContainerManager{
 
     @Override
     public void processLoggedInUserInformation(String username) {
-        applicationPreference = getActivity().getSharedPreferences(APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
+        applicationPreference = getActivity().getSharedPreferences(ApplicationConstants.APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
         SharedPreferences.Editor info = applicationPreference.edit();
-        info.putString("username", username);
+        info.putString(ApplicationConstants.APPLICATION_PREFERENCE_USERNAME, username);
         /**
          * Used apply instead of commit because apply do what commit does only
          * it do it in the background

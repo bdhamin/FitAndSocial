@@ -86,7 +86,6 @@ public class GoogleLogin extends BaseFragment implements Button.OnClickListener,
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceBundle){
-        System.out.println("HELLLLLLLLOOOOOOOOOOOO HHHHHHEEEEEEEEEEERRRRRRRR IS 1");
         view = inflater.inflate(R.layout.google, container, false);
         btnSignIn = (SignInButton) view.findViewById(R.id.btn_sign_in);
         btnSignOut = (Button) view.findViewById(R.id.btn_sign_out);
@@ -180,63 +179,6 @@ public class GoogleLogin extends BaseFragment implements Button.OnClickListener,
             }
         }
     }
-
-//    private void manageApplicationPreference() {
-//        System.out.println("Manage Application Preference 1");
-//        applicationPreference = getActivity().getSharedPreferences(APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = applicationPreference.edit();
-//
-//        if(applicationPreference.contains("loginType")){
-//            System.out.println("Manage Application Preference 2");
-//            if(applicationPreference.getString("loginType", "").equals("google")){
-//                System.out.println("Manage Application Preference 3");
-//                editor.putString("loggedIn", "google");
-//                editor.commit();
-//                accountContainerManager.manageContainers("google", true);
-//            }else{
-//                System.out.println("Manage Application Preference 4");
-//                if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null){
-//                    System.out.println("Manage Application Preference 5");
-//                    Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-//                    if(accountContainerManager.createUserAccountGoogle(currentPerson,  Plus.AccountApi.getAccountName(mGoogleApiClient))){
-//                        System.out.println("Manage Application Preference 6");
-//                        editor.remove("loggedIn");
-//                        editor.remove("loginType");
-//                        editor.remove("loginType");
-//
-//                        editor.putString("loggedIn", "google");
-//                        editor.putString("loginType", "google");
-//                        editor.putString("userId", currentPerson.getId());
-//                        editor.commit();
-//                        accountContainerManager.manageContainers("google", true);
-//                    }else{
-//                        System.out.println("Manage Application Preference 7");
-//                    }
-//                }else {
-//                    System.out.println("Manage Application Preference 8");
-//                }
-//            }
-//        }else{
-//            System.out.println("Manage Application Preference 9");
-//            if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null){
-//                System.out.println("Manage Application Preference 10");
-//                Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-//                if(accountContainerManager.createUserAccountGoogle(currentPerson,  Plus.AccountApi.getAccountName(mGoogleApiClient))){
-//                    System.out.println("Manage Application Preference 11");
-//                    editor.putString("loggedIn", "google");
-//                    editor.putString("loginType", "google");
-//                    editor.putString("userId", currentPerson.getId());
-//                    editor.commit();
-//                    accountContainerManager.manageContainers("google", true);
-//                }else{
-//                    System.out.println("Manage Application Preference 12");
-//                }
-//            }else{
-//                System.out.println("Manage Application Preference 13");
-//            }
-//        }
-//
-//    }
 
     @Override
     public void onClick(View v) {

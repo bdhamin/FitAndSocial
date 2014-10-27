@@ -59,13 +59,8 @@ public class UserGeneralInformation extends BaseFragment{
         setUserVisibleHint(true);
     }
 
+    private void loadDataLocal(){}
 
-    private void loadDataLocal(){
-
-    }
-
-    private void loadDataFromServer(){
-
-    }
+    private void loadDataFromServer(){}
 
 }

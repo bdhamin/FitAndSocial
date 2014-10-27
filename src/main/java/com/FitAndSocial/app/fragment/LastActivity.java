@@ -169,9 +169,9 @@ public class LastActivity extends BaseFragment {
         }
     }
     private String getLoggedUserId(){
-        SharedPreferences preference = getActivity().getSharedPreferences(APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
-        if(preference.contains("userId")){
-            String userId = preference.getString("userId", "");
+        SharedPreferences preference = getActivity().getSharedPreferences(ApplicationConstants.APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
+        if(preference.contains(ApplicationConstants.APPLICATION_PREFERENCE_USER_ID)){
+            String userId = preference.getString(ApplicationConstants.APPLICATION_PREFERENCE_USER_ID, "");
             return userId;
         }
         return "";

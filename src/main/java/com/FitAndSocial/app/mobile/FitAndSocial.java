@@ -13,6 +13,7 @@ import com.FitAndSocial.app.fragment.helper.NonSwipeableViewPager;
 import com.FitAndSocial.app.fragment.helper.ViewPagerAdapter;
 import com.FitAndSocial.app.integration.service.IFASUserRepo;
 import com.FitAndSocial.app.integration.service.INotificationRepo;
+import com.FitAndSocial.app.util.ApplicationConstants;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -32,7 +33,7 @@ public class FitAndSocial extends RoboSherlockFragmentActivity implements OnSele
     private ActionBar.Tab tab;
     private NonSwipeableViewPager viewPager;
     private SharedPreferences applicationPreference;
-    protected final String APPLICATION_PREFERENCE = "applicationPreference";
+//    protected final String APPLICATION_PREFERENCE = "applicationPreference";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -101,10 +102,10 @@ public class FitAndSocial extends RoboSherlockFragmentActivity implements OnSele
         tab = actionbar.newTab().setText("Account").setTabListener(tabListener);
         actionbar.addTab(tab);
 
-        applicationPreference = getSharedPreferences(APPLICATION_PREFERENCE, MODE_PRIVATE);
+        applicationPreference = getSharedPreferences(ApplicationConstants.APPLICATION_PREFERENCE, MODE_PRIVATE);
 
-        if(applicationPreference.contains("loggedIn")) {
-            String loginType = applicationPreference.getString("loggedIn", "");
+        if(applicationPreference.contains(ApplicationConstants.APPLICATION_PREFERENCE_LOGGED_IN)) {
+            String loginType = applicationPreference.getString(ApplicationConstants.APPLICATION_PREFERENCE_LOGGED_IN, "");
             if (loginType != null && !loginType.equals("")) {
                 viewPager.setCurrentItem(0);
             }else{

@@ -41,7 +41,7 @@ public final class ApplicationConstants {
     public static final String KEY_PARTICIPANT = "participants";
 
     //CURRENT LOCAL SERVER BASE ADDRESS
-    public static final String SERVER_BASE_ADDRESS = "http://192.168.2.7:9000";
+    public static final String SERVER_BASE_ADDRESS = "http://192.168.2.9:9000";
 
     //USER ACTIONS TO THE BACKEND
     public static final String SERVER_ADDRESS_ACTION_REGISTER = "/register";
@@ -55,7 +55,15 @@ public final class ApplicationConstants {
     public static final String SERVER_ADDRESS_ACTION_CANCEL_PARTICIPATION = "/cancelParticipation";
 
     //SHARED PREFERENCE ATTRIBUTES
-    
+    public static final String APPLICATION_PREFERENCE = "applicationPreference";
+    public static final String APPLICATION_PREFERENCE_REGISTERED_USERS = "registeredUsers";
+    public static final String APPLICATION_PREFERENCE_USER_ID = "userId";
+    public static final String APPLICATION_PREFERENCE_USERNAME = "username";
+    public static final String APPLICATION_PREFERENCE_LOGIN_TYPE = "loginType";
+    public static final String APPLICATION_PREFERENCE_LOGIN_TYPE_FACEBOOK = "facebook";
+    public static final String APPLICATION_PREFERENCE_LOGIN_TYPE_GOOGLE = "google";
+    public static final String APPLICATION_PREFERENCE_USERS = "users";
+    public static final String APPLICATION_PREFERENCE_LOGGED_IN = "loggedIn";
 
 
 

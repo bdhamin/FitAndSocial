@@ -16,6 +16,7 @@ import com.FitAndSocial.app.fragment.BaseFragment;
 import android.view.View;
 import com.FitAndSocial.app.fragment.helper.AccountContainerManager;
 import com.FitAndSocial.app.mobile.R;
+import com.FitAndSocial.app.util.ApplicationConstants;
 import com.facebook.*;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
@@ -66,7 +67,7 @@ public class FacebookLogin extends BaseFragment{
         if(state.isOpened()){
             Log.d(TAG, "Logged in...");
             userInfoTextView.setVisibility(View.VISIBLE);
-            applicationPreference = getActivity().getSharedPreferences(APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
+            applicationPreference = getActivity().getSharedPreferences(ApplicationConstants.APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
 
             // Request user data and show the results
             Request.executeMeRequestAsync(session, new Request.GraphUserCallback() {
