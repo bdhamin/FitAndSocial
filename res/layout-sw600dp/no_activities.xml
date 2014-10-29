@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:background="@android:color/white">
+
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/no_upcoming_activities"
+            android:id="@+id/no_upcoming_activities"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:textColor="@android:color/black"
+            android:gravity="center"
+            android:autoText="false" android:singleLine="true"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/btn_create_activity"
+            android:id="@+id/create_activity_button"
+            android:layout_below="@+id/no_upcoming_activities"
+            android:layout_alignParentLeft="true"
+            android:textColor="@android:color/black"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="15dp" android:clickable="true"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/btn_search_activity"
+            android:id="@+id/search_activity_button"
+            android:layout_below="@+id/no_upcoming_activities"
+            android:layout_alignParentRight="true"
+            android:gravity="right"
+            android:textColor="@android:color/black"
+            android:layout_marginTop="25dp"
+            android:paddingRight="15dp" android:clickable="true"/>
+
+    <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/hDivider"
+            android:background="@android:color/black"
+            android:src="@android:color/black"
+            android:layout_below="@+id/create_activity_button"
+            android:layout_alignParentRight="true" android:layout_marginTop="15dp"/>
+
+    <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/create_activity_container">
+
+    </RelativeLayout>
+</RelativeLayout>
+

@@ -1,6 +1,9 @@
 package com.FitAndSocial.app.fragment;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -42,6 +45,14 @@ public class ActivityInformationFragment extends BaseFragment{
     private TextView date;
     private TextView time;
     private TextView membersTotal;
+    private ImageView memberOne;
+    private ImageView memberTwo;
+    private ImageView memberThree;
+    private TextView memberOneName;
+    private TextView memberTwoName;
+    private  TextView memberThreeName;
+    private TextView members;
+    private TextView showMore;
 
     private ProgressDialog pDialog;
     private boolean isParticipation;
@@ -80,6 +91,14 @@ public class ActivityInformationFragment extends BaseFragment{
         date = (TextView)view.findViewById(R.id.aDate);
         time = (TextView)view.findViewById(R.id.aTime);
         membersTotal = (TextView)view.findViewById(R.id.members);
+        memberOne = (ImageView) view.findViewById(R.id.memberOne);
+        memberTwo = (ImageView) view.findViewById(R.id.memberTwo);
+        memberThree = (ImageView) view.findViewById(R.id.memberThree);
+        showMore = (TextView) view.findViewById(R.id.showMore);
+        memberOneName = (TextView) view.findViewById(R.id.memberOneName);
+        memberTwoName = (TextView) view.findViewById(R.id.memberTwoName);
+        memberThreeName = (TextView) view.findViewById(R.id.memberThreeName);
+        members = (TextView)view.findViewById(R.id.members);
         if(!isParticipation){
             participationButton = (TextView)view.findViewById(R.id.participate_button);
             participationButton.setText(CANCEL_PARTICIPATION);
@@ -95,6 +114,86 @@ public class ActivityInformationFragment extends BaseFragment{
         date.setText(selectedSearchResult.get(ApplicationConstants.KEY_DATE));
         time.setText(selectedSearchResult.get(ApplicationConstants.KEY_TIME));
         membersTotal.setText("members " + selectedSearchResult.get(ApplicationConstants.KEY_MEMBERS_TOTAL));
+        if(selectedSearchResult.get("member_0_name") != "" && selectedSearchResult.get("member_0_name") != null){
+            memberOneName.setText(selectedSearchResult.get("member_0_name"));
+            memberOne.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.friends));
+
+            if(selectedSearchResult.get("member_1_name") != "" && selectedSearchResult.get("member_1_name") != null){
+                memberTwoName.setText(selectedSearchResult.get("member_1_name"));
+                memberTwo.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.friends));
+            }else{
+                setVisibility(1);
+            }
+            if(selectedSearchResult.get("member_2_name") != "" && selectedSearchResult.get("member_2_name") != null){
+                memberThreeName.setText(selectedSearchResult.get("member_2_name"));
+                memberThree.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.friends));
+                showMore.setVisibility(View.VISIBLE);
+                showMore.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showPopup(selectedSearchResult);
+                    }
+                });
+            }else{
+                setVisibility(2);
+            }
+        }else{
+            showMore.setVisibility(View.INVISIBLE);
+            memberOneName.setText("");
+            memberTwoName.setText("");
+            memberThreeName.setText("");
+            memberOne.setImageDrawable(null);
+            memberTwo.setImageDrawable(null);
+            memberThree.setImageDrawable(null);
+        }
+
+    }
+
+    private void showPopup(HashMap<String, String> stringStringHashMap) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Activity Members");
+
+        ListView modeList = new ListView(getActivity());
+        String[] stringArray = new String[Integer.valueOf(stringStringHashMap.get(ApplicationConstants.KEY_MEMBERS_TOTAL))];
+        for(int i =0; i<Integer.valueOf(stringStringHashMap.get(ApplicationConstants.KEY_MEMBERS_TOTAL)); i++){
+            stringArray[i] = stringStringHashMap.get("member_"+i+"_name");
+        }
+        ArrayAdapter<String> modeAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, stringArray);
+        modeList.setAdapter(modeAdapter);
+
+        builder.setView(modeList);
+
+        builder.setNegativeButton("cancel",
+                new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        final Dialog dialog = builder.create();
+
+        dialog.show();
+    }
+
+    private void setVisibility(int members){
+        switch (members){
+            case 0:
+                break;
+            case 1:
+                showMore.setVisibility(View.INVISIBLE);
+                memberTwoName.setText("");
+                memberThreeName.setText("");
+                memberTwo.setImageDrawable(null);
+                memberThree.setImageDrawable(null);
+                break;
+            case 2:
+                showMore.setVisibility(View.INVISIBLE);
+                memberThreeName.setText("");
+                memberThree.setImageDrawable(null);
+                break;
+        }
     }
 
     private void attachButtonListener() {

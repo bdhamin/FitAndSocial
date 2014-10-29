@@ -1,16 +1,17 @@
 package com.FitAndSocial.app.adapter;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.*;
 import com.FitAndSocial.app.fragment.ActivityInformationFragment;
 import com.FitAndSocial.app.fragment.BaseFragment;
 import com.FitAndSocial.app.mobile.R;
@@ -28,13 +29,12 @@ public class ActivitiesLazyAdapter extends BaseAdapter{
     private ArrayList<HashMap<String, String>> data;
     private static LayoutInflater layoutInflater = null;
     private TextView showMore;
-    private TextView no_members;
     private TextView title;
     private TextView typeName;
     private TextView distanceInKM;
     private TextView dTime;
     private TextView aDate;
-    private  TextView aTime;
+    private TextView aTime;
     private ImageView memberOne;
     private ImageView memberTwo;
     private ImageView memberThree;
@@ -42,10 +42,10 @@ public class ActivitiesLazyAdapter extends BaseAdapter{
     private TextView memberTwoName;
     private  TextView memberThreeName;
     private TextView members;
-    private boolean test =false;
+    private boolean isInformation =false;
     private View view;
-
-
+    private HashMap<String, String> fas;
+    private int activityMembersTotal;
 
     public ActivitiesLazyAdapter(BaseFragment activity, ArrayList<HashMap<String, String>> data){
         this.activity = activity;
@@ -54,9 +54,7 @@ public class ActivitiesLazyAdapter extends BaseAdapter{
     }
 
     public void setIsInformation(boolean isInformation){
-        if(isInformation){
-          test = true;
-        }
+            this.isInformation = isInformation;
     }
 
 
@@ -82,7 +80,7 @@ public class ActivitiesLazyAdapter extends BaseAdapter{
             view = layoutInflater.inflate(R.layout.list_row, null);
 
         showMore = (TextView) view.findViewById(R.id.showMore);
-        no_members = (TextView) view.findViewById(R.id.no_members);
+//        no_members = (TextView) view.findViewById(R.id.no_members);
         title = (TextView) view.findViewById(R.id.title);
         typeName = (TextView) view.findViewById(R.id.typeName);
         distanceInKM = (TextView) view.findViewById(R.id.km);
@@ -99,10 +97,11 @@ public class ActivitiesLazyAdapter extends BaseAdapter{
         memberThreeName = (TextView) view.findViewById(R.id.memberThreeName);
         members = (TextView)view.findViewById(R.id.members);
 
-        HashMap<String, String> fas = new HashMap<>();
+        fas = new HashMap<>();
 
         fas = data.get(position);
         members.setText("Members: "+fas.get(ApplicationConstants.KEY_MEMBERS_TOTAL));
+        activityMembersTotal = Integer.valueOf(fas.get(ApplicationConstants.KEY_MEMBERS_TOTAL));
         title.setText(fas.get(ApplicationConstants.KEY_TITLE));
         typeName.setText(fas.get(ApplicationConstants.KEY_TYPE));
         distanceInKM.setText(fas.get(ApplicationConstants.KEY_DISTANCE));
@@ -112,7 +111,7 @@ public class ActivitiesLazyAdapter extends BaseAdapter{
         if(fas.get("member_0_name") != "" && fas.get("member_0_name") != null){
             memberOneName.setText(fas.get("member_0_name"));
             memberOne.setImageDrawable(activity.getResources().getDrawable(R.drawable.friends));
-            no_members.setVisibility(View.INVISIBLE);
+//            no_members.setVisibility(View.INVISIBLE);
 
             if(fas.get("member_1_name") != "" && fas.get("member_1_name") != null){
                 memberTwoName.setText(fas.get("member_1_name"));
@@ -123,12 +122,11 @@ public class ActivitiesLazyAdapter extends BaseAdapter{
             if(fas.get("member_2_name") != "" && fas.get("member_2_name") != null){
                 memberThreeName.setText(fas.get("member_2_name"));
                 memberThree.setImageDrawable(activity.getResources().getDrawable(R.drawable.friends));
-                if(!test)showMore.setVisibility(View.VISIBLE);
+                if(!isInformation)showMore.setVisibility(View.VISIBLE);
             }else{
                 setVisibility(2);
             }
         }else{
-            no_members.setVisibility(View.VISIBLE);
             showMore.setVisibility(View.INVISIBLE);
             memberOneName.setText("");
             memberTwoName.setText("");
@@ -137,6 +135,13 @@ public class ActivitiesLazyAdapter extends BaseAdapter{
             memberTwo.setImageDrawable(null);
             memberThree.setImageDrawable(null);
         }
+
+        showMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPopup(data.get(position));
+            }
+        });
 
 
         view.setOnClickListener(new View.OnClickListener() {
@@ -165,13 +170,41 @@ public class ActivitiesLazyAdapter extends BaseAdapter{
         return view;
     }
 
+    private void showPopup(HashMap<String, String> stringStringHashMap) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity.getActivity());
+        builder.setTitle("Activity Members");
+
+        ListView modeList = new ListView(activity.getActivity());
+        String[] stringArray = new String[Integer.valueOf(stringStringHashMap.get(ApplicationConstants.KEY_MEMBERS_TOTAL))];
+        for(int i =0; i<Integer.valueOf(stringStringHashMap.get(ApplicationConstants.KEY_MEMBERS_TOTAL)); i++){
+            stringArray[i] = stringStringHashMap.get("member_"+i+"_name");
+        }
+        ArrayAdapter<String> modeAdapter = new ArrayAdapter<String>(activity.getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, stringArray);
+        modeList.setAdapter(modeAdapter);
+
+        builder.setView(modeList);
+
+        builder.setNegativeButton("cancel",
+                new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        final Dialog dialog = builder.create();
+
+        dialog.show();
+    }
+
     private void setVisibility(int members){
         switch (members){
             case 0:
                 break;
             case 1:
                 showMore.setVisibility(View.INVISIBLE);
-                no_members.setVisibility(View.INVISIBLE);
+//                no_members.setVisibility(View.INVISIBLE);
                 memberTwoName.setText("");
                 memberThreeName.setText("");
                 memberTwo.setImageDrawable(null);
@@ -179,12 +212,11 @@ public class ActivitiesLazyAdapter extends BaseAdapter{
                 break;
             case 2:
                 showMore.setVisibility(View.INVISIBLE);
-                no_members.setVisibility(View.INVISIBLE);
+//                no_members.setVisibility(View.INVISIBLE);
                 memberThreeName.setText("");
                 memberThree.setImageDrawable(null);
                 break;
         }
     }
-
 
 }

@@ -132,7 +132,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="13sp"
-            android:text="Show More"
+            android:text=". . . . ."
             android:id="@+id/showMore"
             android:textColor="@color/notification_bar_bg"
             android:textStyle="bold"

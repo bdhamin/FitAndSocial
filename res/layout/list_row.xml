@@ -146,7 +146,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="13sp"
-            android:text="Show More"
+            android:text=". . . . ."
             android:id="@+id/showMore"
             android:textColor="@color/notification_bar_bg"
             android:textStyle="bold"
@@ -154,7 +154,8 @@
             android:layout_toRightOf="@id/memberThree"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="10dp"
-            android:visibility="invisible"/>
+            android:visibility="invisible"
+            android:clickable="true"/>
 
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
@@ -243,16 +244,5 @@
             android:src="@android:color/black"
             android:layout_below="@+id/linearLayout"
             android:layout_alignParentRight="true"/>
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="No members found"
-            android:id="@+id/no_members"
-            android:textColor="@android:color/black"
-            android:layout_alignBottom="@+id/showMore"
-            android:layout_toRightOf="@+id/memberTwoName"
-            android:visibility="invisible"/>
-
 
 </RelativeLayout>

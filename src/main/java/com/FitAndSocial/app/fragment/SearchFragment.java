@@ -200,8 +200,9 @@ public class SearchFragment extends BaseFragment implements OnDateSetListener, O
 
                     Toast.makeText(getActivity(), "All the search fields are required!", Toast.LENGTH_SHORT).show();
 
-                } else if (dateToMillis < date) {
-                    Toast.makeText(getActivity(), "Select other date please", Toast.LENGTH_SHORT).show();
+//                } else if (dateToMillis < date) {
+//                    Toast.makeText(getActivity(), "Select other date please", Toast.LENGTH_SHORT).show();
+                    
                 } else {
                     FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

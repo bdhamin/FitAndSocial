@@ -159,7 +159,7 @@ public class Activities extends BaseFragment{
                         listView = (ListView) view.findViewById(R.id.list);
                         activitiesLazyAdapter = new ActivitiesLazyAdapter(Activities.this, activitiesList);
                         listView.setAdapter(activitiesLazyAdapter);
-                        activitiesLazyAdapter.setIsInformation(true);
+                        activitiesLazyAdapter.setIsInformation(false);
                     }
 
                 } else {
