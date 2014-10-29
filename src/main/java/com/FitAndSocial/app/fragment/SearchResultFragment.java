@@ -1,14 +1,18 @@
 package com.FitAndSocial.app.fragment;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+import com.FitAndSocial.app.fragment.helper.EventHelperService;
+import com.FitAndSocial.app.fragment.helper.SearchFragmentHelper;
 import com.FitAndSocial.app.mobile.R;
 import com.FitAndSocial.app.adapter.SearchResultAdapter;
 import com.FitAndSocial.app.util.ApplicationConstants;
@@ -26,7 +30,7 @@ import java.util.HashMap;
 /**
  * Created by mint on 28-7-14.
  */
-public class SearchResultFragment extends BaseFragment {
+public class SearchResultFragment extends BaseFragment implements SearchFragmentHelper{
 
     private ListView listView;
     private SearchResultAdapter searchResultAdapter;
@@ -34,6 +38,9 @@ public class SearchResultFragment extends BaseFragment {
     private ProgressDialog pDialog;
     private View view;
     private TextView notification;
+    private ArrayList<HashMap<String, String>> searchResultList;
+    private final String USER_ID = "userId";
+    private final String ACTIVITY_ID ="activityId";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceBundle){
@@ -100,7 +107,7 @@ public class SearchResultFragment extends BaseFragment {
                      * to make a request to the server when he clicks on a an event.
                      */
 
-                    ArrayList<HashMap<String, String>> searchResultList = new ArrayList<>();
+                    searchResultList = new ArrayList<>();
 
                     for (int temp = 0; temp < nodelist.getLength(); temp++) {
                         HashMap<String, String> map = new HashMap<>();
@@ -120,6 +127,7 @@ public class SearchResultFragment extends BaseFragment {
 
                         listView = (ListView) view.findViewById(R.id.list);
                         searchResultAdapter = new SearchResultAdapter(SearchResultFragment.this, searchResultList);
+                        searchResultAdapter.setFragment(SearchResultFragment.this);
                         listView.setAdapter(searchResultAdapter);
                         setFragmentTitle("Search Results");
                     }
@@ -140,6 +148,23 @@ public class SearchResultFragment extends BaseFragment {
             Node nValue = (Node) nlList.item(0);
             return nValue.getNodeValue();
         }
+    }
+
+
+    @Override
+    public void removeActivityFromList(int position) {
+        searchResultList.remove(position);
+        searchResultAdapter.notifyDataSetChanged();
+        searchResultAdapter.notifyDataSetInvalidated();
+    }
+
+    @Override
+    public void setParticipationRequestInfo(Long activityId, String loggedInUserId) {
+        Intent eventHelperIntent = new Intent(getActivity(), EventHelperService.class);
+        eventHelperIntent.putExtra(ACTIVITY_ID, activityId);
+        eventHelperIntent.putExtra(USER_ID, loggedInUserId);
+        eventHelperIntent.putExtra(ApplicationConstants.EVENT_TYPE, ApplicationConstants.EVENT_TYPE_PARTICIPATE_ACTION);
+        getActivity().startService(eventHelperIntent);
     }
 
 }

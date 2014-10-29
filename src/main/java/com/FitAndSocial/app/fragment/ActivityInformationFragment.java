@@ -1,6 +1,7 @@
 package com.FitAndSocial.app.fragment;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import com.FitAndSocial.app.fragment.helper.EventHelperService;
 import com.FitAndSocial.app.mobile.R;
 import com.FitAndSocial.app.util.ApplicationConstants;
 import org.apache.http.HttpResponse;
@@ -43,6 +45,7 @@ public class ActivityInformationFragment extends BaseFragment{
 
     private ProgressDialog pDialog;
     private boolean isParticipation;
+    private int activityPosition;
 
     private TextView participationButton;
     private final String ACTIVITY_ID = "activityId";
@@ -59,6 +62,8 @@ public class ActivityInformationFragment extends BaseFragment{
         Bundle bundle = this.getArguments();
         this.selectedSearchResult = (HashMap<String, String>)bundle.getSerializable("activity");
         this.isParticipation = bundle.getBoolean("participation");
+        this.activityPosition = bundle.getInt("position");
+        System.out.println("position: " + activityPosition);
         initTextViews();
         initEventDetails();
         loadRequiredFragments();
@@ -97,13 +102,24 @@ public class ActivityInformationFragment extends BaseFragment{
         participateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                String authenticationKey = getLoggedInUserId();
+                Intent eventHelperIntent = new Intent(ActivityInformationFragment.this.getActivity(), EventHelperService.class);
+                eventHelperIntent.putExtra(ACTIVITY_ID, Long.valueOf(selectedSearchResult.get("id")));
+                eventHelperIntent.putExtra(USER_ID, authenticationKey);
+
                 if(isParticipation){
-                    String participateUrl = ApplicationConstants.SERVER_BASE_ADDRESS+ApplicationConstants.SERVER_ADDRESS_ACTION_PARTICIPATION_REQUEST;
-                    new SendParticipationRequest().execute(participateUrl);
+                    eventHelperIntent.putExtra(ApplicationConstants.EVENT_TYPE, ApplicationConstants.EVENT_TYPE_PARTICIPATE_ACTION);
                 }else{
-                    String cancelParticipationUrl = ApplicationConstants.SERVER_BASE_ADDRESS+ApplicationConstants.SERVER_ADDRESS_ACTION_CANCEL_PARTICIPATION;
-                    new SendParticipationRequest().execute(cancelParticipationUrl);
+                    eventHelperIntent.putExtra(ApplicationConstants.EVENT_TYPE, ApplicationConstants.EVENT_TYPE_PARTICIPATE_CANCEL_ACTION);
                 }
+                ActivityInformationFragment.this.getActivity().startService(eventHelperIntent);
+//                SearchResultFragment searchResultFragment = (SearchResultFragment)
+//                        getActivity().getSupportFragmentManager().findFragmentById(R.id.create_fragment_container);
+//                if(searchResultFragment != null){
+//                    searchResultFragment.removeActivityFromList(activityPosition);
+//                }
+                disposeFragment();
             }
         });
     }
@@ -130,79 +146,5 @@ public class ActivityInformationFragment extends BaseFragment{
             transaction.commit();
             getActivity().getSupportFragmentManager().popBackStack();
         }
-    }
-
-    private class SendParticipationRequest extends AsyncTask<String, Void, Boolean>{
-
-        @Override
-        protected void onPreExecute(){
-            String participate = "Participate";
-            String cancelParticipation = "Cancelling Participation";
-            String createMessage = "Saving...";
-            String updateMessage = "Updating...";
-            pDialog = new ProgressDialog(getActivity());
-            pDialog.setTitle(isParticipation? participate : cancelParticipation);
-            pDialog.setMessage(isParticipation? createMessage : updateMessage);
-            pDialog.setIndeterminate(true);
-            pDialog.show();
-        }
-
-
-        @Override
-        protected Boolean doInBackground(String... Url) {
-
-            String authenticationKey = getLoggedInUserId();
-            if(authenticationKey.trim().isEmpty()){
-                pDialog.dismiss();
-                return false;
-            }
-
-            JSONObject jsonObject = new JSONObject();
-            try {
-                jsonObject.accumulate(ACTIVITY_ID, Long.valueOf(selectedSearchResult.get("id")));
-                jsonObject.accumulate(USER_ID, authenticationKey);
-                StringEntity stringEntity = new StringEntity(jsonObject.toString());
-
-                HttpClient httpClient = new DefaultHttpClient();
-                HttpPost httpPost = new HttpPost(Url[0]);
-                httpPost.setEntity(stringEntity);
-                httpPost.setHeader("Content-type", "application/json");
-
-                HttpResponse httpResponse = httpClient.execute(httpPost);
-                StatusLine statusLine = httpResponse.getStatusLine();
-                if(statusLine.getStatusCode() == HttpStatus.SC_OK){
-                    pDialog.dismiss();
-                    return true;
-                }else{
-                    pDialog.dismiss();
-                    return false;
-                }
-            } catch (JSONException|UnsupportedEncodingException|ClientProtocolException e) {
-                e.printStackTrace();
-                pDialog.dismiss();
-                return false;
-
-            }catch (IOException ioException){
-                pDialog.dismiss();
-                return false;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Boolean success){
-
-            String participationSuccess = "Participation Success";
-            String cancelParticipation = "Successfully removed participation";
-
-
-            if(success){
-                Toast.makeText(getActivity(), isParticipation? participationSuccess : cancelParticipation, Toast.LENGTH_SHORT).show();
-                disposeFragment();
-            }else{
-                Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
-                disposeFragment();
-            }
-        }
-
     }
 }

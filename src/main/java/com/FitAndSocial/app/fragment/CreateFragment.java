@@ -1,15 +1,16 @@
 package com.FitAndSocial.app.fragment;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.*;
+import com.FitAndSocial.app.fragment.helper.EventHelperService;
 import com.FitAndSocial.app.mobile.R;
 import android.view.View;
 import android.app.DatePickerDialog.OnDateSetListener;
@@ -17,14 +18,6 @@ import android.app.TimePickerDialog.OnTimeSetListener;
 import com.FitAndSocial.app.model.Event;
 import com.FitAndSocial.app.util.ApplicationConstants;
 import com.FitAndSocial.app.util.Utils;
-import com.google.gson.Gson;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.StatusLine;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 /**
  * Created by mint on 13-7-14.
@@ -177,8 +170,12 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
             public void onClick(View view) {
                 boolean check = requiredFieldsOk();
                 if(check){
-                    String createEvent = ApplicationConstants.SERVER_BASE_ADDRESS+ApplicationConstants.SERVER_ADDRESS_ACTION_CREATE_ACTIVITY;
-                    new CreateEvent().execute(createEvent);
+                    Event event = createEvent();
+                    Intent eventHelper = new Intent(CreateFragment.this.getActivity(), EventHelperService.class);
+                    eventHelper.putExtra(ApplicationConstants.EVENT_TYPE, ApplicationConstants.EVENT_TYPE_CREATE_ACTION);
+                    eventHelper.putExtra("eventModel", event);
+                    CreateFragment.this.getActivity().startService(eventHelper);
+                    new CreateEvent().execute();
                 }else{
                     Toast.makeText(getActivity(), "Please make sure you have filled in all the fields.", Toast.LENGTH_LONG).show();
                 }
@@ -204,68 +201,38 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
         }
     }
 
-    private class CreateEvent extends AsyncTask<String, Void, Boolean>{
 
+    private Event createEvent(){
         Event event = new Event();
         String[] duration = Utils.parseSelectedValues(activityDuration);
+        String authenticationKey = getLoggedInUserId();
+        event.setTitle(title.getText().toString());
+        event.setType(activityType);
+        event.setDurationMin(Integer.valueOf(duration[0]));
+        event.setDurationMax(Integer.valueOf(duration[1]));
+        event.setDistance(Integer.valueOf(activityDistance));
+        event.setActivityDate(Utils.convertDateStringToLong(date));
+        event.setActivityTime(Utils.convertTimeStringToLong(time));
+        event.setUser(authenticationKey);
+        event.setStartLocationLatitude(10);
+        event.setStartLocationMagnitude(20);
+        event.setEndLocationLatitude(10);
+        event.setEndLocationMagnitude(20);
+
+        return event;
+    }
+
+
+    private class CreateEvent extends AsyncTask<String, Void, Boolean>{
 
         @Override
         protected void onPreExecute(){
-            pDialog = new ProgressDialog(getActivity());
-            pDialog.setTitle("Progressing your request");
-            pDialog.setMessage("Processing...");
-            pDialog.setIndeterminate(true);
-            pDialog.show();
+            super.onPreExecute();
         }
 
         @Override
         protected Boolean doInBackground(String... Url){
-            Gson gson = new Gson();
-            String authenticationKey = getLoggedInUserId();
-
-            if (authenticationKey.trim().isEmpty()) {
-                pDialog.dismiss();
-                return false;
-            }
-
-            event.setTitle(title.getText().toString());
-            event.setType(activityType);
-            event.setDurationMin(Integer.valueOf(duration[0]));
-            event.setDurationMax(Integer.valueOf(duration[1]));
-            event.setDistance(Integer.valueOf(activityDistance));
-            event.setActivityDate(Utils.convertDateStringToLong(date));
-            event.setActivityTime(Utils.convertTimeStringToLong(time));
-            event.setUser(authenticationKey);
-            event.setStartLocationLatitude(10);
-            event.setStartLocationMagnitude(20);
-            event.setEndLocationLatitude(10);
-            event.setEndLocationMagnitude(20);
-
-
-            String json = gson.toJson(event);
-
-            try{
-                HttpClient httpClient = new DefaultHttpClient();
-                HttpPost httpPost = new HttpPost(Url[0]);
-                StringEntity stringEntity = new StringEntity(json);
-                httpPost.setEntity(stringEntity);
-                httpPost.setHeader("Content-type", "application/json");
-                HttpResponse httpResponse = httpClient.execute(httpPost);
-                StatusLine statusLine = httpResponse.getStatusLine();
-                if(statusLine.getStatusCode() == HttpStatus.SC_OK){
-                    pDialog.dismiss();
-                    return true;
-                }else{
-                    pDialog.dismiss();
-                    System.out.println("Something went wrong while creating activity");
-                    return false;
-                }
-            }catch (Exception e){
-                pDialog.dismiss();
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-                return false;
-            }
+            return true;
         }
 
         @Override
@@ -285,11 +252,6 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
             }
             disposeCurrentFragment();
 
-            if(success){
-                Toast.makeText(getActivity(), "Activity Created Successfully!", Toast.LENGTH_LONG).show();
-            }else{
-                Toast.makeText(getActivity(), "Error occurred while trying to create the activity", Toast.LENGTH_LONG).show();
-            }
         }
     }
 }

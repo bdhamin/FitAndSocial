@@ -83,4 +83,11 @@ public final class ApplicationConstants {
     public static final String FRAGMENT_TITLE_CREATE_NEW_ACTIVITY = "Create New Activity";
     public static final String FRAGMENT_TITLE_SEARCH = "Search";
 
+
+    //Event type (Create event, Participate to an event, etc..)
+    public static final String EVENT_TYPE = "eventType";
+    public static final String EVENT_TYPE_CREATE_ACTION = "create";
+    public static final String EVENT_TYPE_PARTICIPATE_ACTION = "participate";
+    public static final String EVENT_TYPE_PARTICIPATE_CANCEL_ACTION = "cancel";
+
 }

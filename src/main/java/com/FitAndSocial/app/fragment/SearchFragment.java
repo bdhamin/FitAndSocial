@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.*;
@@ -15,6 +16,7 @@ import com.FitAndSocial.app.util.ApplicationConstants;
 import com.FitAndSocial.app.util.Utils;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Date;
 
 /**
  * Created by mint on 25-7-14.
@@ -28,6 +30,7 @@ public class SearchFragment extends BaseFragment implements OnDateSetListener, O
     private String radius;
     private String startDate;
     private String startTime;
+    private long dateToMillis;
 
 
     @Override
@@ -88,8 +91,10 @@ public class SearchFragment extends BaseFragment implements OnDateSetListener, O
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
         TextView date = (TextView)view.findViewById(R.id.select_date_button);
         String formattedDate = Utils.formatDate(day, month, year);
+        Time activityDate = new Time();
+        activityDate.set(day, month, year);
+        dateToMillis = activityDate.toMillis(true);
         startDate = formattedDate;
-        System.out.println(formattedDate);
         date.setText(formattedDate);
     }
 
@@ -189,23 +194,26 @@ public class SearchFragment extends BaseFragment implements OnDateSetListener, O
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                long date = new Date().getTime();
+                if (activityTypeName.equals("Activity Type") || distance.equals("Distance (KM)")
+                        || duration.equals("Duration") || radius.equals("Radius")) {
 
-                if(!activityTypeName.equals("Activity Type") && !distance.equals("Distance (KM)")
-                        && !duration.equals("Duration") && !radius.equals("Radius")){
-
-                        FragmentManager fragmentManager = getFragmentManager();
-                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        Fragment searchFragment = fragmentManager.findFragmentById(R.id.create_fragment_container);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("search", assembleUrl());
-                        SearchResultFragment searchResultFragment = new SearchResultFragment();
-                        searchResultFragment.setArguments(bundle);
-                        fragmentTransaction.remove(searchFragment);
-                        fragmentTransaction.add(R.id.activities_container, searchResultFragment);
-                        fragmentTransaction.addToBackStack(null);
-                        fragmentTransaction.commit();
-                }else{
                     Toast.makeText(getActivity(), "All the search fields are required!", Toast.LENGTH_SHORT).show();
+
+                } else if (dateToMillis < date) {
+                    Toast.makeText(getActivity(), "Select other date please", Toast.LENGTH_SHORT).show();
+                } else {
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    Fragment searchFragment = fragmentManager.findFragmentById(R.id.create_fragment_container);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("search", assembleUrl());
+                    SearchResultFragment searchResultFragment = new SearchResultFragment();
+                    searchResultFragment.setArguments(bundle);
+                    fragmentTransaction.remove(searchFragment);
+                    fragmentTransaction.add(R.id.activities_container, searchResultFragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
                 }
             }
         });

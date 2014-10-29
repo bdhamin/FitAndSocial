@@ -11,9 +11,10 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.FitAndSocial.app.fragment.ActivityInformationFragment;
 import com.FitAndSocial.app.fragment.BaseFragment;
+import com.FitAndSocial.app.fragment.helper.EventHelperService;
+import com.FitAndSocial.app.fragment.helper.SearchFragmentHelper;
 import com.FitAndSocial.app.mobile.R;
 import com.FitAndSocial.app.util.ApplicationConstants;
-import com.FitAndSocial.app.util.ParticipationHelper;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -38,6 +39,8 @@ public class SearchResultAdapter extends BaseAdapter{
     private final String ACTIVITY_ID ="activityId";
     private final String ACTIVITY = "activity";
     private final String PARTICIPATION = "participation";
+    private SearchFragmentHelper searchFragmentHelper;
+//    private Fragment fragment;
 
     public SearchResultAdapter(BaseFragment searchActivity, ArrayList<HashMap<String, String>> searchData){
         this.activity = searchActivity;
@@ -90,10 +93,9 @@ public class SearchResultAdapter extends BaseAdapter{
         participate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent processParticipation = new Intent(activity.getActivity(), ParticipationHelper.class);
-                processParticipation.putExtra(USER_ID, activity.getLoggedInUserId());
-                processParticipation.putExtra(ACTIVITY_ID, Long.valueOf(data.get(position).get(ApplicationConstants.KEY_ACTIVITY_ID)));
-                activity.getActivity().startService(processParticipation);
+                searchFragmentHelper.setParticipationRequestInfo(Long.valueOf(data.get(position).get(ApplicationConstants.KEY_ACTIVITY_ID)),activity.getLoggedInUserId());
+                searchFragmentHelper.removeActivityFromList(position);
+
             }
         });
 
@@ -103,6 +105,7 @@ public class SearchResultAdapter extends BaseAdapter{
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(ACTIVITY, data.get(position));
                 bundle.putBoolean(PARTICIPATION, true);
+                bundle.putInt("position", position);
 
                 ActivityInformationFragment activityInformation = new ActivityInformationFragment();
 
@@ -119,6 +122,14 @@ public class SearchResultAdapter extends BaseAdapter{
         });
 
         return view;
+    }
+
+    public void setFragment(Fragment fragment){
+        try{
+            this.searchFragmentHelper = (SearchFragmentHelper) fragment;
+//            this.fragment = fragment;
+        }catch (ClassCastException e){}
+
     }
 
 

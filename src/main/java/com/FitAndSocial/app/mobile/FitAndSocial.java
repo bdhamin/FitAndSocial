@@ -1,29 +1,24 @@
 package com.FitAndSocial.app.mobile;
 
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Gravity;
 import android.view.View;
-import com.FitAndSocial.app.fragment.BaseFragment;
 import com.FitAndSocial.app.fragment.NotificationDetailsFragment;
 import com.FitAndSocial.app.fragment.NotificationsListFragment;
 import com.FitAndSocial.app.fragment.activityCommunicationInterface.OnSelectedNotificationListener;
 import com.FitAndSocial.app.fragment.helper.NonSwipeableViewPager;
 import com.FitAndSocial.app.fragment.helper.ViewPagerAdapter;
-import com.FitAndSocial.app.integration.service.IFASUserRepo;
-import com.FitAndSocial.app.integration.service.INotificationRepo;
 import com.FitAndSocial.app.util.ApplicationConstants;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
-import com.google.inject.Inject;
 import roboguice.inject.ContentView;
-
-import java.util.HashMap;
-
 import static android.support.v4.view.ViewPager.SimpleOnPageChangeListener;
 
 @ContentView(R.layout.main)
@@ -33,7 +28,6 @@ public class FitAndSocial extends RoboSherlockFragmentActivity implements OnSele
     private ActionBar.Tab tab;
     private NonSwipeableViewPager viewPager;
     private SharedPreferences applicationPreference;
-//    protected final String APPLICATION_PREFERENCE = "applicationPreference";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,16 +39,19 @@ public class FitAndSocial extends RoboSherlockFragmentActivity implements OnSele
         actionbar = getSupportActionBar();
         actionbar.setDisplayShowTitleEnabled(false);
         actionbar.setDisplayShowCustomEnabled(true);
-        getSupportActionBar().setCustomView(R.layout.notification_bar_layout);
         actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        actionbar.setCustomView(R.layout.notification_bar_layout);
+
+//        getSupportActionBar().setCustomView(R.layout.notification_bar_layout);
         View homeIcon = findViewById(android.R.id.home);
         ((View) homeIcon.getParent()).setVisibility(View.GONE);
+
+
 
         viewPager = (NonSwipeableViewPager)findViewById(R.id.pager);
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         SimpleOnPageChangeListener viewPagerListener = new NonSwipeableViewPager.SimpleOnPageChangeListener(){
-
             @Override
             public void onPageSelected(int position){
                 super.onPageSelected(position);
@@ -87,7 +84,8 @@ public class FitAndSocial extends RoboSherlockFragmentActivity implements OnSele
             }
         };
 
-        tab = actionbar.newTab().setIcon(getResources().getDrawable(R.drawable.home)).setTabListener(tabListener);
+//        tab = actionbar.newTab().setIcon(getResources().getDrawable(R.drawable.home)).setTabListener(tabListener);
+        tab = actionbar.newTab().setIcon(getResources().getDrawable(R.drawable.home)).setText(" ").setTabListener(tabListener);
         actionbar.addTab(tab);
 
         tab = actionbar.newTab().setText(ApplicationConstants.VIEW_PAGER_TAB_PERSONAL).setTabListener(tabListener);
