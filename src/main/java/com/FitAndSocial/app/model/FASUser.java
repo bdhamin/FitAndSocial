@@ -1,5 +1,6 @@
 package com.FitAndSocial.app.model;
 
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -15,15 +16,10 @@ public class FASUser {
     private String username;
     @DatabaseField(canBeNull = false)
     private String activeSince;
+    @DatabaseField(dataType = DataType.BYTE_ARRAY)
+    private byte[] imageBytes;
 
     public FASUser(){}
-
-    public FASUser(String id, String username, String activeSince){
-        this.id = id;
-        this.username = username;
-        this.activeSince = activeSince;
-    }
-
 
     public String getId() {
         return id;
@@ -47,5 +43,13 @@ public class FASUser {
 
     public void setActiveSince(String activeSince) {
         this.activeSince = activeSince;
+    }
+
+    public byte[] getImageBytes() {
+        return imageBytes;
+    }
+
+    public void setImageBytes(byte[] imageBytes) {
+        this.imageBytes = imageBytes;
     }
 }

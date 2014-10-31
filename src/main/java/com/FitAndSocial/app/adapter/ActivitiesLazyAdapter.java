@@ -1,6 +1,5 @@
 package com.FitAndSocial.app.adapter;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -16,7 +15,6 @@ import com.FitAndSocial.app.fragment.ActivityInformationFragment;
 import com.FitAndSocial.app.fragment.BaseFragment;
 import com.FitAndSocial.app.mobile.R;
 import com.FitAndSocial.app.util.ApplicationConstants;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -80,7 +78,6 @@ public class ActivitiesLazyAdapter extends BaseAdapter{
             view = layoutInflater.inflate(R.layout.list_row, null);
 
         showMore = (TextView) view.findViewById(R.id.showMore);
-//        no_members = (TextView) view.findViewById(R.id.no_members);
         title = (TextView) view.findViewById(R.id.title);
         typeName = (TextView) view.findViewById(R.id.typeName);
         distanceInKM = (TextView) view.findViewById(R.id.km);
@@ -111,7 +108,6 @@ public class ActivitiesLazyAdapter extends BaseAdapter{
         if(fas.get("member_0_name") != "" && fas.get("member_0_name") != null){
             memberOneName.setText(fas.get("member_0_name"));
             memberOne.setImageDrawable(activity.getResources().getDrawable(R.drawable.friends));
-//            no_members.setVisibility(View.INVISIBLE);
 
             if(fas.get("member_1_name") != "" && fas.get("member_1_name") != null){
                 memberTwoName.setText(fas.get("member_1_name"));
@@ -204,7 +200,6 @@ public class ActivitiesLazyAdapter extends BaseAdapter{
                 break;
             case 1:
                 showMore.setVisibility(View.INVISIBLE);
-//                no_members.setVisibility(View.INVISIBLE);
                 memberTwoName.setText("");
                 memberThreeName.setText("");
                 memberTwo.setImageDrawable(null);
@@ -212,7 +207,6 @@ public class ActivitiesLazyAdapter extends BaseAdapter{
                 break;
             case 2:
                 showMore.setVisibility(View.INVISIBLE);
-//                no_members.setVisibility(View.INVISIBLE);
                 memberThreeName.setText("");
                 memberThree.setImageDrawable(null);
                 break;

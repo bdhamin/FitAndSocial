@@ -1,17 +1,16 @@
 package com.FitAndSocial.app.mobile;
 
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.Gravity;
 import android.view.View;
 import com.FitAndSocial.app.fragment.NotificationDetailsFragment;
 import com.FitAndSocial.app.fragment.NotificationsListFragment;
 import com.FitAndSocial.app.fragment.activityCommunicationInterface.OnSelectedNotificationListener;
+import com.FitAndSocial.app.fragment.helper.FragmentVisibilityDeterminationInterface;
 import com.FitAndSocial.app.fragment.helper.NonSwipeableViewPager;
-import com.FitAndSocial.app.fragment.helper.ViewPagerAdapter;
+import com.FitAndSocial.app.adapter.ViewPagerAdapter;
 import com.FitAndSocial.app.util.ApplicationConstants;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.view.Menu;
@@ -28,6 +27,7 @@ public class FitAndSocial extends RoboSherlockFragmentActivity implements OnSele
     private ActionBar.Tab tab;
     private NonSwipeableViewPager viewPager;
     private SharedPreferences applicationPreference;
+//    private FragmentVisibilityDeterminationInterface fragmentVisibility;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,17 +50,27 @@ public class FitAndSocial extends RoboSherlockFragmentActivity implements OnSele
 
         viewPager = (NonSwipeableViewPager)findViewById(R.id.pager);
         FragmentManager fragmentManager = getSupportFragmentManager();
+        final ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(fragmentManager);
 
         SimpleOnPageChangeListener viewPagerListener = new NonSwipeableViewPager.SimpleOnPageChangeListener(){
             @Override
             public void onPageSelected(int position){
                 super.onPageSelected(position);
                 actionbar.setSelectedNavigationItem(position);
+//                try{
+//                        FragmentVisibilityDeterminationInterface fragment = (FragmentVisibilityDeterminationInterface)viewPagerAdapter.instantiateItem(viewPager, position);
+//                        if(fragment != null){
+//                        actionbar.setSelectedNavigationItem(position);
+//                        fragment.fragmentBecameVisible();
+//                    }
+//                }catch (ClassCastException e){
+//                    actionbar.setSelectedNavigationItem(position);
+//                }
+
             }
         };
 
         viewPager.setOnPageChangeListener(viewPagerListener);
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(fragmentManager);
         viewPager.setAdapter(viewPagerAdapter);
 
 

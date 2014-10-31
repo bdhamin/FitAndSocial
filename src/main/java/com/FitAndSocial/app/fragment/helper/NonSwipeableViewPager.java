@@ -38,6 +38,11 @@ public class NonSwipeableViewPager extends ViewPager{
         return false;
     }
 
+
+
+
+
+
     public void setIsSwipeable(boolean isSwipeable){
         this.swipeable = isSwipeable;
     }

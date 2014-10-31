@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: org.robolectric:robolectric:2.4-SNAPSHOT">
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/org/robolectric/robolectric/2.4-SNAPSHOT/robolectric-2.4-20141010.172815-94.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/robolectric/robolectric/2.4-SNAPSHOT/robolectric-2.4-20141029.183600-99.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$MAVEN_REPOSITORY$/org/robolectric/robolectric/2.4-SNAPSHOT/robolectric-2.4-20141010.172815-94-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/robolectric/robolectric/2.4-SNAPSHOT/robolectric-2.4-20141029.183600-99-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$MAVEN_REPOSITORY$/org/robolectric/robolectric/2.4-SNAPSHOT/robolectric-2.4-20141010.172815-94-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/robolectric/robolectric/2.4-SNAPSHOT/robolectric-2.4-20141029.183600-99-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

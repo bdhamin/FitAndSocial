@@ -12,4 +12,6 @@ public interface AccountContainerManager {
     public void processLoggedInGoogleUser(Person user, String email);
     public void processLogoutUser();
     public void processLoggedInUserInformation(String username);
+    public void createAccountUsingGoogle();
+    public void createAccountUsingFacebook();
 }

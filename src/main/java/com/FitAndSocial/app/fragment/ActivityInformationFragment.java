@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,18 +16,6 @@ import android.widget.*;
 import com.FitAndSocial.app.fragment.helper.EventHelperService;
 import com.FitAndSocial.app.mobile.R;
 import com.FitAndSocial.app.util.ApplicationConstants;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONException;
-import org.json.JSONObject;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
 /**
@@ -74,7 +61,6 @@ public class ActivityInformationFragment extends BaseFragment{
         this.selectedSearchResult = (HashMap<String, String>)bundle.getSerializable("activity");
         this.isParticipation = bundle.getBoolean("participation");
         this.activityPosition = bundle.getInt("position");
-        System.out.println("position: " + activityPosition);
         initTextViews();
         initEventDetails();
         loadRequiredFragments();
@@ -213,11 +199,6 @@ public class ActivityInformationFragment extends BaseFragment{
                     eventHelperIntent.putExtra(ApplicationConstants.EVENT_TYPE, ApplicationConstants.EVENT_TYPE_PARTICIPATE_CANCEL_ACTION);
                 }
                 ActivityInformationFragment.this.getActivity().startService(eventHelperIntent);
-//                SearchResultFragment searchResultFragment = (SearchResultFragment)
-//                        getActivity().getSupportFragmentManager().findFragmentById(R.id.create_fragment_container);
-//                if(searchResultFragment != null){
-//                    searchResultFragment.removeActivityFromList(activityPosition);
-//                }
                 disposeFragment();
             }
         });

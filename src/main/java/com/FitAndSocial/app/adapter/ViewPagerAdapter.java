@@ -1,4 +1,4 @@
-package com.FitAndSocial.app.fragment.helper;
+package com.FitAndSocial.app.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -30,8 +30,6 @@ public class ViewPagerAdapter extends FragmentPagerAdapter{
                 ProfileFragment profileFragment = new ProfileFragment();
                 return profileFragment;
             case 3:
-//                NotificationsListFragment notificationsListFragment = new NotificationsListFragment();
-//                return notificationsListFragment;
                 NotificationContainerFragment notificationActivity = new NotificationContainerFragment();
                 return notificationActivity;
             case 4:

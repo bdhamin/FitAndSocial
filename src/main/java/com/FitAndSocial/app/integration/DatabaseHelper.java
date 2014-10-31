@@ -17,7 +17,7 @@ import java.sql.SQLException;
 public class DatabaseHelper extends OrmLiteSqliteOpenHelper{
 
     private static final String DATABASE_NAME = "fitAndSocial.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     @Inject
     public DatabaseHelper(Context context) {
@@ -36,6 +36,11 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper{
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, ConnectionSource connectionSource, int oldVersion, int newVersion) {
-
+         try{
+             TableUtils.dropTable(connectionSource, FASUser.class, true);
+             TableUtils.dropTable(connectionSource, Notification.class, true);
+         }catch (SQLException e){
+             System.out.println("droping table..");
+         }
     }
 }

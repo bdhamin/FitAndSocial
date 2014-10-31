@@ -54,6 +54,7 @@ public final class ApplicationConstants {
     public static final String SERVER_ADDRESS_ACTION_PARTICIPATION_REQUEST = "/participationRequest";
     public static final String SERVER_ADDRESS_ACTION_CANCEL_PARTICIPATION = "/cancelParticipation";
     public static final String SERVER_ADDRESS_ACTION_DEVICE_REGISTRATION = "/deviceRegistrationId/";
+    public static final String SERVER_ADDRESS_ACTION_CAN_CONNECT = "/canConnect";
 
     //SHARED PREFERENCE ATTRIBUTES
     public static final String APPLICATION_PREFERENCE = "applicationPreference";
