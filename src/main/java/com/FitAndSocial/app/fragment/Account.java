@@ -39,6 +39,7 @@ public class Account extends BaseFragment implements AccountContainerManager{
     private ProfilePictureReceiver receiver;
     private GraphUser user;
     private final String FACEBOOK_PROFILE_PIC_URL = "https://graph.facebook.com/";
+
     /**
      * Facebook offer difference sizes for the profile picture
      * -small 50pixels wide variable height
@@ -50,8 +51,8 @@ public class Account extends BaseFragment implements AccountContainerManager{
      * or
      * https://graph.facebook.com/{userId}/picture?type=normal
      */
-    private final String FACEBOOK_PROFILE_PIC_TYPE = "/picture?width=120&height=100";
-    private static final int PROFILE_PIC_SIZE = 120;
+    private final String FACEBOOK_PROFILE_PIC_TYPE = "/picture?width=80&height=80";
+    private static final int PROFILE_PIC_SIZE = 80;
 
 
     @Override

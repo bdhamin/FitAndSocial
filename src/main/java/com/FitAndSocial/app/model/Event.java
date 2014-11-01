@@ -16,10 +16,10 @@ public class Event implements Parcelable{
     private long activityDate;
     private long activityTime;
     private String user;
-    private long startLocationLatitude;
-    private long startLocationMagnitude;
-    private long endLocationLatitude;
-    private long endLocationMagnitude;
+    private double startLocationLatitude;
+    private double startLocationMagnitude;
+    private double endLocationLatitude;
+    private double endLocationMagnitude;
 
 
     public String getTitle() {
@@ -70,35 +70,35 @@ public class Event implements Parcelable{
         this.user = user;
     }
 
-    public long getStartLocationLatitude() {
+    public double getStartLocationLatitude() {
         return startLocationLatitude;
     }
 
-    public void setStartLocationLatitude(long startLocationLatitude) {
+    public void setStartLocationLatitude(double startLocationLatitude) {
         this.startLocationLatitude = startLocationLatitude;
     }
 
-    public long getStartLocationMagnitude() {
+    public double getStartLocationMagnitude() {
         return startLocationMagnitude;
     }
 
-    public void setStartLocationMagnitude(long startLocationMagnitude) {
+    public void setStartLocationMagnitude(double startLocationMagnitude) {
         this.startLocationMagnitude = startLocationMagnitude;
     }
 
-    public long getEndLocationLatitude() {
+    public double getEndLocationLatitude() {
         return endLocationLatitude;
     }
 
-    public void setEndLocationLatitude(long endLocationLatitude) {
+    public void setEndLocationLatitude(double endLocationLatitude) {
         this.endLocationLatitude = endLocationLatitude;
     }
 
-    public long getEndLocationMagnitude() {
+    public double getEndLocationMagnitude() {
         return endLocationMagnitude;
     }
 
-    public void setEndLocationMagnitude(long endLocationMagnitude) {
+    public void setEndLocationMagnitude(double endLocationMagnitude) {
         this.endLocationMagnitude = endLocationMagnitude;
     }
 
@@ -133,10 +133,10 @@ public class Event implements Parcelable{
         dest.writeLong(activityDate);
         dest.writeLong(activityTime);
         dest.writeString(user);
-        dest.writeLong(startLocationLatitude);
-        dest.writeLong(startLocationMagnitude);
-        dest.writeLong(endLocationLatitude);
-        dest.writeLong(endLocationMagnitude);
+        dest.writeDouble(getStartLocationLatitude());
+        dest.writeDouble(getStartLocationMagnitude());
+        dest.writeDouble(getEndLocationLatitude());
+        dest.writeDouble(getEndLocationMagnitude());
     }
 
     private void readFromParcel(Parcel in){
@@ -148,10 +148,10 @@ public class Event implements Parcelable{
         activityDate = in.readLong();
         activityTime = in.readLong();
         user = in.readString();
-        startLocationLatitude = in.readLong();
-        startLocationMagnitude = in.readLong();
-        endLocationLatitude = in.readLong();
-        endLocationMagnitude = in.readLong();
+        setStartLocationLatitude(in.readDouble());
+        setStartLocationMagnitude(in.readDouble());
+        setEndLocationLatitude(in.readDouble());
+        setEndLocationMagnitude(in.readDouble());
     }
 
     public final static Creator<Event> CREATOR = new Creator<Event>() {
@@ -166,10 +166,10 @@ public class Event implements Parcelable{
             event.activityDate = source.readLong();
             event.activityTime = source.readLong();
             event.user = source.readString();
-            event.startLocationLatitude = source.readLong();
-            event.startLocationMagnitude = source.readLong();
-            event.endLocationLatitude = source.readLong();
-            event.endLocationMagnitude = source.readLong();
+            event.setStartLocationLatitude(source.readDouble());
+            event.setStartLocationMagnitude(source.readDouble());
+            event.setEndLocationLatitude(source.readDouble());
+            event.setEndLocationMagnitude(source.readDouble());
             return event;
         }
 

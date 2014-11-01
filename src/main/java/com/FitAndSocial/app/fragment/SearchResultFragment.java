@@ -122,6 +122,10 @@ public class SearchResultFragment extends BaseFragment implements SearchFragment
                             map.put(ApplicationConstants.KEY_DATE, getNode(ApplicationConstants.KEY_DATE, eElement));
                             map.put(ApplicationConstants.KEY_TIME, getNode(ApplicationConstants.KEY_TIME, eElement));
                             map.put(ApplicationConstants.KEY_MEMBERS_TOTAL, getNode(ApplicationConstants.KEY_MEMBERS_TOTAL, eElement));
+                            map.put(ApplicationConstants.START_LAT, getNode(ApplicationConstants.START_LAT, eElement));
+                            map.put(ApplicationConstants.START_LNG, getNode(ApplicationConstants.START_LNG, eElement));
+                            map.put(ApplicationConstants.END_LAT, getNode(ApplicationConstants.END_LAT, eElement));
+                            map.put(ApplicationConstants.END_LNG, getNode(ApplicationConstants.END_LNG, eElement));
                             searchResultList.add(map);
                         }
 

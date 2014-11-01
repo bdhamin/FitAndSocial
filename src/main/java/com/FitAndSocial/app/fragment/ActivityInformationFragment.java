@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,6 +17,17 @@ import android.widget.*;
 import com.FitAndSocial.app.fragment.helper.EventHelperService;
 import com.FitAndSocial.app.mobile.R;
 import com.FitAndSocial.app.util.ApplicationConstants;
+import com.FitAndSocial.app.util.MapActivityLocationBounds;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.LocationSource;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -40,8 +52,7 @@ public class ActivityInformationFragment extends BaseFragment{
     private  TextView memberThreeName;
     private TextView members;
     private TextView showMore;
-
-    private ProgressDialog pDialog;
+    private PolylineOptions polylineOptions;
     private boolean isParticipation;
     private int activityPosition;
 
@@ -49,6 +60,7 @@ public class ActivityInformationFragment extends BaseFragment{
     private final String ACTIVITY_ID = "activityId";
     private final String USER_ID = "userId";
     private final String CANCEL_PARTICIPATION = "Cancel Participation";
+    private GoogleMap googleMap;
 
 
     @Override
@@ -63,7 +75,8 @@ public class ActivityInformationFragment extends BaseFragment{
         this.activityPosition = bundle.getInt("position");
         initTextViews();
         initEventDetails();
-        loadRequiredFragments();
+        loadMapsIfNeeded();
+//        loadRequiredFragments();
         attachButtonListener();
         return view;
     }
@@ -204,12 +217,75 @@ public class ActivityInformationFragment extends BaseFragment{
         });
     }
 
-    private void loadRequiredFragments() {
-        GoogleMapsFragment maps = new GoogleMapsFragment();
-        FragmentManager manager = getFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.add(R.id.activity_info_map_container, maps);
-        transaction.commit();
+    private void loadMapsIfNeeded() {
+        if(googleMap == null) {
+            googleMap = ((SupportMapFragment) getFragmentManager().findFragmentById(R.id.activity_info_map_container)).getMap();
+
+            if(googleMap != null){
+                setUpMap();
+            }
+        }
+    }
+
+    private void setUpMap() {
+        googleMap.setMyLocationEnabled(true);
+        drawLineBasedOnChosenLocation(Double.parseDouble(selectedSearchResult.get(ApplicationConstants.START_LAT)),
+                Double.parseDouble(selectedSearchResult.get(ApplicationConstants.START_LNG)),
+                Double.parseDouble(selectedSearchResult.get(ApplicationConstants.END_LAT)),
+                Double.parseDouble(selectedSearchResult.get(ApplicationConstants.END_LNG)));
+    }
+
+
+    public void drawLineBasedOnChosenLocation(double startLat, double startLon, double endLat, double endLon){
+        LatLng startPoint = new LatLng(startLat, startLon);
+        LatLng endPoint = new LatLng(endLat, endLon);
+        ArrayList<LatLng> arrayPoints = new ArrayList<>();
+        arrayPoints.add(startPoint);
+        arrayPoints.add(endPoint);
+        final MarkerOptions startPointMarker = new MarkerOptions();
+        startPointMarker.position(startPoint);
+        final MarkerOptions endPointMarker = new MarkerOptions();
+        endPointMarker.position(endPoint);
+        polylineOptions = new PolylineOptions();
+        polylineOptions.color(Color.RED);
+        polylineOptions.width(5);
+        polylineOptions.addAll(arrayPoints);
+        googleMap.addPolyline(polylineOptions);
+        googleMap.addMarker(startPointMarker);
+        googleMap.addMarker(endPointMarker);
+        googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+            @Override
+            public void onMapLoaded() {
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(MapActivityLocationBounds.createBoundsWithMinDiagonal(startPointMarker, endPointMarker), 5));
+            }
+        });
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        if (googleMap != null)
+            setUpMap();
+
+        if (googleMap == null) {
+            // Try to obtain the map from the SupportMapFragment.
+            googleMap = ((SupportMapFragment) getFragmentManager().findFragmentById(R.id.activity_info_map_container)).getMap();
+            // Check if we were successful in obtaining the map.
+            if (googleMap != null)
+                setUpMap();
+        }
+    }
+
+    /**** The mapfragment's id must be removed from the FragmentManager
+     **** or else if the same it is passed on the next time then
+     **** app will crash ****/
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (googleMap != null) {
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .remove(getActivity().getSupportFragmentManager().findFragmentById(R.id.activity_info_map_container)).commit();
+            googleMap = null;
+        }
     }
 
     @Override

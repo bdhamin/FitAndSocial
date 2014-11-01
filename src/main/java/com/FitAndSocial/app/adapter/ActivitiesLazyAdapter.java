@@ -25,7 +25,7 @@ public class ActivitiesLazyAdapter extends BaseAdapter{
 
     private BaseFragment activity;
     private ArrayList<HashMap<String, String>> data;
-    private static LayoutInflater layoutInflater = null;
+    private LayoutInflater layoutInflater = null;
     private TextView showMore;
     private TextView title;
     private TextView typeName;

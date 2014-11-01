@@ -2,6 +2,7 @@ package com.FitAndSocial.app.fragment;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,11 @@ import android.app.TimePickerDialog.OnTimeSetListener;
 import com.FitAndSocial.app.model.Event;
 import com.FitAndSocial.app.util.ApplicationConstants;
 import com.FitAndSocial.app.util.Utils;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.ArrayList;
 
 /**
  * Created by mint on 13-7-14.
@@ -32,6 +38,12 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
     private String date;
     private String time;
     private ProgressDialog pDialog;
+    private GoogleMapsFragment googleMapsFragment;
+    private double startLat;
+    private double startLon;
+    private double endLat;
+    private double endLon;
+    private GoogleMap googleMap;
 
 
     @Override
@@ -52,7 +64,7 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
     }
 
     private void addRequiredFragments() {
-        GoogleMapsFragment googleMapsFragment = new GoogleMapsFragment();
+        googleMapsFragment = new GoogleMapsFragment();
         FragmentManager manager = getFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.add(R.id.google_map_container, googleMapsFragment);
@@ -170,6 +182,7 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
             public void onClick(View view) {
                 boolean check = requiredFieldsOk();
                 if(check){
+                    getChosenLocations();
                     Event event = createEvent();
                     Intent eventHelper = new Intent(CreateFragment.this.getActivity(), EventHelperService.class);
                     eventHelper.putExtra(ApplicationConstants.EVENT_TYPE, ApplicationConstants.EVENT_TYPE_CREATE_ACTION);
@@ -214,14 +227,33 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
         event.setActivityDate(Utils.convertDateStringToLong(date));
         event.setActivityTime(Utils.convertTimeStringToLong(time));
         event.setUser(authenticationKey);
-        event.setStartLocationLatitude(10);
-        event.setStartLocationMagnitude(20);
-        event.setEndLocationLatitude(10);
-        event.setEndLocationMagnitude(20);
-
+        event.setStartLocationLatitude(startLat);
+        event.setStartLocationMagnitude(startLon);
+        event.setEndLocationLatitude(endLat);
+        event.setEndLocationMagnitude(endLon);
         return event;
     }
 
+    private void getChosenLocations(){
+        ArrayList<LatLng> locations = googleMapsFragment.getChosenLocations();
+        if(locations != null && locations.size() > 0){
+            startLat = locations.get(0).latitude;
+            startLon = locations.get(0).longitude;
+            endLat = locations.get(1).latitude;
+            endLon = locations.get(1).longitude;
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        Fragment googleMap = getFragmentManager().findFragmentById(R.id.google_maps);
+        if(googleMap !=null ){
+            getActivity().getSupportFragmentManager().beginTransaction()
+                .remove(getActivity().getSupportFragmentManager().findFragmentById(R.id.google_maps)).commit();
+        }
+    }
 
     private class CreateEvent extends AsyncTask<String, Void, Boolean>{
 
@@ -251,7 +283,6 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
                 transaction.commit();
             }
             disposeCurrentFragment();
-
         }
     }
 }

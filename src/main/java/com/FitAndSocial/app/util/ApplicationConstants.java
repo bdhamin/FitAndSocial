@@ -91,4 +91,11 @@ public final class ApplicationConstants {
     public static final String EVENT_TYPE_PARTICIPATE_ACTION = "participate";
     public static final String EVENT_TYPE_PARTICIPATE_CANCEL_ACTION = "cancel";
 
+
+    //Google Maps
+    public static final String START_LAT = "startLat";
+    public static final String START_LNG = "startLng";
+    public static final String END_LAT = "endLat";
+    public static final String END_LNG = "endLng";
+
 }
