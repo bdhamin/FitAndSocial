@@ -50,7 +50,7 @@
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TEST"
+            android:text="@string/btn_set_date"
             android:id="@+id/select_date_button"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/activity_duration_spinner"

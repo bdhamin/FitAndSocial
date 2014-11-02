@@ -126,6 +126,15 @@ public class SearchResultFragment extends BaseFragment implements SearchFragment
                             map.put(ApplicationConstants.START_LNG, getNode(ApplicationConstants.START_LNG, eElement));
                             map.put(ApplicationConstants.END_LAT, getNode(ApplicationConstants.END_LAT, eElement));
                             map.put(ApplicationConstants.END_LNG, getNode(ApplicationConstants.END_LNG, eElement));
+                            NodeList members = ((Element) nodelist.item(temp)).getElementsByTagName("member");
+                            if (members != null && members.getLength() > 0) {
+                                for (int j = 0; j < members.getLength(); j++) {
+                                    Element member = (Element) members.item(j);
+                                    map.put("member_" + j + "_id", getNode("id", member));
+                                    map.put("member_" + j + "_name", getNode("name", member));
+                                    map.put("member_" + j + "_pictureURL", getNode("pictureURL", member));
+                                }
+                            }
                             searchResultList.add(map);
                         }
 

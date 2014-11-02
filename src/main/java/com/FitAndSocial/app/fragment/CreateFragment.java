@@ -1,8 +1,8 @@
 package com.FitAndSocial.app.fragment;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.location.Location;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,11 +19,11 @@ import android.app.TimePickerDialog.OnTimeSetListener;
 import com.FitAndSocial.app.model.Event;
 import com.FitAndSocial.app.util.ApplicationConstants;
 import com.FitAndSocial.app.util.Utils;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by mint on 13-7-14.
@@ -37,14 +37,11 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
     private String activityDuration;
     private String date;
     private String time;
-    private ProgressDialog pDialog;
     private GoogleMapsFragment googleMapsFragment;
     private double startLat;
-    private double startLon;
+    private double startLng;
     private double endLat;
-    private double endLon;
-    private GoogleMap googleMap;
-
+    private double endLng;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceBundle){
@@ -69,6 +66,7 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.add(R.id.google_map_container, googleMapsFragment);
         transaction.commit();
+
     }
 
     private void showTimeDialogListener() {
@@ -228,9 +226,9 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
         event.setActivityTime(Utils.convertTimeStringToLong(time));
         event.setUser(authenticationKey);
         event.setStartLocationLatitude(startLat);
-        event.setStartLocationMagnitude(startLon);
+        event.setStartLocationMagnitude(startLng);
         event.setEndLocationLatitude(endLat);
-        event.setEndLocationMagnitude(endLon);
+        event.setEndLocationMagnitude(endLng);
         return event;
     }
 
@@ -238,9 +236,9 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
         ArrayList<LatLng> locations = googleMapsFragment.getChosenLocations();
         if(locations != null && locations.size() > 0){
             startLat = locations.get(0).latitude;
-            startLon = locations.get(0).longitude;
+            startLng = locations.get(0).longitude;
             endLat = locations.get(1).latitude;
-            endLon = locations.get(1).longitude;
+            endLng = locations.get(1).longitude;
         }
     }
 

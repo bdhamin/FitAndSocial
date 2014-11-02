@@ -239,15 +239,14 @@
             android:layout_alignBottom="@+id/showMore"
             android:layout_toRightOf="@+id/memberTwoName"
             android:visibility="invisible"/>
-
-
-    <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+    <fragment
+            android:layout_below="@+id/hDivider"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="15dp"
             android:id="@+id/activity_info_map_container"
-            android:layout_below="@+id/hDivider">
-
-    </RelativeLayout>
+            android:layout_width="fill_parent"
+            android:layout_height="200dp"
+            class="com.google.android.gms.maps.SupportMapFragment" />
 
     <Button
             android:layout_width="wrap_content"
