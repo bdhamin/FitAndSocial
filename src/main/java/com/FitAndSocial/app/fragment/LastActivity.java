@@ -27,6 +27,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 
 /**
  * Created by mint on 12-7-14.
@@ -107,15 +108,16 @@ public class LastActivity extends BaseFragment {
                 }
 
                 String lastActivityAddress = url[0].concat("?id=").concat(authenticationKey);
-                URL address = new URL(lastActivityAddress);
+                URLConnection connection = new URL(lastActivityAddress).openConnection();
+                connection.setConnectTimeout(10000);
+                connection.setReadTimeout(10000);
                 DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
                 DocumentBuilder db = dbf.newDocumentBuilder();
                 // Download the XML file
-                Document doc = db.parse(new InputSource(address.openStream()));
+                Document doc = db.parse(new InputSource(connection.getInputStream()));
                 doc.getDocumentElement().normalize();
                 // Locate the Tag Name
                 nodelist = doc.getElementsByTagName(ApplicationConstants.KEY_ACTIVITY);
-
             }catch (MalformedURLException | ParserConfigurationException | SAXException | FileNotFoundException | NullPointerException e ) {
                 e.printStackTrace();
                 return false;

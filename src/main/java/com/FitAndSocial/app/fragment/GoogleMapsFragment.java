@@ -3,14 +3,17 @@ package com.FitAndSocial.app.fragment;
 /**
  * Created by mint on 31-7-14.
  */
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.FitAndSocial.app.mobile.R;
 import com.FitAndSocial.app.util.Utils;
@@ -32,12 +35,16 @@ public class GoogleMapsFragment extends BaseFragment implements GoogleMap.OnMapC
     private PolylineOptions polylineOptions;
     private Location start, end;
     private Geocoder geocoder;
+    private TextView startStreet;
+    private TextView endStreet;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceBundle){
         View view = inflater.inflate(R.layout.google_maps, container, false);
         arrayPoints = new ArrayList<>();
         geocoder = new Geocoder(getActivity().getApplicationContext(), Locale.getDefault());
+        startStreet = (TextView)view.findViewById(R.id.start_point_street);
+        endStreet = (TextView)view.findViewById(R.id.end_point_street);
         try{
             loadMapsIfNeeded();
         }catch (Exception e){
@@ -80,17 +87,24 @@ public class GoogleMapsFragment extends BaseFragment implements GoogleMap.OnMapC
             markerCounter++;
             MarkerOptions marker = new MarkerOptions();
             marker.position(point);
-            googleMap.addMarker(marker);
             polylineOptions = new PolylineOptions();
             polylineOptions.color(Color.RED);
             polylineOptions.width(5);
             arrayPoints.add(point);
             polylineOptions.addAll(arrayPoints);
             googleMap.addPolyline(polylineOptions);
-            System.out.println(getStreetNameIfAvailable(point.latitude, point.longitude));
+            if(markerCounter == 1){
+                marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                marker.title(getStreetNameIfAvailable(point.latitude, point.longitude, true));
+                startStreet.setText(getStreetNameIfAvailable(point.latitude, point.longitude, false));
+            }
             if(markerCounter == 2){
+                marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                marker.title(getStreetNameIfAvailable(point.latitude, point.longitude, true));
+                endStreet.setText(getStreetNameIfAvailable(point.latitude, point.longitude, false));
                 showChosenDistance();
             }
+            googleMap.addMarker(marker);
         }else{
             Toast.makeText(getActivity(), "Long click on the map to reset the marker",Toast.LENGTH_LONG).show();
         }
@@ -110,7 +124,6 @@ public class GoogleMapsFragment extends BaseFragment implements GoogleMap.OnMapC
         double distanceInKm = distance/1000;
 
         Toast.makeText(getActivity(), "Distance is: " + Utils.round(distanceInKm, 2), Toast.LENGTH_SHORT).show();
-        getStreetNameIfAvailable(start.getLatitude(),start.getLongitude());
     }
 
     @Override
@@ -118,34 +131,31 @@ public class GoogleMapsFragment extends BaseFragment implements GoogleMap.OnMapC
         googleMap.clear();
         arrayPoints.clear();
         markerCounter = 0;
+        startStreet.setText("");
+        endStreet.setText("");
     }
 
-    private String getStreetNameIfAvailable(double latitude, double longitude){
+    private String getStreetNameIfAvailable(double latitude, double longitude, boolean isCompleteAddress){
         String finalAddress;
         try {
             List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-            System.out.println(latitude);
-            System.out.println(longitude);
             if(addresses != null && addresses.size() > 0){
-                System.out.println("Address is not empty");
-
                 Address address = addresses.get(0);
                 StringBuilder sb = new StringBuilder();
-                for(int i=0; i<address.getMaxAddressLineIndex(); i++){
-                    sb.append(address.getAddressLine(i)).append("\n");
+                if(isCompleteAddress){
+                    sb.append(address.getAddressLine(0)).append(", ").append(address.getAddressLine(1));
+                    finalAddress = sb.toString();
+                    return finalAddress;
                 }
-
+                sb.append(address.getAddressLine(0));
                 finalAddress = sb.toString();
-                Toast.makeText(getActivity(), finalAddress, Toast.LENGTH_LONG).show();
                 return finalAddress;
             }
         }catch (IOException e){
-
+            Log.e("GoogleMapsFragment", "IOException");
+            Log.i("GoogleMapsFragment", "IOException", e.getCause());
         }
-
-
-
-        finalAddress = "No address found";
+        finalAddress = "Address not available";
         Toast.makeText(getActivity(), finalAddress, Toast.LENGTH_LONG).show();
         return finalAddress;
     }
@@ -158,7 +168,6 @@ public class GoogleMapsFragment extends BaseFragment implements GoogleMap.OnMapC
     public void onViewCreated(View view, Bundle savedInstanceState) {
         if (googleMap != null)
             setUpMap();
-
         if (googleMap == null) {
             // Try to obtain the map from the SupportMapFragment.
             googleMap = ((SupportMapFragment) getFragmentManager().findFragmentById(R.id.google_maps)).getMap();

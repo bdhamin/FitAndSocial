@@ -35,7 +35,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -71,7 +73,7 @@ public class ProfileFragment extends BaseFragment implements  View.OnClickListen
         initFragments();
         //TODO: change this to own method where we first get the logged in user id and then execute the method
         String userProfileAddress = ApplicationConstants.SERVER_BASE_ADDRESS+ApplicationConstants.SERVER_ADDRESS_ACTION_USER_PROFILE;
-        new UserProfile().execute(userProfileAddress);
+        new LodUserProfile().execute(userProfileAddress);
         return view;
     }
 
@@ -191,7 +193,7 @@ public class ProfileFragment extends BaseFragment implements  View.OnClickListen
     }
 
 
-    private class UserProfile extends AsyncTask<String, Void, Boolean>{
+    private class LodUserProfile extends AsyncTask<String, Void, Boolean>{
 
         @Override
         protected Boolean doInBackground(String... address){
@@ -199,16 +201,17 @@ public class ProfileFragment extends BaseFragment implements  View.OnClickListen
                 String authenticationProviderKey = getLoggedInUserId();
                 if (authenticationProviderKey != null && !authenticationProviderKey.trim().isEmpty()) {
                     String profileUrl = address[0].concat(authenticationProviderKey);
-                    URL url = new URL(profileUrl);
+                    URLConnection connection = new URL(profileUrl).openConnection();
+                    connection.setConnectTimeout(5000);
+                    connection.setReadTimeout(5000);
                     DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
                     DocumentBuilder db = dbf.newDocumentBuilder();
-
-                    Document doc = db.parse(new InputSource(url.openStream()));
+                    Document doc = db.parse(new InputSource(connection.getInputStream()));
                     doc.getDocumentElement().normalize();
                     nodelist = doc.getElementsByTagName(ApplicationConstants.KEY_USER);
                 }
 
-            }catch (MalformedURLException | ParserConfigurationException | SAXException | FileNotFoundException e ) {
+            }catch (MalformedURLException | ParserConfigurationException | SAXException | FileNotFoundException | SocketTimeoutException e ) {
                 Log.e("Error", e.getMessage());
                 e.printStackTrace();
                 return false;

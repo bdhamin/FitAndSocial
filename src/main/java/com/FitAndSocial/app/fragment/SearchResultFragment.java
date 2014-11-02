@@ -21,9 +21,17 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -73,19 +81,23 @@ public class SearchResultFragment extends BaseFragment implements SearchFragment
         @Override
         protected Boolean doInBackground(String ... Url){
             try {
-                URL url = new URL(Url[0]);
-                System.out.println(url.toString());
+                URLConnection connection = new URL(Url[0]).openConnection();
+                connection.setConnectTimeout(7000);
+                connection.setReadTimeout(7000);
                 DocumentBuilderFactory dbf = DocumentBuilderFactory
                         .newInstance();
                 DocumentBuilder db = dbf.newDocumentBuilder();
                 // Download the XML file
-                Document doc = db.parse(new InputSource(url.openStream()));
+                Document doc = db.parse(new InputSource(connection.getInputStream()));
                 doc.getDocumentElement().normalize();
                 // Locate the Tag Name
                 nodelist = doc.getElementsByTagName(ApplicationConstants.KEY_ACTIVITY);
 
-            } catch (Exception e) {
+            }catch (MalformedURLException | ParserConfigurationException | SAXException | FileNotFoundException | SocketTimeoutException e ) {
                 Log.e("Error", e.getMessage());
+                e.printStackTrace();
+                return false;
+            } catch (IOException e) {
                 e.printStackTrace();
                 return false;
             }

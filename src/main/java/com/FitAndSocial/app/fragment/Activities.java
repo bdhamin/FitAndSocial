@@ -22,9 +22,15 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -91,27 +97,29 @@ public class Activities extends BaseFragment{
                 String userId = applicationPreference.getString(ApplicationConstants.APPLICATION_PREFERENCE_USER_ID, "");
                 sb.append(url).append("?id=").append(userId);
                 address = sb.toString();
-                try {
-                    URL url = new URL(address);
-                    DocumentBuilderFactory dbf = DocumentBuilderFactory
-                            .newInstance();
-                    DocumentBuilder db = dbf.newDocumentBuilder();
-                    // Download the XML file
-                    Document doc = db.parse(new InputSource(url.openStream()));
-                    doc.getDocumentElement().normalize();
-                    // Locate the Tag Name
-                    nodelist = doc.getElementsByTagName(ApplicationConstants.KEY_ACTIVITY);
 
-                } catch (Exception e) {
-                    Log.e("Error", e.getMessage());
+                    URLConnection connection = null;
+                    try {
+                        connection = new URL(address).openConnection();
+                        connection.setConnectTimeout(5000);
+                        connection.setReadTimeout(5000);
+                        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+                        DocumentBuilder db = dbf.newDocumentBuilder();
+                        Document doc = db.parse(new InputSource(connection.getInputStream()));
+                        doc.getDocumentElement().normalize();
+                        nodelist = doc.getElementsByTagName(ApplicationConstants.KEY_ACTIVITY);
+                        return true;
+
+                } catch (ParserConfigurationException | SAXException | SocketTimeoutException e ) {
+                        System.out.println("timeout!");
                     e.printStackTrace();
-                    return false;
+                        return false;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                        return false;
                 }
-            }else{
-                return false;
             }
-            return true;
-
+            return false;
         }
 
         @Override

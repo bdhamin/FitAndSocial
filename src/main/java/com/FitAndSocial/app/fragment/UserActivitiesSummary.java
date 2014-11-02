@@ -16,9 +16,17 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.net.URLConnection;
 
 /**
  * Created by mint on 11-9-14.
@@ -97,12 +105,14 @@ public class UserActivitiesSummary extends BaseFragment{
                 String authenticationProviderKey = getLoggedInUserId();
                 if(authenticationProviderKey != null && !authenticationProviderKey.trim().isEmpty()) {
                     String address = Url[0].concat(authenticationProviderKey);
-                    URL url = new URL(address);
+                    URLConnection connection = new URL(address).openConnection();
+                    connection.setConnectTimeout(5000);
+                    connection.setReadTimeout(5000);
                     DocumentBuilderFactory dbf = DocumentBuilderFactory
                             .newInstance();
                     DocumentBuilder db = dbf.newDocumentBuilder();
                     // Download the XML file
-                    Document doc = db.parse(new InputSource(url.openStream()));
+                    Document doc = db.parse(new InputSource(connection.getInputStream()));
                     doc.getDocumentElement().normalize();
                     // Locate the Tag Name
                     nodelist = doc.getElementsByTagName(ApplicationConstants.KEY_ACTIVITY);
@@ -111,10 +121,14 @@ public class UserActivitiesSummary extends BaseFragment{
                     return false;
                 }
 
-            } catch (Exception e) {
+            }catch (MalformedURLException | ParserConfigurationException | SAXException | FileNotFoundException | SocketTimeoutException e ) {
+                pDialog.dismiss();
                 Log.e("Error", e.getMessage());
                 e.printStackTrace();
+                return false;
+            } catch (IOException e) {
                 pDialog.dismiss();
+                e.printStackTrace();
                 return false;
             }
             return true;

@@ -35,7 +35,7 @@ public final class Connection {
     public static boolean canConnectToServer(Activity activity) {
         _activity = activity;
         try {
-            new CanConnectTest().execute().get(40000, TimeUnit.MILLISECONDS);
+            new CanConnectTest().execute().get(3500, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
         } catch (ExecutionException e) {
         } catch (TimeoutException e) {
@@ -61,25 +61,20 @@ public final class Connection {
                     HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
                     urlc.setRequestProperty("User-Agent", "Android Application");
                     urlc.setRequestProperty("Connection", "close");
-                    urlc.setConnectTimeout(30 * 1000);
+                    urlc.setConnectTimeout(3000);
                     urlc.connect();
                     isReachable = (urlc.getResponseCode() == 200);
                 } catch (IOException e) {
-                    canConnect = false;
                     Log.e("OOPS", e.getMessage());
                 }
             }
             return isReachable;
         }
 
-
         @Override
         protected void onPostExecute(Boolean success) {
-            if(success){
-                canConnect = true;
-            }
             super.onPostExecute(success);
-
+            canConnect = success ? true : false;
         }
     }
 
