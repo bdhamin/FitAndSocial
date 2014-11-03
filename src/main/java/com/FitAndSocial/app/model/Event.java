@@ -20,6 +20,10 @@ public class Event implements Parcelable{
     private double startLocationMagnitude;
     private double endLocationLatitude;
     private double endLocationMagnitude;
+    private String startStreetName;
+    private String endStreetName;
+    private String completeStartAddress;
+    private String completeEndAddress;
 
 
     public String getTitle() {
@@ -118,6 +122,38 @@ public class Event implements Parcelable{
         this.durationMax = durationMax;
     }
 
+    public String getStartStreetName() {
+        return startStreetName;
+    }
+
+    public void setStartStreetName(String startStreetName) {
+        this.startStreetName = startStreetName;
+    }
+
+    public String getEndStreetName() {
+        return endStreetName;
+    }
+
+    public void setEndStreetName(String endStreetName) {
+        this.endStreetName = endStreetName;
+    }
+
+    public String getCompleteStartAddress() {
+        return completeStartAddress;
+    }
+
+    public void setCompleteStartAddress(String completeStartAddress) {
+        this.completeStartAddress = completeStartAddress;
+    }
+
+    public String getCompleteEndAddress() {
+        return completeEndAddress;
+    }
+
+    public void setCompleteEndAddress(String completeEndAddress) {
+        this.completeEndAddress = completeEndAddress;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -137,6 +173,10 @@ public class Event implements Parcelable{
         dest.writeDouble(getStartLocationMagnitude());
         dest.writeDouble(getEndLocationLatitude());
         dest.writeDouble(getEndLocationMagnitude());
+        dest.writeString(getStartStreetName());
+        dest.writeString(getEndStreetName());
+        dest.writeString(getCompleteStartAddress());
+        dest.writeString(getCompleteEndAddress());
     }
 
     private void readFromParcel(Parcel in){
@@ -152,6 +192,10 @@ public class Event implements Parcelable{
         setStartLocationMagnitude(in.readDouble());
         setEndLocationLatitude(in.readDouble());
         setEndLocationMagnitude(in.readDouble());
+        setStartStreetName(in.readString());
+        setEndStreetName(in.readString());
+        setCompleteStartAddress(in.readString());
+        setCompleteEndAddress(in.readString());
     }
 
     public final static Creator<Event> CREATOR = new Creator<Event>() {
@@ -170,6 +214,10 @@ public class Event implements Parcelable{
             event.setStartLocationMagnitude(source.readDouble());
             event.setEndLocationLatitude(source.readDouble());
             event.setEndLocationMagnitude(source.readDouble());
+            event.setStartStreetName(source.readString());
+            event.setEndStreetName(source.readString());
+            event.setCompleteStartAddress(source.readString());
+            event.setCompleteEndAddress(source.readString());
             return event;
         }
 
@@ -178,5 +226,4 @@ public class Event implements Parcelable{
             return new Event[0];
         }
     };
-
 }

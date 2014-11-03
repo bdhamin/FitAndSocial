@@ -157,7 +157,10 @@ public class Activities extends BaseFragment{
                             map.put(ApplicationConstants.START_LNG, getNode(ApplicationConstants.START_LNG, eElement));
                             map.put(ApplicationConstants.END_LAT, getNode(ApplicationConstants.END_LAT, eElement));
                             map.put(ApplicationConstants.END_LNG, getNode(ApplicationConstants.END_LNG, eElement));
-
+                            map.put(ApplicationConstants.START_STREET_NAME, getNode(ApplicationConstants.START_STREET_NAME, eElement));
+                            map.put(ApplicationConstants.END_STREET_NAME, getNode(ApplicationConstants.END_STREET_NAME, eElement));
+                            map.put(ApplicationConstants.COMPLETE_START_ADDRESS, getNode(ApplicationConstants.COMPLETE_START_ADDRESS, eElement));
+                            map.put(ApplicationConstants.COMPLETE_END_ADDRESS, getNode(ApplicationConstants.COMPLETE_END_ADDRESS, eElement));
                             NodeList members = ((Element) nodelist.item(temp)).getElementsByTagName("member");
                             if (members != null && members.getLength() > 0) {
                                 for (int j = 0; j < members.getLength(); j++) {

@@ -3,7 +3,6 @@ package com.FitAndSocial.app.fragment;
 /**
  * Created by mint on 31-7-14.
  */
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
@@ -37,6 +36,12 @@ public class GoogleMapsFragment extends BaseFragment implements GoogleMap.OnMapC
     private Geocoder geocoder;
     private TextView startStreet;
     private TextView endStreet;
+    private String startStreetString;
+    private String endStreetString;
+    private String completeStartStreet;
+    private String completeEndStreet;
+    private String fullAddress;
+    private String streetName;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceBundle){
@@ -94,14 +99,30 @@ public class GoogleMapsFragment extends BaseFragment implements GoogleMap.OnMapC
             polylineOptions.addAll(arrayPoints);
             googleMap.addPolyline(polylineOptions);
             if(markerCounter == 1){
+                fullAddress = getStreetNameIfAvailable(point.latitude, point.longitude, true);
+                streetName = getStreetNameIfAvailable(point.latitude, point.longitude, false);
+
                 marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                marker.title(getStreetNameIfAvailable(point.latitude, point.longitude, true));
-                startStreet.setText(getStreetNameIfAvailable(point.latitude, point.longitude, false));
+                marker.title(fullAddress);
+
+                startStreet.setText(streetName);
+
+                startStreetString = streetName;
+                completeStartStreet = fullAddress;
             }
             if(markerCounter == 2){
+
+                fullAddress = getStreetNameIfAvailable(point.latitude, point.longitude, true);
+                streetName = getStreetNameIfAvailable(point.latitude, point.longitude, false);
+
                 marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
                 marker.title(getStreetNameIfAvailable(point.latitude, point.longitude, true));
+
                 endStreet.setText(getStreetNameIfAvailable(point.latitude, point.longitude, false));
+
+                endStreetString = streetName;
+                completeEndStreet = fullAddress;
+
                 showChosenDistance();
             }
             googleMap.addMarker(marker);
@@ -133,6 +154,15 @@ public class GoogleMapsFragment extends BaseFragment implements GoogleMap.OnMapC
         markerCounter = 0;
         startStreet.setText("");
         endStreet.setText("");
+    }
+
+    public List<String> getStreetInfo(){
+        List<String> streetNames = new ArrayList<>();
+        streetNames.add(startStreetString);
+        streetNames.add(endStreetString);
+        streetNames.add(completeStartStreet);
+        streetNames.add(completeEndStreet);
+        return streetNames;
     }
 
     private String getStreetNameIfAvailable(double latitude, double longitude, boolean isCompleteAddress){

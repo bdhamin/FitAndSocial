@@ -229,6 +229,35 @@
             android:src="@android:color/black"
             android:layout_below="@+id/linearLayout"
             android:layout_alignParentRight="true"/>
+
+    <TextView
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text=""
+            android:id="@+id/end_point_street"
+            android:layout_below="@+id/hDivider"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="right"
+            android:textColor="@android:color/black"/>
+
+    <TextView
+            android:layout_below="@+id/hDivider"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text=""
+            android:id="@+id/start_point_street"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_alignParentLeft="true"
+            android:textColor="@android:color/black"/>
+
+
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

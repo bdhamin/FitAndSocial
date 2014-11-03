@@ -42,6 +42,11 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
     private double startLng;
     private double endLat;
     private double endLng;
+    private String startStreet;
+    private String endStreet;
+    private String completeStartStreet;
+    private String completeEndStreet;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceBundle){
@@ -181,6 +186,7 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
                 boolean check = requiredFieldsOk();
                 if(check){
                     getChosenLocations();
+                    processStreetNames();
                     Event event = createEvent();
                     Intent eventHelper = new Intent(CreateFragment.this.getActivity(), EventHelperService.class);
                     eventHelper.putExtra(ApplicationConstants.EVENT_TYPE, ApplicationConstants.EVENT_TYPE_CREATE_ACTION);
@@ -192,6 +198,36 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
                 }
             }
         });
+    }
+
+    /**
+     * Contains a list of names of the chosen start and end locations
+     * The following indexes describe the values of the list
+     * 0 = startStreet
+     * 1 = endStreet
+     * 2 = fullStartStreet
+     * 3= fullEndStreet
+     */
+
+    private void processStreetNames(){
+        List<String> streetNames = googleMapsFragment.getStreetInfo();
+        if(streetNames != null && streetNames.size() > 0){
+//            && streetNames.size() == 4
+            startStreet = streetNames.get(0);
+            endStreet = streetNames.get(1);
+            completeStartStreet = streetNames.get(2);
+            completeEndStreet = streetNames.get(3);
+        }
+    }
+
+    private void getChosenLocations(){
+        ArrayList<LatLng> locations = googleMapsFragment.getChosenLocations();
+        if(locations != null && locations.size() > 0){
+            startLat = locations.get(0).latitude;
+            startLng = locations.get(0).longitude;
+            endLat = locations.get(1).latitude;
+            endLng = locations.get(1).longitude;
+        }
     }
 
     private boolean requiredFieldsOk() {
@@ -212,7 +248,7 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
         }
     }
 
-
+    //TODO: remove empty value to final String or remove it all since its not really needed
     private Event createEvent(){
         Event event = new Event();
         String[] duration = Utils.parseSelectedValues(activityDuration);
@@ -229,17 +265,11 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
         event.setStartLocationMagnitude(startLng);
         event.setEndLocationLatitude(endLat);
         event.setEndLocationMagnitude(endLng);
+        event.setStartStreetName(startStreet.equals("")? "" : startStreet);
+        event.setEndStreetName(endStreet.equals("")? "" : endStreet);
+        event.setCompleteStartAddress(completeStartStreet.equals("")? "" : completeStartStreet);
+        event.setCompleteEndAddress(completeEndStreet.equals("")? "" : completeEndStreet);
         return event;
-    }
-
-    private void getChosenLocations(){
-        ArrayList<LatLng> locations = googleMapsFragment.getChosenLocations();
-        if(locations != null && locations.size() > 0){
-            startLat = locations.get(0).latitude;
-            startLng = locations.get(0).longitude;
-            endLat = locations.get(1).latitude;
-            endLng = locations.get(1).longitude;
-        }
     }
 
     @Override

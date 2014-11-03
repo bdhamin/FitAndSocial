@@ -369,7 +369,6 @@ public class ProfileFragment extends BaseFragment implements  View.OnClickListen
             StringBuilder sb = new StringBuilder();
             sb.append(ApplicationConstants.SERVER_BASE_ADDRESS).append(ApplicationConstants.SERVER_ADDRESS_ACTION_UPDATE_PROFILE).append("?authenticationID=").append(getLoggedInUserId());
             return sb.toString();
-
         }
     }
 }

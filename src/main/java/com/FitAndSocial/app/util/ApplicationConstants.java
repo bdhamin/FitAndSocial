@@ -97,5 +97,9 @@ public final class ApplicationConstants {
     public static final String START_LNG = "startLng";
     public static final String END_LAT = "endLat";
     public static final String END_LNG = "endLng";
+    public static final String START_STREET_NAME = "startStreet";
+    public static final String END_STREET_NAME = "endStreet";
+    public static final String COMPLETE_START_ADDRESS = "completeStartStreet";
+    public static final String COMPLETE_END_ADDRESS = "completeEndStreet";
 
 }

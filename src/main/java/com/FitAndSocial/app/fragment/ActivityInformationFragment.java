@@ -22,10 +22,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,9 +46,13 @@ public class ActivityInformationFragment extends BaseFragment{
     private ImageView memberThree;
     private TextView memberOneName;
     private TextView memberTwoName;
-    private  TextView memberThreeName;
+    private TextView memberThreeName;
     private TextView members;
     private TextView showMore;
+    private TextView startStreet;
+    private TextView endStreet;
+
+
     private PolylineOptions polylineOptions;
     private boolean isParticipation;
     private int activityPosition;
@@ -97,6 +98,8 @@ public class ActivityInformationFragment extends BaseFragment{
         memberOneName = (TextView) view.findViewById(R.id.memberOneName);
         memberTwoName = (TextView) view.findViewById(R.id.memberTwoName);
         memberThreeName = (TextView) view.findViewById(R.id.memberThreeName);
+        startStreet = (TextView) view.findViewById(R.id.start_point_street);
+        endStreet = (TextView) view.findViewById(R.id.end_point_street);
         members = (TextView)view.findViewById(R.id.members);
         if(!isParticipation){
             participationButton = (TextView)view.findViewById(R.id.participate_button);
@@ -112,6 +115,8 @@ public class ActivityInformationFragment extends BaseFragment{
         duration.setText(selectedSearchResult.get(ApplicationConstants.KEY_DURATION));
         date.setText(selectedSearchResult.get(ApplicationConstants.KEY_DATE));
         time.setText(selectedSearchResult.get(ApplicationConstants.KEY_TIME));
+        startStreet.setText(selectedSearchResult.get(ApplicationConstants.START_STREET_NAME));
+        endStreet.setText(selectedSearchResult.get(ApplicationConstants.END_STREET_NAME));
         membersTotal.setText("members " + selectedSearchResult.get(ApplicationConstants.KEY_MEMBERS_TOTAL));
         if(selectedSearchResult.get("member_0_name") != "" && selectedSearchResult.get("member_0_name") != null){
             memberOneName.setText(selectedSearchResult.get("member_0_name"));
@@ -251,6 +256,10 @@ public class ActivityInformationFragment extends BaseFragment{
         polylineOptions.width(5);
         polylineOptions.addAll(arrayPoints);
         googleMap.addPolyline(polylineOptions);
+        startPointMarker.title(selectedSearchResult.get(ApplicationConstants.COMPLETE_START_ADDRESS));
+        endPointMarker.title(selectedSearchResult.get(ApplicationConstants.COMPLETE_END_ADDRESS));
+        startPointMarker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        endPointMarker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
         googleMap.addMarker(startPointMarker);
         googleMap.addMarker(endPointMarker);
         googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
