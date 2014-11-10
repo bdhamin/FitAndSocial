@@ -6,7 +6,6 @@ import com.FitAndSocial.app.integration.service.INotificationRepo;
 import com.FitAndSocial.app.model.Notification;
 import com.google.inject.Inject;
 import com.j256.ormlite.dao.Dao;
-
 import java.sql.SQLException;
 import java.util.List;
 

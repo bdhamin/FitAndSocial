@@ -13,10 +13,8 @@ import com.FitAndSocial.app.mobile.R;
  */
 public class NotificationContainerFragment extends BaseFragment{
 
-    private View view;
-
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceBundle){
-        view = layoutInflater.inflate(R.layout.notification_container_layout, container, false);
+        View view = layoutInflater.inflate(R.layout.notification_container_layout, container, false);
         manageFragments();
         return view;
     }

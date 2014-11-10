@@ -7,8 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import com.FitAndSocial.app.fragment.NotificationDetailsFragment;
 import com.FitAndSocial.app.fragment.NotificationsListFragment;
-import com.FitAndSocial.app.fragment.activityCommunicationInterface.OnSelectedNotificationListener;
-import com.FitAndSocial.app.fragment.helper.FragmentVisibilityDeterminationInterface;
+import com.FitAndSocial.app.fragment.helper.OnSelectedNotificationListener;
 import com.FitAndSocial.app.fragment.helper.NonSwipeableViewPager;
 import com.FitAndSocial.app.adapter.ViewPagerAdapter;
 import com.FitAndSocial.app.util.ApplicationConstants;
@@ -27,7 +26,6 @@ public class FitAndSocial extends RoboSherlockFragmentActivity implements OnSele
     private ActionBar.Tab tab;
     private NonSwipeableViewPager viewPager;
     private SharedPreferences applicationPreference;
-//    private FragmentVisibilityDeterminationInterface fragmentVisibility;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,7 +40,6 @@ public class FitAndSocial extends RoboSherlockFragmentActivity implements OnSele
         actionbar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         actionbar.setCustomView(R.layout.notification_bar_layout);
 
-//        getSupportActionBar().setCustomView(R.layout.notification_bar_layout);
         View homeIcon = findViewById(android.R.id.home);
         ((View) homeIcon.getParent()).setVisibility(View.GONE);
 
@@ -57,22 +54,11 @@ public class FitAndSocial extends RoboSherlockFragmentActivity implements OnSele
             public void onPageSelected(int position){
                 super.onPageSelected(position);
                 actionbar.setSelectedNavigationItem(position);
-//                try{
-//                        FragmentVisibilityDeterminationInterface fragment = (FragmentVisibilityDeterminationInterface)viewPagerAdapter.instantiateItem(viewPager, position);
-//                        if(fragment != null){
-//                        actionbar.setSelectedNavigationItem(position);
-//                        fragment.fragmentBecameVisible();
-//                    }
-//                }catch (ClassCastException e){
-//                    actionbar.setSelectedNavigationItem(position);
-//                }
-
             }
         };
 
         viewPager.setOnPageChangeListener(viewPagerListener);
         viewPager.setAdapter(viewPagerAdapter);
-
 
         // Capture tab button clicks
         ActionBar.TabListener tabListener = new ActionBar.TabListener() {
@@ -112,8 +98,8 @@ public class FitAndSocial extends RoboSherlockFragmentActivity implements OnSele
 
         applicationPreference = getSharedPreferences(ApplicationConstants.APPLICATION_PREFERENCE, MODE_PRIVATE);
 
-        if(applicationPreference.contains(ApplicationConstants.APPLICATION_PREFERENCE_LOGGED_IN)) {
-            String loginType = applicationPreference.getString(ApplicationConstants.APPLICATION_PREFERENCE_LOGGED_IN, "");
+        if(applicationPreference.contains(ApplicationConstants.APPLICATION_PREFERENCE_LOGIN_TYPE)) {
+            String loginType = applicationPreference.getString(ApplicationConstants.APPLICATION_PREFERENCE_LOGIN_TYPE, "");
             if (loginType != null && !loginType.equals("")) {
                 viewPager.setCurrentItem(0);
             }else{

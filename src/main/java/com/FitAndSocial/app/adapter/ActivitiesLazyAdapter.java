@@ -43,7 +43,6 @@ public class ActivitiesLazyAdapter extends BaseAdapter{
     private boolean isInformation =false;
     private View view;
     private HashMap<String, String> fas;
-    private int activityMembersTotal;
 
     public ActivitiesLazyAdapter(BaseFragment activity, ArrayList<HashMap<String, String>> data){
         this.activity = activity;
@@ -98,24 +97,23 @@ public class ActivitiesLazyAdapter extends BaseAdapter{
 
         fas = data.get(position);
         members.setText("Members: "+fas.get(ApplicationConstants.KEY_MEMBERS_TOTAL));
-        activityMembersTotal = Integer.valueOf(fas.get(ApplicationConstants.KEY_MEMBERS_TOTAL));
         title.setText(fas.get(ApplicationConstants.KEY_TITLE));
         typeName.setText(fas.get(ApplicationConstants.KEY_TYPE));
         distanceInKM.setText(fas.get(ApplicationConstants.KEY_DISTANCE));
         dTime.setText(fas.get(ApplicationConstants.KEY_DURATION));
         aDate.setText(fas.get(ApplicationConstants.KEY_DATE));
         aTime.setText(fas.get(ApplicationConstants.KEY_TIME));
-        if(fas.get("member_0_name") != "" && fas.get("member_0_name") != null){
+        if(fas.get("member_0_name") != null && !fas.get("member_0_name").equals("")){
             memberOneName.setText(fas.get("member_0_name"));
             memberOne.setImageDrawable(activity.getResources().getDrawable(R.drawable.friends));
 
-            if(fas.get("member_1_name") != "" && fas.get("member_1_name") != null){
+            if(fas.get("member_1_name") != null && !fas.get("member_1_name").equals("")){
                 memberTwoName.setText(fas.get("member_1_name"));
                 memberTwo.setImageDrawable(activity.getResources().getDrawable(R.drawable.friends));
             }else{
                 setVisibility(1);
             }
-            if(fas.get("member_2_name") != "" && fas.get("member_2_name") != null){
+            if(fas.get("member_2_name") != null && !fas.get("member_2_name").equals("")){
                 memberThreeName.setText(fas.get("member_2_name"));
                 memberThree.setImageDrawable(activity.getResources().getDrawable(R.drawable.friends));
                 if(!isInformation)showMore.setVisibility(View.VISIBLE);
@@ -175,7 +173,7 @@ public class ActivitiesLazyAdapter extends BaseAdapter{
         for(int i =0; i<Integer.valueOf(stringStringHashMap.get(ApplicationConstants.KEY_MEMBERS_TOTAL)); i++){
             stringArray[i] = stringStringHashMap.get("member_"+i+"_name");
         }
-        ArrayAdapter<String> modeAdapter = new ArrayAdapter<String>(activity.getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, stringArray);
+        ArrayAdapter<String> modeAdapter = new ArrayAdapter<>(activity.getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, stringArray);
         modeList.setAdapter(modeAdapter);
 
         builder.setView(modeList);

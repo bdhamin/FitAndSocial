@@ -62,8 +62,6 @@ public class ProfileFragment extends BaseFragment implements  View.OnClickListen
     private CheckBox swimming, cycling, running, climbing, walking, gym;
     private ProgressDialog progressDialog;
 
-
-
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceBundle){
         view = layoutInflater.inflate(R.layout.profile, container, false);
@@ -118,12 +116,6 @@ public class ProfileFragment extends BaseFragment implements  View.OnClickListen
     public void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);
         setUserVisibleHint(true);
-    }
-
-    private List<String> activitiesType(String activities){
-
-        List<String> activitiesList = Arrays.asList(activities.split(","));
-        return activitiesList;
     }
 
     @Override
@@ -237,7 +229,7 @@ public class ProfileFragment extends BaseFragment implements  View.OnClickListen
                             email.setText(getNode(ApplicationConstants.KEY_EMAIL, eElement));
                             nickname.setText(getNode(ApplicationConstants.KEY_NICKNAME, eElement));
                             about.setText(getNode(ApplicationConstants.KEY_ABOUT, eElement));
-                            if(getNode(ApplicationConstants.KEY_ACTIVITIES, eElement) != null && getNode(ApplicationConstants.KEY_ACTIVITIES, eElement) != ""){
+                            if(getNode(ApplicationConstants.KEY_ACTIVITIES, eElement) != null && !getNode(ApplicationConstants.KEY_ACTIVITIES, eElement).equals("")){
                                 initActivitiesCheckBox(getNode(ApplicationConstants.KEY_ACTIVITIES, eElement));
                             }
                         }
@@ -248,6 +240,7 @@ public class ProfileFragment extends BaseFragment implements  View.OnClickListen
             }
         }
 
+        //TODO:Refactor this to enumlist
         private void initActivitiesCheckBox(String activities) {
             List<String> activitiesList = Arrays.asList(activities.split(", "));
             System.out.println("ActivitiesList: " + activitiesList);

@@ -9,13 +9,14 @@ import android.view.ViewGroup;
 import android.view.View;
 import android.widget.TextView;
 import com.FitAndSocial.app.fragment.helper.AccountContainerManager;
-import com.FitAndSocial.app.fragment.helper.ProcessRegistration;
+import com.FitAndSocial.app.fragment.helper.ProcessRegistrationService;
 import com.FitAndSocial.app.mobile.R;
 import com.FitAndSocial.app.model.FASAccount;
 import com.FitAndSocial.app.socialLogin.facebook.FacebookLogin;
 import com.FitAndSocial.app.socialLogin.google.GoogleLogin;
 import com.FitAndSocial.app.util.ApplicationConstants;
 import com.FitAndSocial.app.util.Connection;
+import com.actionbarsherlock.view.Menu;
 import com.facebook.model.GraphUser;
 import com.google.android.gms.plus.model.people.Person;
 import java.util.HashSet;
@@ -38,7 +39,9 @@ public class Account extends BaseFragment implements AccountContainerManager{
     private byte[] profileImage;
     private ProfilePictureReceiver receiver;
     private GraphUser user;
-    private final String FACEBOOK_PROFILE_PIC_URL = "https://graph.facebook.com/";
+    private static final String FACEBOOK_PROFILE_PIC_URL = "https://graph.facebook.com/";
+    private Menu menu;
+    private boolean isHideMenu = true;
 
     /**
      * Facebook offer difference sizes for the profile picture
@@ -51,7 +54,7 @@ public class Account extends BaseFragment implements AccountContainerManager{
      * or
      * https://graph.facebook.com/{userId}/picture?type=normal
      */
-    private final String FACEBOOK_PROFILE_PIC_TYPE = "/picture?width=80&height=80";
+    private static final String FACEBOOK_PROFILE_PIC_TYPE = "/picture?width=80&height=80";
     private static final int PROFILE_PIC_SIZE = 80;
 
 
@@ -64,6 +67,11 @@ public class Account extends BaseFragment implements AccountContainerManager{
         manager = getFragmentManager();
         transaction = manager.beginTransaction();
         noConnection = (TextView)view.findViewById(R.id.noConnection);
+        /**
+         * Make the application aware that this fragment support Menu.
+         * If is not set onPreOptionMenu of this fragment wont get called!
+         */
+        setHasOptionsMenu(true);
         if(!isLoggedIn()){
             if(Connection.hasInternetConnection(getActivity()) && Connection.canConnectToServer(getActivity())){
                 manageStartupFragments();
@@ -72,12 +80,14 @@ public class Account extends BaseFragment implements AccountContainerManager{
                 configureTabMode();
             }
         }else{
+            isHideMenu = false;
             noConnection.setVisibility(View.GONE);
             manageStartupFragments();
         }
         registerReceiver();
         return view;
     }
+
 
     /**
      * Register the receiver which is an inner class.
@@ -131,7 +141,7 @@ public class Account extends BaseFragment implements AccountContainerManager{
                 // we can replace the value with whatever dimension we want by
                 // replacing sz=X
                 personPhotoUrl = personPhotoUrl.substring(0,personPhotoUrl.length() - 2)+ PROFILE_PIC_SIZE;
-                Intent processRegistration = new Intent(this.getActivity(), ProcessRegistration.class);
+                Intent processRegistration = new Intent(this.getActivity(), ProcessRegistrationService.class);
                 processRegistration.putExtra("registrationPart", "loadImage");
                 processRegistration.putExtra("photoUrl", personPhotoUrl);
                 processRegistration.putExtra("accountType", "GOOGLE");
@@ -154,13 +164,13 @@ public class Account extends BaseFragment implements AccountContainerManager{
     public void createAccountUsingGoogle(){
         FASAccount account = createAccountUsingGoogle(this.person, this.email);
         //Create User account
-        Intent processRegistration = new Intent(getActivity(), ProcessRegistration.class);
+        Intent processRegistration = new Intent(getActivity(), ProcessRegistrationService.class);
         processRegistration.putExtra("account", account);
         processRegistration.putExtra("registrationPart", "account");
         getActivity().startService(processRegistration);
 
         //Register User Device to receive notification from GCM
-        Intent deviceRegistration = new Intent(this.getActivity(), ProcessRegistration.class);
+        Intent deviceRegistration = new Intent(this.getActivity(), ProcessRegistrationService.class);
         deviceRegistration.putExtra("registrationPart", "deviceRegistration");
         getActivity().startService(deviceRegistration);
 
@@ -176,31 +186,37 @@ public class Account extends BaseFragment implements AccountContainerManager{
             if(!accountExist(user.getId())){
                 this.user = user;
                 String personPhotoUrl = FACEBOOK_PROFILE_PIC_URL+user.getId()+FACEBOOK_PROFILE_PIC_TYPE;
-                Intent processRegistration = new Intent(this.getActivity(), ProcessRegistration.class);
+                Intent processRegistration = new Intent(this.getActivity(), ProcessRegistrationService.class);
                 processRegistration.putExtra("registrationPart", "loadImage");
                 processRegistration.putExtra("photoUrl", personPhotoUrl);
                 processRegistration.putExtra("accountType", "FACEBOOK");
+
                 getActivity().startService(processRegistration);
 
             }else{
+
                 processLoggedInUserInformation(user.getFirstName());
                 saveLoginType(true, user.getId());
                 configureTabMode();
             }
         }
     }
+
+    /**
+     * Called after processing the user profile pic
+     */
     @Override
     public void createAccountUsingFacebook(){
         FASAccount account = createAccountUsingFacebook(user);
 
         //Create User account
-        Intent processRegistration = new Intent(this.getActivity(), ProcessRegistration.class);
+        Intent processRegistration = new Intent(this.getActivity(), ProcessRegistrationService.class);
         processRegistration.putExtra("account", account);
         processRegistration.putExtra("registrationPart", "account");
         getActivity().startService(processRegistration);
 
         //Register User Device to receive notification from GCM
-        Intent deviceRegistration = new Intent(this.getActivity(), ProcessRegistration.class);
+        Intent deviceRegistration = new Intent(this.getActivity(), ProcessRegistrationService.class);
         deviceRegistration.putExtra("registrationPart", "deviceRegistration");
         getActivity().startService(deviceRegistration);
 
@@ -280,7 +296,15 @@ public class Account extends BaseFragment implements AccountContainerManager{
             setFragmentTitle(getUsername());
             enableViewPagerSwipe(true);
             noConnection.setVisibility(View.GONE);
+            isHideMenu = false;
+            if(menu != null && !menu.hasVisibleItems()){
+                getActivity().invalidateOptionsMenu();
+            }
         }else{
+            isHideMenu = true;
+            if(menu != null){
+                menu.clear();
+            }
             setActionbarNavigationMode(0);
             setFragmentTitle(ApplicationConstants.FRAGMENT_TITLE_ACCOUNT);
             enableViewPagerSwipe(false);
@@ -322,6 +346,9 @@ public class Account extends BaseFragment implements AccountContainerManager{
         SharedPreferences.Editor editor = applicationPreference.edit();
         editor.remove(ApplicationConstants.APPLICATION_PREFERENCE_LOGIN_TYPE);
         editor.remove(ApplicationConstants.APPLICATION_PREFERENCE_USER_ID);
+        if(menu != null){
+            menu.clear();
+        }
         /**
          * Used apply instead of commit because apply do what commit does only
          * it do it in the background
@@ -385,8 +412,8 @@ public class Account extends BaseFragment implements AccountContainerManager{
         account.setProviderKey(person.getId());
         account.setAge(30);
         account.setGender(person.getGender() == 0 ? "male" : "female");
-        account.setFirstName(person.getDisplayName());
-        account.setLastName(person.getDisplayName());
+        account.setFirstName(person.getName().getGivenName());
+        account.setLastName(person.getName().getFamilyName());
         account.setUserEmail(email);
         account.setDetails("Please update this section with details about your self");
         account.setNickname("New User");
@@ -426,6 +453,17 @@ public class Account extends BaseFragment implements AccountContainerManager{
                 case "FACEBOOK":
                     createAccountUsingFacebook();
                     break;
+            }
+        }
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        if(menu != null) {
+            this.menu = menu;
+            if (isHideMenu) {
+                menu.clear();
             }
         }
     }

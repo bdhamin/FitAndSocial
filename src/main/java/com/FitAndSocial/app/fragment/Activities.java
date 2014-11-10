@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -42,7 +40,6 @@ public class Activities extends BaseFragment{
     private String url;
     private ListView listView;
     private ActivitiesLazyAdapter activitiesLazyAdapter;
-    private boolean isInformation = false;
     private View view;
     private NodeList nodelist;
     private SwipeRefreshLayout swipeLayout;
@@ -56,7 +53,7 @@ public class Activities extends BaseFragment{
         notification = (TextView)view.findViewById(R.id.notification);
         setActionbarNavigationMode(2);
         url = ApplicationConstants.SERVER_BASE_ADDRESS+ApplicationConstants.SERVER_ADDRESS_ACTION_UPCOMING_ACTIVITIES;
-        new DownloadXML().execute(url);
+        new DownloadUpcomingActivities().execute(url);
         return view;
     }
 
@@ -66,14 +63,7 @@ public class Activities extends BaseFragment{
         setUserVisibleHint(true);
     }
 
-    public void isActivityInformation(boolean isInformationView){
-        if(isInformationView){
-            isInformation = true;
-        }
-    }
-
-    // DownloadXML AsyncTask
-    private class DownloadXML extends AsyncTask<String, Void, Boolean> implements SwipeRefreshLayout.OnRefreshListener{
+    private class DownloadUpcomingActivities extends AsyncTask<String, Void, Boolean> implements SwipeRefreshLayout.OnRefreshListener{
 
         @Override
         protected void onPreExecute() {
@@ -89,18 +79,15 @@ public class Activities extends BaseFragment{
         @Override
         protected Boolean doInBackground(String... Url) {
 
-            String address = "";
             StringBuilder sb = new StringBuilder();
-
             applicationPreference = getActivity().getSharedPreferences(ApplicationConstants.APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
             if(applicationPreference.contains(ApplicationConstants.APPLICATION_PREFERENCE_USER_ID)){
                 String userId = applicationPreference.getString(ApplicationConstants.APPLICATION_PREFERENCE_USER_ID, "");
                 sb.append(url).append("?id=").append(userId);
-                address = sb.toString();
+                String address = sb.toString();
 
-                    URLConnection connection = null;
                     try {
-                        connection = new URL(address).openConnection();
+                        URLConnection connection = new URL(address).openConnection();
                         connection.setConnectTimeout(5000);
                         connection.setReadTimeout(5000);
                         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -198,7 +185,7 @@ public class Activities extends BaseFragment{
 
         @Override
         public void onRefresh() {
-            new DownloadXML().execute(url);
+            new DownloadUpcomingActivities().execute(url);
         }
 
         private void canConnectToServer(boolean connection){

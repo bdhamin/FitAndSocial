@@ -10,6 +10,6 @@ public class InitApp extends Application{
 
     @Override
     public void onCreate(){
-        new DatabaseHelper(getApplicationContext()).getWritableDatabase();
+        new DatabaseHelper(getApplicationContext()).getWritableDatabase().close();
     }
 }

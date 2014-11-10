@@ -15,13 +15,11 @@ import com.FitAndSocial.app.util.Utils;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.util.Date;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -36,7 +34,7 @@ import roboguice.service.RoboIntentService;
 /**
  * Created by mint on 1-10-14.
  */
-public class ProcessRegistration extends RoboIntentService{
+public class ProcessRegistrationService extends RoboIntentService{
 
     private FASAccount fasAccount;
     private GoogleCloudMessaging gcm;
@@ -48,7 +46,7 @@ public class ProcessRegistration extends RoboIntentService{
     private byte[]imgProfilePic;
     private String accountType;
 
-    public ProcessRegistration() {
+    public ProcessRegistrationService() {
         super("Create Account");
     }
 
@@ -125,8 +123,7 @@ public class ProcessRegistration extends RoboIntentService{
              */
             if(registrationPart[0].equals("account")){
                 Gson gson = new Gson();
-                String json = "";
-                json = gson.toJson(fasAccount);
+                String json = gson.toJson(fasAccount);
                 try {
                     HttpClient httpClient = new DefaultHttpClient();
                     HttpPost httpPost = new HttpPost(ApplicationConstants.SERVER_BASE_ADDRESS+ApplicationConstants.SERVER_ADDRESS_ACTION_REGISTER);
@@ -135,11 +132,7 @@ public class ProcessRegistration extends RoboIntentService{
                     httpPost.setHeader("Content-type", "application/json");
                     HttpResponse httpResponse = httpClient.execute(httpPost);
                     StatusLine statusLine = httpResponse.getStatusLine();
-                    if(statusLine.getStatusCode() == HttpStatus.SC_OK){
-                        return true;
-                    }else{
-                        return false;
-                    }
+                    return statusLine.getStatusCode() == HttpStatus.SC_OK;
                 } catch (MalformedURLException | UnsupportedEncodingException | ClientProtocolException e) {
                     e.printStackTrace();
                     return false;
@@ -164,11 +157,7 @@ public class ProcessRegistration extends RoboIntentService{
                     HttpPost httpPost = new HttpPost(registrationUrl);
                     HttpResponse httpResponse = httpClient.execute(httpPost);
                     StatusLine statusLine = httpResponse.getStatusLine();
-                    if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
-                        return true;
-                    } else {
-                        return false;
-                    }
+                    return statusLine.getStatusCode() == HttpStatus.SC_OK;
                 } catch (IOException e) {
                     e.printStackTrace();
                     return false;

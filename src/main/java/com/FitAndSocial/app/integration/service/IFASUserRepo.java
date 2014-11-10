@@ -1,7 +1,6 @@
 package com.FitAndSocial.app.integration.service;
 
 import com.FitAndSocial.app.model.FASUser;
-
 import java.sql.SQLException;
 
 /**

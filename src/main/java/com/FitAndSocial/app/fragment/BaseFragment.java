@@ -2,26 +2,21 @@ package com.FitAndSocial.app.fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.v4.app.Fragment;
 import android.widget.TextView;
 import com.FitAndSocial.app.fragment.helper.NonSwipeableViewPager;
 import com.FitAndSocial.app.mobile.FitAndSocial;
 import com.FitAndSocial.app.mobile.R;
-import com.FitAndSocial.app.socialLogin.google.GoogleLogin;
 import com.FitAndSocial.app.util.ApplicationConstants;
 import com.actionbarsherlock.app.ActionBar;
-import roboguice.fragment.RoboFragment;
+import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 
 /**
  * Created by mint on 31-7-14.
  */
-public class BaseFragment extends RoboFragment {
+public class BaseFragment extends RoboSherlockFragment {
 
     private ActionBar actionbar;
     private NonSwipeableViewPager viewPager;
-    private String title;
-    private TextView fragmentTitle;
-    private boolean isExternalInformationRequired;
     protected SharedPreferences applicationPreference;
 
     /**
@@ -59,46 +54,20 @@ public class BaseFragment extends RoboFragment {
     }
 
     protected void setFragmentTitle(String title){
-        this.title = title;
         if(title != null && !title.trim().isEmpty()){
-            changeFragmentTitle();
+            this.changeFragmentTitle(title);
         }
     }
 
-    private void changeFragmentTitle() {
-        fragmentTitle = (TextView)getActivity().findViewById(R.id.username);
-        fragmentTitle.setText(this.title);
+    private void changeFragmentTitle(String title) {
+       TextView fragmentTitle = (TextView)getActivity().findViewById(R.id.username);
+       fragmentTitle.setText(title);
     }
-
-    /**
-     *
-     * @param isRequired
-     * @return boolean
-     * Some of the fragments are used to display information about the user
-     * and about the user activities. Some of the user information are stored
-     * local and so the user don't need to connect online te view the information
-     * for example the user profile. When the user view his/her own profile the data
-     * can be loaded from local storage. However this is not the case when the user
-     * tries to view another user profile. In this case the data need to be loaded
-     * from the server. So this boolean check is made to determine of external connection
-     * needed or not.
-     *
-     */
-
-    protected void setIsExternalInformationRequired(boolean isRequired){
-        this.isExternalInformationRequired = isRequired;
-    }
-
-    protected boolean getIsExternalInformationRequired(){
-        return isExternalInformationRequired;
-    }
-
 
     public String getLoggedInUserId(){
         applicationPreference = this.getActivity().getSharedPreferences(ApplicationConstants.APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
         if(applicationPreference.contains(ApplicationConstants.APPLICATION_PREFERENCE_USER_ID)){
-            String userId = applicationPreference.getString(ApplicationConstants.APPLICATION_PREFERENCE_USER_ID, "");
-            return userId;
+            return applicationPreference.getString(ApplicationConstants.APPLICATION_PREFERENCE_USER_ID, "");
         }
         return "";
     }
@@ -106,8 +75,7 @@ public class BaseFragment extends RoboFragment {
     protected String getUsername(){
         applicationPreference = this.getActivity().getSharedPreferences(ApplicationConstants.APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
         if(applicationPreference.contains(ApplicationConstants.APPLICATION_PREFERENCE_USERNAME)){
-            String username = applicationPreference.getString(ApplicationConstants.APPLICATION_PREFERENCE_USERNAME, "");
-            return username;
+            return applicationPreference.getString(ApplicationConstants.APPLICATION_PREFERENCE_USERNAME, "");
         }
         return "";
     }

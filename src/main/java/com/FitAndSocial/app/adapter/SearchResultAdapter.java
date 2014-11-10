@@ -35,12 +35,9 @@ public class SearchResultAdapter extends BaseAdapter{
     TextView aTime;
     TextView aDate;
     Button participate;
-    private final String USER_ID = "userId";
-    private final String ACTIVITY_ID ="activityId";
-    private final String ACTIVITY = "activity";
-    private final String PARTICIPATION = "participation";
+    private final static String ACTIVITY = "activity";
+    private final static String PARTICIPATION = "participation";
     private SearchFragmentHelper searchFragmentHelper;
-//    private Fragment fragment;
 
     public SearchResultAdapter(BaseFragment searchActivity, ArrayList<HashMap<String, String>> searchData){
         this.activity = searchActivity;
@@ -127,8 +124,7 @@ public class SearchResultAdapter extends BaseAdapter{
     public void setFragment(Fragment fragment){
         try{
             this.searchFragmentHelper = (SearchFragmentHelper) fragment;
-//            this.fragment = fragment;
-        }catch (ClassCastException e){}
+        }catch (ClassCastException e){System.out.println("Error casting class");}
 
     }
 

@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import com.FitAndSocial.app.fragment.activityCommunicationInterface.OnSelectedNotificationListener;
+import com.FitAndSocial.app.fragment.helper.OnSelectedNotificationListener;
 import com.FitAndSocial.app.integration.service.INotificationRepo;
 import com.FitAndSocial.app.mobile.R;
 import com.FitAndSocial.app.model.Notification;

@@ -2,14 +2,10 @@ package com.FitAndSocial.app.fragment;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +16,8 @@ import com.FitAndSocial.app.util.ApplicationConstants;
 import com.FitAndSocial.app.util.MapActivityLocationBounds;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.*;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -47,20 +41,17 @@ public class ActivityInformationFragment extends BaseFragment{
     private TextView memberOneName;
     private TextView memberTwoName;
     private TextView memberThreeName;
-    private TextView members;
     private TextView showMore;
     private TextView startStreet;
     private TextView endStreet;
-
-
     private PolylineOptions polylineOptions;
     private boolean isParticipation;
     private int activityPosition;
 
     private TextView participationButton;
-    private final String ACTIVITY_ID = "activityId";
-    private final String USER_ID = "userId";
-    private final String CANCEL_PARTICIPATION = "Cancel Participation";
+    private final static String ACTIVITY_ID = "activityId";
+    private final static String USER_ID = "userId";
+    private final static String CANCEL_PARTICIPATION = "Cancel Participation";
     private GoogleMap googleMap;
 
 
@@ -77,7 +68,6 @@ public class ActivityInformationFragment extends BaseFragment{
         initTextViews();
         initEventDetails();
         loadMapsIfNeeded();
-//        loadRequiredFragments();
         attachButtonListener();
         return view;
     }
@@ -100,7 +90,6 @@ public class ActivityInformationFragment extends BaseFragment{
         memberThreeName = (TextView) view.findViewById(R.id.memberThreeName);
         startStreet = (TextView) view.findViewById(R.id.start_point_street);
         endStreet = (TextView) view.findViewById(R.id.end_point_street);
-        members = (TextView)view.findViewById(R.id.members);
         if(!isParticipation){
             participationButton = (TextView)view.findViewById(R.id.participate_button);
             participationButton.setText(CANCEL_PARTICIPATION);
@@ -118,17 +107,17 @@ public class ActivityInformationFragment extends BaseFragment{
         startStreet.setText(selectedSearchResult.get(ApplicationConstants.START_STREET_NAME));
         endStreet.setText(selectedSearchResult.get(ApplicationConstants.END_STREET_NAME));
         membersTotal.setText("members " + selectedSearchResult.get(ApplicationConstants.KEY_MEMBERS_TOTAL));
-        if(selectedSearchResult.get("member_0_name") != "" && selectedSearchResult.get("member_0_name") != null){
+        if(selectedSearchResult.get("member_0_name") != null && !selectedSearchResult.get("member_0_name").equals("")){
             memberOneName.setText(selectedSearchResult.get("member_0_name"));
             memberOne.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.friends));
 
-            if(selectedSearchResult.get("member_1_name") != "" && selectedSearchResult.get("member_1_name") != null){
+            if(selectedSearchResult.get("member_1_name") != null && !selectedSearchResult.get("member_1_name") .equals("")){
                 memberTwoName.setText(selectedSearchResult.get("member_1_name"));
                 memberTwo.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.friends));
             }else{
                 setVisibility(1);
             }
-            if(selectedSearchResult.get("member_2_name") != "" && selectedSearchResult.get("member_2_name") != null){
+            if(selectedSearchResult.get("member_2_name") != null && !selectedSearchResult.get("member_2_name").equals("")){
                 memberThreeName.setText(selectedSearchResult.get("member_2_name"));
                 memberThree.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.friends));
                 showMore.setVisibility(View.VISIBLE);
@@ -162,7 +151,7 @@ public class ActivityInformationFragment extends BaseFragment{
         for(int i =0; i<Integer.valueOf(stringStringHashMap.get(ApplicationConstants.KEY_MEMBERS_TOTAL)); i++){
             stringArray[i] = stringStringHashMap.get("member_"+i+"_name");
         }
-        ArrayAdapter<String> modeAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, stringArray);
+        ArrayAdapter<String> modeAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, android.R.id.text1, stringArray);
         modeList.setAdapter(modeAdapter);
 
         builder.setView(modeList);
@@ -205,7 +194,6 @@ public class ActivityInformationFragment extends BaseFragment{
         participateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 String authenticationKey = getLoggedInUserId();
                 Intent eventHelperIntent = new Intent(ActivityInformationFragment.this.getActivity(), EventHelperService.class);
                 eventHelperIntent.putExtra(ACTIVITY_ID, Long.valueOf(selectedSearchResult.get("id")));
@@ -304,12 +292,6 @@ public class ActivityInformationFragment extends BaseFragment{
     }
 
     private void disposeFragment() {
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        Fragment activityInformation = getActivity().getSupportFragmentManager().findFragmentById(R.id.create_fragment_container);
-        if(activityInformation != null){
-            transaction.remove(activityInformation);
-            transaction.commit();
-            getActivity().getSupportFragmentManager().popBackStack();
-        }
+        getActivity().getSupportFragmentManager().popBackStack();
     }
 }

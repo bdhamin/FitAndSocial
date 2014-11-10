@@ -19,13 +19,11 @@ import com.FitAndSocial.app.util.Utils;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.*;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-//TODO remove this fragment to be part of create fragment since there is only one use to it
 public class GoogleMapsFragment extends BaseFragment implements GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener{
 
     private GoogleMap googleMap;
@@ -72,13 +70,6 @@ public class GoogleMapsFragment extends BaseFragment implements GoogleMap.OnMapC
         googleMap.setOnMapClickListener(this);
         googleMap.setOnMapLongClickListener(this);
     }
-
-
-//    @Override
-//    public void onSaveInstanceState(Bundle bundle){
-//        super.onSaveInstanceState(bundle);
-//        setUserVisibleHint(true);
-//    }
 
     @Override
     public void onResume() {
@@ -186,7 +177,6 @@ public class GoogleMapsFragment extends BaseFragment implements GoogleMap.OnMapC
             Log.i("GoogleMapsFragment", "IOException", e.getCause());
         }
         finalAddress = "Address not available";
-        Toast.makeText(getActivity(), finalAddress, Toast.LENGTH_LONG).show();
         return finalAddress;
     }
 
@@ -206,18 +196,4 @@ public class GoogleMapsFragment extends BaseFragment implements GoogleMap.OnMapC
                 setUpMap();
         }
     }
-
-//    /**** The map fragment's id must be removed from the FragmentManager
-//     **** or else if the same it is passed on the next time then
-//     **** app will crash ****/
-//    @Override
-//    public void onDestroyView() {
-//        super.onDestroyView();
-//        if (googleMap != null) {
-//            getFragmentManager().beginTransaction()
-//                    .remove(getFragmentManager().findFragmentById(R.id.google_maps)).commit();
-//            googleMap = null;
-//        }
-//    }
-
 }

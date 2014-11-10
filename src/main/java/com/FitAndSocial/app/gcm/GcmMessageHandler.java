@@ -10,7 +10,6 @@ import com.FitAndSocial.app.model.Notification;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.inject.Inject;
 import roboguice.service.RoboIntentService;
-
 import java.sql.SQLException;
 import java.util.Date;
 
@@ -63,7 +62,6 @@ public class GcmMessageHandler extends RoboIntentService {
         showToast();
         Log.i("GCM", "Received : (" + messageType + ")  " + extras.getString("title"));
         GcmBroadcastReceiver.completeWakefulIntent(intent);
-
     }
 
     public void showToast(){
@@ -72,6 +70,5 @@ public class GcmMessageHandler extends RoboIntentService {
                 Toast.makeText(getApplicationContext(), title, Toast.LENGTH_LONG).show();
             }
         });
-
     }
 }

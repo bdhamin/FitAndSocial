@@ -24,6 +24,7 @@ public class NoActivities extends BaseFragment {
         searchButtonListener();
         enableViewPagerSwipe(true);
         setActionbarNavigationMode(2);
+        setFragmentTitle(getUsername());
         return view;
     }
 
@@ -76,12 +77,4 @@ public class NoActivities extends BaseFragment {
         super.onSaveInstanceState(onState);
         setUserVisibleHint(true);
     }
-
-
-
-
-
-
-
-
 }

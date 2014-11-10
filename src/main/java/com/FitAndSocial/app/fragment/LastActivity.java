@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import com.FitAndSocial.app.mobile.R;
 import com.FitAndSocial.app.util.ApplicationConstants;
@@ -34,25 +33,15 @@ import java.net.URLConnection;
  */
 public class LastActivity extends BaseFragment {
 
-    private TextView showMore;
-    private TextView no_members;
     private TextView title;
     private TextView typeName;
     private TextView distanceInKM;
     private TextView dTime;
     private TextView aDate;
     private TextView aTime;
-    private ImageView memberOne;
-    private ImageView memberTwo;
-    private ImageView memberThree;
-    private TextView memberOneName;
-    private TextView memberTwoName;
-    private TextView memberThreeName;
     private TextView members;
     private NodeList nodelist;
     private View view;
-    private String authenticationKey;
-
 
     public LastActivity(){
         String lastActivityUrl = ApplicationConstants.SERVER_BASE_ADDRESS+ApplicationConstants.SERVER_ADDRESS_ACTION_LAST_ACTIVITY;
@@ -63,24 +52,14 @@ public class LastActivity extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceState){
         view = layoutInflater.inflate(R.layout.last_activity, container, false);
-        showMore = (TextView) view.findViewById(R.id.showMore);
-        no_members = (TextView) view.findViewById(R.id.no_members);
         title = (TextView) view.findViewById(R.id.title);
         typeName = (TextView) view.findViewById(R.id.typeName);
         distanceInKM = (TextView) view.findViewById(R.id.km);
         dTime = (TextView) view.findViewById(R.id.dTime);
         aDate = (TextView) view.findViewById(R.id.aDate);
         aTime = (TextView) view.findViewById(R.id.aTime);
-
-        memberOne = (ImageView) view.findViewById(R.id.memberOne);
-        memberTwo = (ImageView) view.findViewById(R.id.memberTwo);
-        memberThree = (ImageView) view.findViewById(R.id.memberThree);
-
-        memberOneName = (TextView) view.findViewById(R.id.memberOneName);
-        memberTwoName = (TextView) view.findViewById(R.id.memberTwoName);
-        memberThreeName = (TextView) view.findViewById(R.id.memberThreeName);
         members = (TextView)view.findViewById(R.id.members);
-        this.authenticationKey = getLoggedInUserId();
+        setFragmentTitle(getUsername());
         return view;
     }
 
@@ -173,8 +152,7 @@ public class LastActivity extends BaseFragment {
     private String getLoggedUserId(){
         SharedPreferences preference = getActivity().getSharedPreferences(ApplicationConstants.APPLICATION_PREFERENCE, Context.MODE_PRIVATE);
         if(preference.contains(ApplicationConstants.APPLICATION_PREFERENCE_USER_ID)){
-            String userId = preference.getString("userId", "");
-            return userId;
+            return preference.getString("userId", "");
         }
         return "";
     }

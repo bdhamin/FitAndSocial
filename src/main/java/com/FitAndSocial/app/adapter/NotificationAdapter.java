@@ -6,10 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import com.FitAndSocial.app.fragment.BaseFragment;
-import com.FitAndSocial.app.fragment.activityCommunicationInterface.OnSelectedNotificationListener;
+import com.FitAndSocial.app.fragment.helper.OnSelectedNotificationListener;
 import com.FitAndSocial.app.mobile.R;
 import com.FitAndSocial.app.model.Notification;
 import com.FitAndSocial.app.util.Utils;
@@ -29,14 +28,12 @@ public class NotificationAdapter extends BaseAdapter{
     private OnSelectedNotificationListener notificationListener;
     private int color;
     private ImageView deleteImageView;
-    private ListView listView;
     private View view;
 
-    public NotificationAdapter(BaseFragment baseFragment, List<Notification> notificationList, OnSelectedNotificationListener notificationListener, ListView listView){
+    public NotificationAdapter(BaseFragment baseFragment, List<Notification> notificationList, OnSelectedNotificationListener notificationListener){
         this.baseFragment = baseFragment;
         this.notificationList = notificationList;
         this.notificationListener = notificationListener;
-        this.listView = listView;
         layoutInflater = (LayoutInflater)baseFragment.getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 

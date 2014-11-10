@@ -6,7 +6,6 @@ import com.FitAndSocial.app.integration.service.IFASUserRepo;
 import com.FitAndSocial.app.model.FASUser;
 import com.google.inject.Inject;
 import com.j256.ormlite.dao.Dao;
-
 import java.sql.SQLException;
 
 /**

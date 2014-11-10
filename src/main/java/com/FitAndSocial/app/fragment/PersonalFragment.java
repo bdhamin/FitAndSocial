@@ -16,7 +16,6 @@ public class PersonalFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceBundle){
         View view = layoutInflater.inflate(R.layout.personal, container, false);
-        setIsExternalInformationRequired(false);
         loadRequiredFragments();
         return view;
     }
@@ -26,7 +25,6 @@ public class PersonalFragment extends BaseFragment {
         super.onSaveInstanceState(outState);
         setUserVisibleHint(true);
     }
-
 
     private void loadRequiredFragments() {
 
@@ -38,6 +36,4 @@ public class PersonalFragment extends BaseFragment {
         fragmentTransaction.add(R.id.personal_activities_summary_container, userActivitiesSummary);
         fragmentTransaction.commit();
     }
-
-
 }

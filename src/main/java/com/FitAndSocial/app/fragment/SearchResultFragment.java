@@ -47,8 +47,8 @@ public class SearchResultFragment extends BaseFragment implements SearchFragment
     private View view;
     private TextView notification;
     private ArrayList<HashMap<String, String>> searchResultList;
-    private final String USER_ID = "userId";
-    private final String ACTIVITY_ID ="activityId";
+    private final static String USER_ID = "userId";
+    private final static String ACTIVITY_ID ="activityId";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceBundle){

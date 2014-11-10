@@ -30,7 +30,7 @@
 
         </receiver>
         <service android:name="com.FitAndSocial.app.gcm.GcmMessageHandler" />
-        <service android:name="com.FitAndSocial.app.fragment.helper.ProcessRegistration" />
+        <service android:name="com.FitAndSocial.app.fragment.helper.ProcessRegistrationService" />
         <service android:name="com.FitAndSocial.app.fragment.helper.EventHelperService" />
 
         <activity android:name="com.facebook.LoginActivity"

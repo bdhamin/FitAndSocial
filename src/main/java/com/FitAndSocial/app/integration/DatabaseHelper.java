@@ -40,7 +40,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper{
              TableUtils.dropTable(connectionSource, FASUser.class, true);
              TableUtils.dropTable(connectionSource, Notification.class, true);
          }catch (SQLException e){
-             System.out.println("droping table..");
+             System.out.println("dropping table..");
          }
     }
 }

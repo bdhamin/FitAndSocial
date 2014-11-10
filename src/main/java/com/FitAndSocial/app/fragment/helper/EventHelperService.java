@@ -18,7 +18,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 import roboguice.service.RoboIntentService;
-
 import java.io.UnsupportedEncodingException;
 
 /**
@@ -30,8 +29,8 @@ public class EventHelperService extends RoboIntentService{
     private Event event;
     private String userId;
     private long activityId;
-    private final String ACTIVITY_ID = "activityId";
-    private final String USER_ID = "userId";
+    private static final String ACTIVITY_ID = "activityId";
+    private static final String USER_ID = "userId";
 
     public EventHelperService(){super("EventHelper");}
 

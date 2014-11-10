@@ -25,7 +25,6 @@ public final class ApplicationConstants {
     public static final String KEY_NICKNAME = "nickname";
     public static final String KEY_ACTIVITIES = "activities";
     public static final String KEY_ABOUT = "about";
-    public static final String ACTIVE_SINCE = "active_since";
     public static final String KEY_ACTIVITY_TYPE = "activityType";
     public static final String KYE_DISTANCE = "distance";
     public static final String KEY_Min_DURATION = "durationMin";
@@ -42,6 +41,9 @@ public final class ApplicationConstants {
 
     //CURRENT LOCAL SERVER BASE ADDRESS
     public static final String SERVER_BASE_ADDRESS = "http://192.168.2.9:9000";
+
+    //Heroku Server URL
+//    public static final String SERVER_BASE_ADDRESS = "https://ancient-garden-4250.herokuapp.com";
 
     //USER ACTIONS TO THE BACKEND
     public static final String SERVER_ADDRESS_ACTION_REGISTER = "/register";
@@ -65,8 +67,6 @@ public final class ApplicationConstants {
     public static final String APPLICATION_PREFERENCE_LOGIN_TYPE_FACEBOOK = "facebook";
     public static final String APPLICATION_PREFERENCE_LOGIN_TYPE_GOOGLE = "google";
     public static final String APPLICATION_PREFERENCE_USERS = "users";
-    public static final String APPLICATION_PREFERENCE_LOGGED_IN = "loggedIn";
-
 
     //GCM
     public static final String PROJECT_NUMBER = "5876528920";

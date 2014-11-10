@@ -16,7 +16,6 @@ import com.FitAndSocial.app.integration.service.IFASUserRepo;
 import com.FitAndSocial.app.mobile.R;
 import com.FitAndSocial.app.model.FASUser;
 import com.google.inject.Inject;
-
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.sql.SQLException;
@@ -35,11 +34,6 @@ public class UserGeneralInformation extends BaseFragment{
         view = layoutInflater.inflate(R.layout.user_general_information, null);
         initTextViews();
         populateTextViews();
-        if(getIsExternalInformationRequired()){
-            loadDataFromServer();
-        }else{
-            loadDataLocal();
-        }
         return view;
     }
 
@@ -51,7 +45,7 @@ public class UserGeneralInformation extends BaseFragment{
 
     private void populateTextViews() {
         String userId = getLoggedInUserId();
-        Bitmap mIcon11 = null;
+        Bitmap mIcon11;
         try {
             FASUser user = _userRepo.find(userId);
             username.setText(user.getUsername());
@@ -71,9 +65,4 @@ public class UserGeneralInformation extends BaseFragment{
         super.onSaveInstanceState(bundle);
         setUserVisibleHint(true);
     }
-
-    private void loadDataLocal(){}
-
-    private void loadDataFromServer(){}
-
 }

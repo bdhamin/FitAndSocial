@@ -8,13 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import com.FitAndSocial.app.fragment.activityCommunicationInterface.OnSelectedNotificationListener;
+import com.FitAndSocial.app.fragment.helper.OnSelectedNotificationListener;
 import com.FitAndSocial.app.integration.service.INotificationRepo;
 import com.FitAndSocial.app.mobile.R;
 import com.FitAndSocial.app.model.Notification;
 import com.FitAndSocial.app.adapter.NotificationAdapter;
 import com.google.inject.Inject;
-
 import java.sql.SQLException;
 import java.util.List;
 
@@ -26,7 +25,6 @@ public class NotificationsListFragment extends BaseFragment implements SwipeRefr
     private SwipeRefreshLayout swipeLayout;
     private View view;
     private OnSelectedNotificationListener notificationListener;
-    private ListView notificationsList;
     private NotificationAdapter notificationAdapter;
     private List<Notification> notifications;
     @Inject
@@ -90,8 +88,8 @@ public class NotificationsListFragment extends BaseFragment implements SwipeRefr
         @Override
         protected void onPostExecute(Boolean success){
             if(success){
-                notificationsList = (ListView)view.findViewById(R.id.notificationsList_lv);
-                notificationAdapter = new NotificationAdapter(NotificationsListFragment.this, notifications, notificationListener, notificationsList);
+                ListView notificationsList = (ListView)view.findViewById(R.id.notificationsList_lv);
+                notificationAdapter = new NotificationAdapter(NotificationsListFragment.this, notifications, notificationListener);
                 notificationsList.setAdapter(notificationAdapter);
             }else{
                 System.out.println("Cannot load notifications list!!");
@@ -102,6 +100,14 @@ public class NotificationsListFragment extends BaseFragment implements SwipeRefr
     @Override
     public void onRefresh() {
         new LoadNotification().execute();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser){
+            new LoadNotification().execute();
+        }
     }
 
     public void updateView(int position){

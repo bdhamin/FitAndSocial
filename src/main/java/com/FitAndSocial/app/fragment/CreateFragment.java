@@ -1,9 +1,6 @@
 package com.FitAndSocial.app.fragment;
 
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,8 +17,6 @@ import com.FitAndSocial.app.model.Event;
 import com.FitAndSocial.app.util.ApplicationConstants;
 import com.FitAndSocial.app.util.Utils;
 import com.google.android.gms.maps.model.LatLng;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +41,8 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
     private String endStreet;
     private String completeStartStreet;
     private String completeEndStreet;
+    private static final String NO_ADDRESS_AVAILABLE = "Address not available";
+    private static final String EMPTY_FIELDS = "Please make sure you have filled in all the fields.";
 
 
     @Override
@@ -192,9 +189,9 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
                     eventHelper.putExtra(ApplicationConstants.EVENT_TYPE, ApplicationConstants.EVENT_TYPE_CREATE_ACTION);
                     eventHelper.putExtra("eventModel", event);
                     CreateFragment.this.getActivity().startService(eventHelper);
-                    new CreateEvent().execute();
+                    showSearchResults();
                 }else{
-                    Toast.makeText(getActivity(), "Please make sure you have filled in all the fields.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), EMPTY_FIELDS, Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -212,7 +209,6 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
     private void processStreetNames(){
         List<String> streetNames = googleMapsFragment.getStreetInfo();
         if(streetNames != null && streetNames.size() > 0){
-//            && streetNames.size() == 4
             startStreet = streetNames.get(0);
             endStreet = streetNames.get(1);
             completeStartStreet = streetNames.get(2);
@@ -231,21 +227,9 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
     }
 
     private boolean requiredFieldsOk() {
-        if(!title.getText().toString().trim().equals("") && !activityType.equals("Activity Type")
+        return !title.getText().toString().trim().equals("") && !activityType.equals("Activity Type")
                 && !activityDistance.equals("Distance (KM)") && !activityDistance.trim().equals("") && !activityDuration.equals("Duration")
-                && !date.equals("Set Date") && !date.equals("") && !time.equals("Set Time") && !time.equals("")){
-            return true;
-        }
-        return false;
-    }
-
-    private void disposeCurrentFragment(){
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.create_activity_container);
-        if(currentFragment != null){
-            transaction.remove(currentFragment);
-            transaction.commit();
-        }
+                && !date.equals("Set Date") && !date.equals("") && !time.equals("Set Time") && !time.equals("");
     }
 
     //TODO: remove empty value to final String or remove it all since its not really needed
@@ -265,10 +249,14 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
         event.setStartLocationMagnitude(startLng);
         event.setEndLocationLatitude(endLat);
         event.setEndLocationMagnitude(endLng);
-        event.setStartStreetName(startStreet.equals("")? "" : startStreet);
-        event.setEndStreetName(endStreet.equals("")? "" : endStreet);
-        event.setCompleteStartAddress(completeStartStreet.equals("")? "" : completeStartStreet);
-        event.setCompleteEndAddress(completeEndStreet.equals("")? "" : completeEndStreet);
+        /*
+            In some cases android locator does not give back any address. When that happens we need to make
+            sure that the there is some additional information instead of the start/end locations.
+         */
+        event.setStartStreetName(startStreet == null || startStreet.equals("") ? NO_ADDRESS_AVAILABLE : startStreet);
+        event.setEndStreetName(endStreet == null || endStreet.equals("")? NO_ADDRESS_AVAILABLE : endStreet);
+        event.setCompleteStartAddress(completeStartStreet == null || completeStartStreet.equals("")? NO_ADDRESS_AVAILABLE : completeStartStreet);
+        event.setCompleteEndAddress(completeEndStreet == null || completeEndStreet.equals("")? NO_ADDRESS_AVAILABLE : completeEndStreet);
         return event;
     }
 
@@ -283,34 +271,19 @@ public class CreateFragment extends BaseFragment implements OnDateSetListener, O
         }
     }
 
-    private class CreateEvent extends AsyncTask<String, Void, Boolean>{
+    private void showSearchResults(){
+        getActivity().getSupportFragmentManager().popBackStack();
 
-        @Override
-        protected void onPreExecute(){
-            super.onPreExecute();
-        }
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-        @Override
-        protected Boolean doInBackground(String... Url){
-            return true;
-        }
+        Fragment lastActivity = fragmentManager.findFragmentById(R.id.last_activity_fragment_container);
 
-        @Override
-        protected void onPostExecute(Boolean success){
-            getActivity().getSupportFragmentManager().popBackStack();
-
-            FragmentManager fragmentManager = getFragmentManager();
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-
-            Fragment lastActivity = fragmentManager.findFragmentById(R.id.last_activity_fragment_container);
-
-            if(lastActivity != null){
-                Activities activities = new Activities();
-                transaction.add(R.id.activities_container, activities);
-                transaction.remove(lastActivity);
-                transaction.commit();
-            }
-            disposeCurrentFragment();
+        if(lastActivity != null){
+            Activities activities = new Activities();
+            transaction.add(R.id.activities_container, activities);
+            transaction.remove(lastActivity);
+            transaction.commit();
         }
     }
 }

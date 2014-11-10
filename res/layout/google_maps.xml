@@ -7,51 +7,26 @@
                 android:background="@android:color/white">
 
     <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Start"
-            android:id="@+id/start_point_text"
-            android:textColor="@android:color/black"
-            android:layout_marginLeft="18dp"/>
-
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="End"
-            android:id="@+id/end_point_text"
-            android:textColor="@android:color/black"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="88dp"/>
-
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="End Street"
+            android:text=""
             android:id="@+id/end_point_street"
-            android:layout_below="@+id/end_point_text"
-            android:layout_alignLeft="@+id/end_point_text"/>
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:gravity="right"
+            android:textColor="@android:color/black"/>
 
     <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Start Street"
+            android:text=""
             android:id="@+id/start_point_street"
-            android:layout_below="@+id/start_point_text"
-            android:layout_alignLeft="@+id/start_point_text"/>
-
-    <!--<ImageView-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/google_map"-->
-            <!--android:layout_below="@+id/start_point_street"-->
-            <!--android:layout_marginTop="10dp"-->
-            <!--android:layout_marginLeft="15dp"-->
-            <!--android:layout_marginRight="15dp"-->
-            <!--android:src="@drawable/dummy_google_map"/>-->
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_alignParentLeft="true"
+            android:textColor="@android:color/black"/>
 
     <fragment
             android:layout_below="@id/start_point_street"
@@ -59,8 +34,4 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             class="com.google.android.gms.maps.SupportMapFragment"></fragment>
-
-
-
-
 </RelativeLayout>

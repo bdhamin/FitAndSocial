@@ -1,4 +1,4 @@
-package com.FitAndSocial.app.fragment.activityCommunicationInterface;
+package com.FitAndSocial.app.fragment.helper;
 
 /**
  * Created by mint on 14-10-14.

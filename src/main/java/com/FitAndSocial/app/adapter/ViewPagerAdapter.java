@@ -11,7 +11,7 @@ import com.FitAndSocial.app.fragment.*;
 public class ViewPagerAdapter extends FragmentPagerAdapter{
 
     // Declare the number of ViewPager pages
-    final int PAGE_COUNT = 5;
+    private final static int PAGE_COUNT = 5;
 
     public ViewPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -21,20 +21,15 @@ public class ViewPagerAdapter extends FragmentPagerAdapter{
     public Fragment getItem(int tab) {
         switch (tab) {
             case 0:
-                HomeFragment homeFragment = new HomeFragment();
-                return homeFragment;
+                return new HomeFragment();
             case 1:
-                PersonalFragment personalFragment = new PersonalFragment();
-                return personalFragment;
+                return new PersonalFragment();
             case 2:
-                ProfileFragment profileFragment = new ProfileFragment();
-                return profileFragment;
+                return new ProfileFragment();
             case 3:
-                NotificationContainerFragment notificationActivity = new NotificationContainerFragment();
-                return notificationActivity;
+                return new NotificationContainerFragment();
             case 4:
-                Account account = new Account();
-                return account;
+                return new Account();
         }
         return null;
     }

@@ -7,7 +7,6 @@ import com.google.inject.Provider;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.support.ConnectionSource;
-
 import java.sql.SQLException;
 
 /**
@@ -21,7 +20,6 @@ public class NotificationDaoProvider implements Provider<Dao<Notification, Integ
     public NotificationDaoProvider(DatabaseHelper databaseHelper){
         connectionSource = databaseHelper.getConnectionSource();
     }
-
 
     @Override
     public Dao<Notification, Integer> get() {

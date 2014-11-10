@@ -5,8 +5,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import com.FitAndSocial.app.fragment.helper.NonSwipeableViewPager;
 import com.FitAndSocial.app.mobile.R;
 import android.support.v4.app.FragmentManager;
 
@@ -16,7 +14,7 @@ import android.support.v4.app.FragmentManager;
  */
 public class HomeFragment extends BaseFragment{
 
-    private final String NO_ACTIVITIES_FRAGMENT_ID = "no_activities_fragment";
+    private static final String NO_ACTIVITIES_FRAGMENT_ID = "no_activities_fragment";
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle savedInstanceBundle){

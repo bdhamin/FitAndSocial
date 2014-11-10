@@ -2,10 +2,6 @@ package com.FitAndSocial.app.util;
 
 import android.text.format.DateFormat;
 import android.text.format.Time;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.ParseException;
@@ -18,24 +14,6 @@ import java.util.Date;
 public final class Utils {
 
     private Utils(){}
-
-    public static String readTextFile(InputStream inputStream) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-        byte buf[] = new byte[1024];
-        int len;
-        try {
-            while ((len = inputStream.read(buf)) != -1) {
-                outputStream.write(buf, 0, len);
-            }
-            outputStream.close();
-            inputStream.close();
-        } catch (IOException e) {
-
-        }
-        return outputStream.toString();
-    }
-
     /**
      *
      * @param dayOfMonth
@@ -48,8 +26,7 @@ public final class Utils {
         Time activityDate = new Time();
         activityDate.set(dayOfMonth, month, year);
         long dateToMillis = activityDate.toMillis(true);
-        String dateFormatter = DateFormat.format("dd-MM-yyyy", dateToMillis).toString();
-        return dateFormatter;
+        return DateFormat.format("dd-MM-yyyy", dateToMillis).toString();
     }
 
     public static String formatTime(int hour, int minute){
@@ -94,6 +71,10 @@ public final class Utils {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        if (date != null) {
+            return date.getTime();
+        }
+        date = new Date();
         return date.getTime();
     }
 
@@ -119,23 +100,20 @@ public final class Utils {
      */
     public static String[] parseSelectedValues(String value){
         value = value.replaceAll("[^\\d-]", "");
-        String[] parts = value.split("-");
-        return parts;
+        return value.split("-");
     }
 
 
     public static String getDateFromLong(long date){
         String pattern = "dd-MM-yyyy";
         java.text.DateFormat dateFormat = new SimpleDateFormat(pattern);
-        String formattedDate = dateFormat.format(date);
-        return formattedDate;
+        return dateFormat.format(date);
     }
 
     public static String getTimeFromLong(long date){
         String pattern = "HH:mm";
         java.text.DateFormat dateFormat = new SimpleDateFormat(pattern);
-        String formattedTime = dateFormat.format(date);
-        return formattedTime;
+        return dateFormat.format(date);
     }
 
     public static double round(double value, int places){

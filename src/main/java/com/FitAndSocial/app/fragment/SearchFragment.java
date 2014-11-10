@@ -16,7 +16,6 @@ import com.FitAndSocial.app.util.ApplicationConstants;
 import com.FitAndSocial.app.util.Utils;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.Date;
 
 /**
  * Created by mint on 25-7-14.
@@ -30,8 +29,6 @@ public class SearchFragment extends BaseFragment implements OnDateSetListener, O
     private String radius;
     private String startDate;
     private String startTime;
-    private long dateToMillis;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceBundle){
@@ -93,7 +90,6 @@ public class SearchFragment extends BaseFragment implements OnDateSetListener, O
         String formattedDate = Utils.formatDate(day, month, year);
         Time activityDate = new Time();
         activityDate.set(day, month, year);
-        dateToMillis = activityDate.toMillis(true);
         startDate = formattedDate;
         date.setText(formattedDate);
     }
@@ -194,15 +190,10 @@ public class SearchFragment extends BaseFragment implements OnDateSetListener, O
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                long date = new Date().getTime();
                 if (activityTypeName.equals("Activity Type") || distance.equals("Distance (KM)")
                         || duration.equals("Duration") || radius.equals("Radius")) {
 
                     Toast.makeText(getActivity(), "All the search fields are required!", Toast.LENGTH_SHORT).show();
-
-//                } else if (dateToMillis < date) {
-//                    Toast.makeText(getActivity(), "Select other date please", Toast.LENGTH_SHORT).show();
-                    
                 } else {
                     FragmentManager fragmentManager = getFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -219,16 +210,6 @@ public class SearchFragment extends BaseFragment implements OnDateSetListener, O
             }
         });
     }
-
-    private void disposeCurrentFragment(){
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.create_activity_container);
-        if(currentFragment != null){
-            transaction.remove(currentFragment);
-            transaction.commit();
-        }
-    }
-
     /**
      *
      * @return a string represents the full address to the backend.
@@ -239,26 +220,21 @@ public class SearchFragment extends BaseFragment implements OnDateSetListener, O
      */
     private String assembleUrl(){
 
-        String minDuration = "";
-        String maxDuration = "";
-        String minRadius = "";
-        String maxRadius = "";
-
         /**
          * Duration has start and end value so we need to extract
          * the value in min and max value which represent from to
          */
         String[] durationParts = Utils.parseSelectedValues(duration);
-        minDuration = durationParts[0];
-        maxDuration = durationParts[1];
+        String minDuration = durationParts[0];
+        String maxDuration = durationParts[1];
 
         /**
          * Duration has start and end value so we need to extract
          * the value in min and max value which represent from to
          */
         String[] radiusParts = Utils.parseSelectedValues(duration);
-        minRadius = radiusParts[0];
-        maxRadius = radiusParts[1];
+        String minRadius = radiusParts[0];
+        String maxRadius = radiusParts[1];
 
         /**
          * Trim and remove the KM letters from distance
